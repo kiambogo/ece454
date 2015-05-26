@@ -20,10 +20,13 @@
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TServer.Args;
 import org.apache.thrift.server.TSimpleServer;
+import org.apache.thrift.server.TNonblockingServer;
 import org.apache.thrift.server.TThreadPoolServer;
 import org.apache.thrift.transport.TSSLTransportFactory;
 import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TServerTransport;
+import org.apache.thrift.transport.TNonblockingServerTransport;
+import org.apache.thrift.transport.TNonblockingServerSocket;
 import org.apache.thrift.transport.TSSLTransportFactory.TSSLTransportParameters;
 
 // Generated code
@@ -52,7 +55,7 @@ public class JavaServer {
 
       Runnable simple = new Runnable() {
         public void run() {
-          simple(processor, Integer.parseInt(port));
+          nonblocking(processor, Integer.parseInt(port));
         }
       };      
 
@@ -62,13 +65,13 @@ public class JavaServer {
     }
   }
 
-  public static void simple(HashService.Processor processor, Integer port) {
+  public static void nonblocking(HashService.Processor processor, Integer port) {
     try {
-      TServerTransport serverTransport = new TServerSocket(port);
-      TServer server = new TSimpleServer(
-              new Args(serverTransport).processor(processor));
+      TNonblockingServerTransport serverTransport = new TNonblockingServerSocket(port);
+      TServer server = new TNonblockingServer(
+              new TNonblockingServer.Args(serverTransport).processor(processor));
 
-      System.out.println("Starting the simple server...");
+      System.out.println("Starting the nonblocking server...");
       server.serve();
     } catch (Exception e) {
       e.printStackTrace();
