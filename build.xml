@@ -53,7 +53,6 @@
 
   <target name="test" depends="run" />
 
-  <!-- target name="tutorial" description="Run the tutorial" -->
   <target name="run" description="Run the tutorial" depends="compile" >
     <jar jarfile="ece454.jar" basedir="${build}"/>
     <parallel>
@@ -72,23 +71,21 @@
   </target>
 
   <target name="generate">
-    <!-- Generate the thrift gen-java source -->
-    <!-- exec executable="../../compiler/cpp/thrift" failonerror="true" -->
     <exec executable="/usr/local/bin/thrift" failonerror="true" >
       <arg line="--gen java -r ece454.thrift"/>
     </exec>
   </target>
 
-  <target name="client" description="Run a tutorial client" depends="compile">
-    <echo>tutorial client simple:</echo>
-    <java classname="JavaClient"
+  <target name="localclient" description="Run a tutorial client" depends="compile">
+    <echo>Launching localclient...:</echo>
+    <java classname="LocalClient"
       classpathref="ece454.classpath" failonerror="true">
       <arg line="simple"/>
     </java>
   </target>
 
   <target name="remoteclient" description="Run a tutorial client" >
-    <echo>tutorial client simple:</echo>
+    <echo>Launching remoteclient, connecting to eceubuntu...:</echo>
     <java classname="RemoteClient"
       classpathref="ece454.classpath" failonerror="true">
       <arg line="simple eceubuntu"/>

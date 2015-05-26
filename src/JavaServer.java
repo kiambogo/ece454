@@ -38,13 +38,21 @@ public class JavaServer {
   public static HashService.Processor processor;
 
   public static void main(String [] args) {
+    final String port; 
+
+    if (args.length != 0) {
+      port = args[0];
+    } else {
+      port = "9090";
+    }
+
     try {
       handler = new HashServiceHandler();
       processor = new HashService.Processor(handler);
 
       Runnable simple = new Runnable() {
         public void run() {
-          simple(processor);
+          simple(processor, Integer.parseInt(port));
         }
       };      
 
@@ -54,9 +62,9 @@ public class JavaServer {
     }
   }
 
-  public static void simple(HashService.Processor processor) {
+  public static void simple(HashService.Processor processor, Integer port) {
     try {
-      TServerTransport serverTransport = new TServerSocket(9090);
+      TServerTransport serverTransport = new TServerSocket(port);
       TServer server = new TSimpleServer(
               new Args(serverTransport).processor(processor));
 
