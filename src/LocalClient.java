@@ -28,7 +28,7 @@ import org.apache.thrift.transport.TSSLTransportFactory.TSSLTransportParameters;
 import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 
-public class JavaClient {
+public class LocalClient {
   public static void main(String [] args) {
 
     if (args.length != 1 || !args[0].contains("simple")) {
@@ -42,7 +42,7 @@ public class JavaClient {
       transport.open();
 
       TProtocol protocol = new  TBinaryProtocol(transport);
-      Myservice.Client client = new Myservice.Client(protocol);
+      HashService.Client client = new HashService.Client(protocol);
 
       perform(client);
 
@@ -52,19 +52,9 @@ public class JavaClient {
     } 
   }
 
-  private static void perform(Myservice.Client client) throws TException
+  private static void perform(HashService.Client client) throws TException
   {
-
-    int sum = client.add(2,7);
-    System.out.println("2+7=" + sum);
-
-    Item item = new Item();
-    item.key = 100;
-    item.value = "Hello World!";
-
-    client.putItem(item);
-    Item another_item = client.getItem(100);
-    
-    System.out.println("Another_item value: " + another_item.value);
+    String response = client.hashPassword("", (short)9);
+    System.out.println(""+response);
   }
 }

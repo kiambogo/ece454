@@ -18,33 +18,31 @@
  */
 
 import org.apache.thrift.TException;
+import org.apache.thrift.async.AsyncMethodCallback;
 
 // Generated code
 import ece454.*;
 
 import java.util.HashMap;
 
-public class MyserviceHandler implements Myservice.Iface {
+public class HashServiceHandler implements HashService.Iface {
 
-  private HashMap<Integer,Item> map;
+  private HashMap<Integer,String> map;
 
-  public MyserviceHandler() {
-    map = new HashMap<Integer, Item>();
+  public HashServiceHandler() {
+    map = new HashMap<Integer, String>();
   }
 
-  public int add(int n1, int n2) {
-    System.out.println("add(" + n1 + "," + n2 + ")");
-    return n1 + n2;
+  public String hashPassword(String password, short logRounds) throws ServiceUnavailableException, TException {
+    return "[insert hashed password here]";
   }
 
-  public void putItem(Item item) {
-    System.out.println("putItem key(" + item.key + ")");
-    map.put(item.key, item);
+  public boolean checkPassword(String password, String hash) throws TException {
+    return true;
   }
 
-  public Item getItem(int key) {
-    System.out.println("getItem(" + key + ")");
-    return map.get(key);
-  }
+  public PerfCounters getPerfCounters() throws TException {
+    return new PerfCounters();
+    }
 }
 
