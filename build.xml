@@ -79,7 +79,7 @@
     </exec>
   </target>
 
-  <target name="tutorialclient" description="Run a tutorial client" depends="compile">
+  <target name="client" description="Run a tutorial client" depends="compile">
     <echo>tutorial client simple:</echo>
     <java classname="JavaClient"
       classpathref="ece454.classpath" failonerror="true">
@@ -89,13 +89,13 @@
 
   <target name="remoteclient" description="Run a tutorial client" >
     <echo>tutorial client simple:</echo>
-    <java classname="JavaClient2"
+    <java classname="RemoteClient"
       classpathref="ece454.classpath" failonerror="true">
       <arg line="simple eceubuntu"/>
     </java>
   </target>
 
-  <target name="tutorialserver" description="Run a tutorial server" depends="compile">
+  <target name="server" description="Run a tutorial server" depends="compile">
       <java classname="JavaServer" fork="true"
         classpathref="ece454.classpath" failonerror="false" output="${build}/log/server.log">
       </java>

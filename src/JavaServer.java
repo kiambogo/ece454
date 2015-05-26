@@ -33,14 +33,14 @@ import java.util.HashMap;
 
 public class JavaServer {
 
-  public static MyserviceHandler handler;
+  public static HashServiceHandler handler;
 
-  public static Myservice.Processor processor;
+  public static HashService.Processor processor;
 
   public static void main(String [] args) {
     try {
-      handler = new MyserviceHandler();
-      processor = new Myservice.Processor(handler);
+      handler = new HashServiceHandler();
+      processor = new HashService.Processor(handler);
 
       Runnable simple = new Runnable() {
         public void run() {
@@ -54,7 +54,7 @@ public class JavaServer {
     }
   }
 
-  public static void simple(Myservice.Processor processor) {
+  public static void simple(HashService.Processor processor) {
     try {
       TServerTransport serverTransport = new TServerSocket(9090);
       TServer server = new TSimpleServer(
