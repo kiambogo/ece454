@@ -23,6 +23,7 @@ import ece454.*;
 import org.apache.thrift.TException;
 import org.apache.thrift.transport.TSSLTransportFactory;
 import org.apache.thrift.transport.TTransport;
+import org.apache.thrift.transport.TFramedTransport;
 import org.apache.thrift.transport.TSocket;
 import org.apache.thrift.transport.TSSLTransportFactory.TSSLTransportParameters;
 import org.apache.thrift.protocol.TBinaryProtocol;
@@ -39,7 +40,7 @@ public class RemoteClient {
 
     try {
       TTransport transport;
-      transport = new TSocket(args[1], 10399);
+      transport = new TFramedTransport(new TSocket(args[1], 10300));
       transport.open();
 
       TProtocol protocol = new  TBinaryProtocol(transport);

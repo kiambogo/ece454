@@ -23,6 +23,7 @@ import org.apache.thrift.async.AsyncMethodCallback;
 // Generated code
 import ece454.*;
 
+import org.mindrot.jbcrypt.*;
 import java.util.HashMap;
 
 public class HashServiceHandler implements HashService.Iface {
@@ -34,7 +35,7 @@ public class HashServiceHandler implements HashService.Iface {
   }
 
   public String hashPassword(String password, short logRounds) throws ServiceUnavailableException, TException {
-    return "[insert hashed password here]";
+    return BCrypt.hashpw(password, BCrypt.gensalt((int)logRounds));
   }
 
   public boolean checkPassword(String password, String hash) throws TException {

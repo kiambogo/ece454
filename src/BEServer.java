@@ -19,8 +19,6 @@
 
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TServer.Args;
-import org.apache.thrift.server.TSimpleServer;
-import org.apache.thrift.server.TNonblockingServer;
 import org.apache.thrift.server.TThreadPoolServer;
 import org.apache.thrift.transport.TSSLTransportFactory;
 import org.apache.thrift.transport.TServerSocket;
@@ -34,20 +32,14 @@ import ece454.*;
 
 import java.util.HashMap;
 
-public class JavaServer {
+public class BEServer {
 
   public static HashServiceHandler handler;
 
   public static HashService.Processor processor;
 
   public static void main(String [] args) {
-    final String port; 
-
-    if (args.length != 0) {
-      port = args[0];
-    } else {
-      port = "9090";
-    }
+    final int port = 9091; 
 
     try {
       handler = new HashServiceHandler();
@@ -55,7 +47,7 @@ public class JavaServer {
 
       Runnable simple = new Runnable() {
         public void run() {
-          nonblocking(processor, Integer.parseInt(port));
+          threadpool(processor, port);
         }
       };      
 
@@ -65,13 +57,13 @@ public class JavaServer {
     }
   }
 
-  public static void nonblocking(HashService.Processor processor, Integer port) {
+  public static void threadpool(HashService.Processor processor, Integer port) {
     try {
       TNonblockingServerTransport serverTransport = new TNonblockingServerSocket(port);
-      TServer server = new TNonblockingServer(
-              new TNonblockingServer.Args(serverTransport).processor(processor));
+      TServer server = new TThreadPoolServer(
+              new TThreadPoolServer.Args(serverTransport).processor(processor));
 
-      System.out.println("Starting the nonblocking server...");
+      System.out.println("Starting the BE (threadpool) server...");
       server.serve();
     } catch (Exception e) {
       e.printStackTrace();
