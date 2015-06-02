@@ -41,13 +41,9 @@ public class A1Management {
 
     public PerfCounters getPerfCounters() throws org.apache.thrift.TException;
 
-    public void sendHealthcheck(short numberOfCores) throws org.apache.thrift.TException;
+    public Set<Heartbeat> getUpdatedBEList() throws org.apache.thrift.TException;
 
-    public void sendServerUp(short portNumber, short numberOfCores) throws org.apache.thrift.TException;
-
-    public void receiveHealthCheck(ServerHealthcheck healthCheck) throws org.apache.thrift.TException;
-
-    public void receiveServerUp(ServerUpBroadcast broadcast) throws org.apache.thrift.TException;
+    public void sendHeartbeat(Heartbeat heartbeat) throws org.apache.thrift.TException;
 
   }
 
@@ -55,13 +51,9 @@ public class A1Management {
 
     public void getPerfCounters(org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
-    public void sendHealthcheck(short numberOfCores, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+    public void getUpdatedBEList(org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
-    public void sendServerUp(short portNumber, short numberOfCores, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
-
-    public void receiveHealthCheck(ServerHealthcheck healthCheck, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
-
-    public void receiveServerUp(ServerUpBroadcast broadcast, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+    public void sendHeartbeat(Heartbeat heartbeat, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -107,84 +99,45 @@ public class A1Management {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getPerfCounters failed: unknown result");
     }
 
-    public void sendHealthcheck(short numberOfCores) throws org.apache.thrift.TException
+    public Set<Heartbeat> getUpdatedBEList() throws org.apache.thrift.TException
     {
-      send_sendHealthcheck(numberOfCores);
-      recv_sendHealthcheck();
+      send_getUpdatedBEList();
+      return recv_getUpdatedBEList();
     }
 
-    public void send_sendHealthcheck(short numberOfCores) throws org.apache.thrift.TException
+    public void send_getUpdatedBEList() throws org.apache.thrift.TException
     {
-      sendHealthcheck_args args = new sendHealthcheck_args();
-      args.setNumberOfCores(numberOfCores);
-      sendBase("sendHealthcheck", args);
+      getUpdatedBEList_args args = new getUpdatedBEList_args();
+      sendBase("getUpdatedBEList", args);
     }
 
-    public void recv_sendHealthcheck() throws org.apache.thrift.TException
+    public Set<Heartbeat> recv_getUpdatedBEList() throws org.apache.thrift.TException
     {
-      sendHealthcheck_result result = new sendHealthcheck_result();
-      receiveBase(result, "sendHealthcheck");
-      return;
+      getUpdatedBEList_result result = new getUpdatedBEList_result();
+      receiveBase(result, "getUpdatedBEList");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getUpdatedBEList failed: unknown result");
     }
 
-    public void sendServerUp(short portNumber, short numberOfCores) throws org.apache.thrift.TException
+    public void sendHeartbeat(Heartbeat heartbeat) throws org.apache.thrift.TException
     {
-      send_sendServerUp(portNumber, numberOfCores);
-      recv_sendServerUp();
+      send_sendHeartbeat(heartbeat);
+      recv_sendHeartbeat();
     }
 
-    public void send_sendServerUp(short portNumber, short numberOfCores) throws org.apache.thrift.TException
+    public void send_sendHeartbeat(Heartbeat heartbeat) throws org.apache.thrift.TException
     {
-      sendServerUp_args args = new sendServerUp_args();
-      args.setPortNumber(portNumber);
-      args.setNumberOfCores(numberOfCores);
-      sendBase("sendServerUp", args);
+      sendHeartbeat_args args = new sendHeartbeat_args();
+      args.setHeartbeat(heartbeat);
+      sendBase("sendHeartbeat", args);
     }
 
-    public void recv_sendServerUp() throws org.apache.thrift.TException
+    public void recv_sendHeartbeat() throws org.apache.thrift.TException
     {
-      sendServerUp_result result = new sendServerUp_result();
-      receiveBase(result, "sendServerUp");
-      return;
-    }
-
-    public void receiveHealthCheck(ServerHealthcheck healthCheck) throws org.apache.thrift.TException
-    {
-      send_receiveHealthCheck(healthCheck);
-      recv_receiveHealthCheck();
-    }
-
-    public void send_receiveHealthCheck(ServerHealthcheck healthCheck) throws org.apache.thrift.TException
-    {
-      receiveHealthCheck_args args = new receiveHealthCheck_args();
-      args.setHealthCheck(healthCheck);
-      sendBase("receiveHealthCheck", args);
-    }
-
-    public void recv_receiveHealthCheck() throws org.apache.thrift.TException
-    {
-      receiveHealthCheck_result result = new receiveHealthCheck_result();
-      receiveBase(result, "receiveHealthCheck");
-      return;
-    }
-
-    public void receiveServerUp(ServerUpBroadcast broadcast) throws org.apache.thrift.TException
-    {
-      send_receiveServerUp(broadcast);
-      recv_receiveServerUp();
-    }
-
-    public void send_receiveServerUp(ServerUpBroadcast broadcast) throws org.apache.thrift.TException
-    {
-      receiveServerUp_args args = new receiveServerUp_args();
-      args.setBroadcast(broadcast);
-      sendBase("receiveServerUp", args);
-    }
-
-    public void recv_receiveServerUp() throws org.apache.thrift.TException
-    {
-      receiveServerUp_result result = new receiveServerUp_result();
-      receiveBase(result, "receiveServerUp");
+      sendHeartbeat_result result = new sendHeartbeat_result();
+      receiveBase(result, "sendHeartbeat");
       return;
     }
 
@@ -235,24 +188,53 @@ public class A1Management {
       }
     }
 
-    public void sendHealthcheck(short numberOfCores, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+    public void getUpdatedBEList(org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      sendHealthcheck_call method_call = new sendHealthcheck_call(numberOfCores, resultHandler, this, ___protocolFactory, ___transport);
+      getUpdatedBEList_call method_call = new getUpdatedBEList_call(resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class sendHealthcheck_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private short numberOfCores;
-      public sendHealthcheck_call(short numberOfCores, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+    public static class getUpdatedBEList_call extends org.apache.thrift.async.TAsyncMethodCall {
+      public getUpdatedBEList_call(org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
-        this.numberOfCores = numberOfCores;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("sendHealthcheck", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        sendHealthcheck_args args = new sendHealthcheck_args();
-        args.setNumberOfCores(numberOfCores);
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getUpdatedBEList", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getUpdatedBEList_args args = new getUpdatedBEList_args();
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public Set<Heartbeat> getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_getUpdatedBEList();
+      }
+    }
+
+    public void sendHeartbeat(Heartbeat heartbeat, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      sendHeartbeat_call method_call = new sendHeartbeat_call(heartbeat, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class sendHeartbeat_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private Heartbeat heartbeat;
+      public sendHeartbeat_call(Heartbeat heartbeat, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.heartbeat = heartbeat;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("sendHeartbeat", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        sendHeartbeat_args args = new sendHeartbeat_args();
+        args.setHeartbeat(heartbeat);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -263,106 +245,7 @@ public class A1Management {
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        (new Client(prot)).recv_sendHealthcheck();
-      }
-    }
-
-    public void sendServerUp(short portNumber, short numberOfCores, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
-      checkReady();
-      sendServerUp_call method_call = new sendServerUp_call(portNumber, numberOfCores, resultHandler, this, ___protocolFactory, ___transport);
-      this.___currentMethod = method_call;
-      ___manager.call(method_call);
-    }
-
-    public static class sendServerUp_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private short portNumber;
-      private short numberOfCores;
-      public sendServerUp_call(short portNumber, short numberOfCores, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
-        super(client, protocolFactory, transport, resultHandler, false);
-        this.portNumber = portNumber;
-        this.numberOfCores = numberOfCores;
-      }
-
-      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("sendServerUp", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        sendServerUp_args args = new sendServerUp_args();
-        args.setPortNumber(portNumber);
-        args.setNumberOfCores(numberOfCores);
-        args.write(prot);
-        prot.writeMessageEnd();
-      }
-
-      public void getResult() throws org.apache.thrift.TException {
-        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
-          throw new IllegalStateException("Method call not finished!");
-        }
-        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
-        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        (new Client(prot)).recv_sendServerUp();
-      }
-    }
-
-    public void receiveHealthCheck(ServerHealthcheck healthCheck, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
-      checkReady();
-      receiveHealthCheck_call method_call = new receiveHealthCheck_call(healthCheck, resultHandler, this, ___protocolFactory, ___transport);
-      this.___currentMethod = method_call;
-      ___manager.call(method_call);
-    }
-
-    public static class receiveHealthCheck_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private ServerHealthcheck healthCheck;
-      public receiveHealthCheck_call(ServerHealthcheck healthCheck, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
-        super(client, protocolFactory, transport, resultHandler, false);
-        this.healthCheck = healthCheck;
-      }
-
-      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("receiveHealthCheck", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        receiveHealthCheck_args args = new receiveHealthCheck_args();
-        args.setHealthCheck(healthCheck);
-        args.write(prot);
-        prot.writeMessageEnd();
-      }
-
-      public void getResult() throws org.apache.thrift.TException {
-        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
-          throw new IllegalStateException("Method call not finished!");
-        }
-        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
-        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        (new Client(prot)).recv_receiveHealthCheck();
-      }
-    }
-
-    public void receiveServerUp(ServerUpBroadcast broadcast, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
-      checkReady();
-      receiveServerUp_call method_call = new receiveServerUp_call(broadcast, resultHandler, this, ___protocolFactory, ___transport);
-      this.___currentMethod = method_call;
-      ___manager.call(method_call);
-    }
-
-    public static class receiveServerUp_call extends org.apache.thrift.async.TAsyncMethodCall {
-      private ServerUpBroadcast broadcast;
-      public receiveServerUp_call(ServerUpBroadcast broadcast, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
-        super(client, protocolFactory, transport, resultHandler, false);
-        this.broadcast = broadcast;
-      }
-
-      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("receiveServerUp", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        receiveServerUp_args args = new receiveServerUp_args();
-        args.setBroadcast(broadcast);
-        args.write(prot);
-        prot.writeMessageEnd();
-      }
-
-      public void getResult() throws org.apache.thrift.TException {
-        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
-          throw new IllegalStateException("Method call not finished!");
-        }
-        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
-        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        (new Client(prot)).recv_receiveServerUp();
+        (new Client(prot)).recv_sendHeartbeat();
       }
     }
 
@@ -380,10 +263,8 @@ public class A1Management {
 
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
       processMap.put("getPerfCounters", new getPerfCounters());
-      processMap.put("sendHealthcheck", new sendHealthcheck());
-      processMap.put("sendServerUp", new sendServerUp());
-      processMap.put("receiveHealthCheck", new receiveHealthCheck());
-      processMap.put("receiveServerUp", new receiveServerUp());
+      processMap.put("getUpdatedBEList", new getUpdatedBEList());
+      processMap.put("sendHeartbeat", new sendHeartbeat());
       return processMap;
     }
 
@@ -407,82 +288,42 @@ public class A1Management {
       }
     }
 
-    public static class sendHealthcheck<I extends Iface> extends org.apache.thrift.ProcessFunction<I, sendHealthcheck_args> {
-      public sendHealthcheck() {
-        super("sendHealthcheck");
+    public static class getUpdatedBEList<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getUpdatedBEList_args> {
+      public getUpdatedBEList() {
+        super("getUpdatedBEList");
       }
 
-      public sendHealthcheck_args getEmptyArgsInstance() {
-        return new sendHealthcheck_args();
+      public getUpdatedBEList_args getEmptyArgsInstance() {
+        return new getUpdatedBEList_args();
       }
 
       protected boolean isOneway() {
         return false;
       }
 
-      public sendHealthcheck_result getResult(I iface, sendHealthcheck_args args) throws org.apache.thrift.TException {
-        sendHealthcheck_result result = new sendHealthcheck_result();
-        iface.sendHealthcheck(args.numberOfCores);
+      public getUpdatedBEList_result getResult(I iface, getUpdatedBEList_args args) throws org.apache.thrift.TException {
+        getUpdatedBEList_result result = new getUpdatedBEList_result();
+        result.success = iface.getUpdatedBEList();
         return result;
       }
     }
 
-    public static class sendServerUp<I extends Iface> extends org.apache.thrift.ProcessFunction<I, sendServerUp_args> {
-      public sendServerUp() {
-        super("sendServerUp");
+    public static class sendHeartbeat<I extends Iface> extends org.apache.thrift.ProcessFunction<I, sendHeartbeat_args> {
+      public sendHeartbeat() {
+        super("sendHeartbeat");
       }
 
-      public sendServerUp_args getEmptyArgsInstance() {
-        return new sendServerUp_args();
-      }
-
-      protected boolean isOneway() {
-        return false;
-      }
-
-      public sendServerUp_result getResult(I iface, sendServerUp_args args) throws org.apache.thrift.TException {
-        sendServerUp_result result = new sendServerUp_result();
-        iface.sendServerUp(args.portNumber, args.numberOfCores);
-        return result;
-      }
-    }
-
-    public static class receiveHealthCheck<I extends Iface> extends org.apache.thrift.ProcessFunction<I, receiveHealthCheck_args> {
-      public receiveHealthCheck() {
-        super("receiveHealthCheck");
-      }
-
-      public receiveHealthCheck_args getEmptyArgsInstance() {
-        return new receiveHealthCheck_args();
+      public sendHeartbeat_args getEmptyArgsInstance() {
+        return new sendHeartbeat_args();
       }
 
       protected boolean isOneway() {
         return false;
       }
 
-      public receiveHealthCheck_result getResult(I iface, receiveHealthCheck_args args) throws org.apache.thrift.TException {
-        receiveHealthCheck_result result = new receiveHealthCheck_result();
-        iface.receiveHealthCheck(args.healthCheck);
-        return result;
-      }
-    }
-
-    public static class receiveServerUp<I extends Iface> extends org.apache.thrift.ProcessFunction<I, receiveServerUp_args> {
-      public receiveServerUp() {
-        super("receiveServerUp");
-      }
-
-      public receiveServerUp_args getEmptyArgsInstance() {
-        return new receiveServerUp_args();
-      }
-
-      protected boolean isOneway() {
-        return false;
-      }
-
-      public receiveServerUp_result getResult(I iface, receiveServerUp_args args) throws org.apache.thrift.TException {
-        receiveServerUp_result result = new receiveServerUp_result();
-        iface.receiveServerUp(args.broadcast);
+      public sendHeartbeat_result getResult(I iface, sendHeartbeat_args args) throws org.apache.thrift.TException {
+        sendHeartbeat_result result = new sendHeartbeat_result();
+        iface.sendHeartbeat(args.heartbeat);
         return result;
       }
     }
@@ -501,10 +342,8 @@ public class A1Management {
 
     private static <I extends AsyncIface> Map<String,  org.apache.thrift.AsyncProcessFunction<I, ? extends  org.apache.thrift.TBase,?>> getProcessMap(Map<String,  org.apache.thrift.AsyncProcessFunction<I, ? extends  org.apache.thrift.TBase, ?>> processMap) {
       processMap.put("getPerfCounters", new getPerfCounters());
-      processMap.put("sendHealthcheck", new sendHealthcheck());
-      processMap.put("sendServerUp", new sendServerUp());
-      processMap.put("receiveHealthCheck", new receiveHealthCheck());
-      processMap.put("receiveServerUp", new receiveServerUp());
+      processMap.put("getUpdatedBEList", new getUpdatedBEList());
+      processMap.put("sendHeartbeat", new sendHeartbeat());
       return processMap;
     }
 
@@ -559,20 +398,21 @@ public class A1Management {
       }
     }
 
-    public static class sendHealthcheck<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, sendHealthcheck_args, Void> {
-      public sendHealthcheck() {
-        super("sendHealthcheck");
+    public static class getUpdatedBEList<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, getUpdatedBEList_args, Set<Heartbeat>> {
+      public getUpdatedBEList() {
+        super("getUpdatedBEList");
       }
 
-      public sendHealthcheck_args getEmptyArgsInstance() {
-        return new sendHealthcheck_args();
+      public getUpdatedBEList_args getEmptyArgsInstance() {
+        return new getUpdatedBEList_args();
       }
 
-      public AsyncMethodCallback<Void> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
+      public AsyncMethodCallback<Set<Heartbeat>> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
         final org.apache.thrift.AsyncProcessFunction fcall = this;
-        return new AsyncMethodCallback<Void>() { 
-          public void onComplete(Void o) {
-            sendHealthcheck_result result = new sendHealthcheck_result();
+        return new AsyncMethodCallback<Set<Heartbeat>>() { 
+          public void onComplete(Set<Heartbeat> o) {
+            getUpdatedBEList_result result = new getUpdatedBEList_result();
+            result.success = o;
             try {
               fcall.sendResponse(fb,result, org.apache.thrift.protocol.TMessageType.REPLY,seqid);
               return;
@@ -584,7 +424,7 @@ public class A1Management {
           public void onError(Exception e) {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
-            sendHealthcheck_result result = new sendHealthcheck_result();
+            getUpdatedBEList_result result = new getUpdatedBEList_result();
             {
               msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
               msg = (org.apache.thrift.TBase)new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
@@ -604,25 +444,25 @@ public class A1Management {
         return false;
       }
 
-      public void start(I iface, sendHealthcheck_args args, org.apache.thrift.async.AsyncMethodCallback<Void> resultHandler) throws TException {
-        iface.sendHealthcheck(args.numberOfCores,resultHandler);
+      public void start(I iface, getUpdatedBEList_args args, org.apache.thrift.async.AsyncMethodCallback<Set<Heartbeat>> resultHandler) throws TException {
+        iface.getUpdatedBEList(resultHandler);
       }
     }
 
-    public static class sendServerUp<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, sendServerUp_args, Void> {
-      public sendServerUp() {
-        super("sendServerUp");
+    public static class sendHeartbeat<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, sendHeartbeat_args, Void> {
+      public sendHeartbeat() {
+        super("sendHeartbeat");
       }
 
-      public sendServerUp_args getEmptyArgsInstance() {
-        return new sendServerUp_args();
+      public sendHeartbeat_args getEmptyArgsInstance() {
+        return new sendHeartbeat_args();
       }
 
       public AsyncMethodCallback<Void> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
         final org.apache.thrift.AsyncProcessFunction fcall = this;
         return new AsyncMethodCallback<Void>() { 
           public void onComplete(Void o) {
-            sendServerUp_result result = new sendServerUp_result();
+            sendHeartbeat_result result = new sendHeartbeat_result();
             try {
               fcall.sendResponse(fb,result, org.apache.thrift.protocol.TMessageType.REPLY,seqid);
               return;
@@ -634,7 +474,7 @@ public class A1Management {
           public void onError(Exception e) {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
-            sendServerUp_result result = new sendServerUp_result();
+            sendHeartbeat_result result = new sendHeartbeat_result();
             {
               msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
               msg = (org.apache.thrift.TBase)new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
@@ -654,108 +494,8 @@ public class A1Management {
         return false;
       }
 
-      public void start(I iface, sendServerUp_args args, org.apache.thrift.async.AsyncMethodCallback<Void> resultHandler) throws TException {
-        iface.sendServerUp(args.portNumber, args.numberOfCores,resultHandler);
-      }
-    }
-
-    public static class receiveHealthCheck<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, receiveHealthCheck_args, Void> {
-      public receiveHealthCheck() {
-        super("receiveHealthCheck");
-      }
-
-      public receiveHealthCheck_args getEmptyArgsInstance() {
-        return new receiveHealthCheck_args();
-      }
-
-      public AsyncMethodCallback<Void> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
-        final org.apache.thrift.AsyncProcessFunction fcall = this;
-        return new AsyncMethodCallback<Void>() { 
-          public void onComplete(Void o) {
-            receiveHealthCheck_result result = new receiveHealthCheck_result();
-            try {
-              fcall.sendResponse(fb,result, org.apache.thrift.protocol.TMessageType.REPLY,seqid);
-              return;
-            } catch (Exception e) {
-              LOGGER.error("Exception writing to internal frame buffer", e);
-            }
-            fb.close();
-          }
-          public void onError(Exception e) {
-            byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
-            org.apache.thrift.TBase msg;
-            receiveHealthCheck_result result = new receiveHealthCheck_result();
-            {
-              msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
-              msg = (org.apache.thrift.TBase)new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
-            }
-            try {
-              fcall.sendResponse(fb,msg,msgType,seqid);
-              return;
-            } catch (Exception ex) {
-              LOGGER.error("Exception writing to internal frame buffer", ex);
-            }
-            fb.close();
-          }
-        };
-      }
-
-      protected boolean isOneway() {
-        return false;
-      }
-
-      public void start(I iface, receiveHealthCheck_args args, org.apache.thrift.async.AsyncMethodCallback<Void> resultHandler) throws TException {
-        iface.receiveHealthCheck(args.healthCheck,resultHandler);
-      }
-    }
-
-    public static class receiveServerUp<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, receiveServerUp_args, Void> {
-      public receiveServerUp() {
-        super("receiveServerUp");
-      }
-
-      public receiveServerUp_args getEmptyArgsInstance() {
-        return new receiveServerUp_args();
-      }
-
-      public AsyncMethodCallback<Void> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
-        final org.apache.thrift.AsyncProcessFunction fcall = this;
-        return new AsyncMethodCallback<Void>() { 
-          public void onComplete(Void o) {
-            receiveServerUp_result result = new receiveServerUp_result();
-            try {
-              fcall.sendResponse(fb,result, org.apache.thrift.protocol.TMessageType.REPLY,seqid);
-              return;
-            } catch (Exception e) {
-              LOGGER.error("Exception writing to internal frame buffer", e);
-            }
-            fb.close();
-          }
-          public void onError(Exception e) {
-            byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
-            org.apache.thrift.TBase msg;
-            receiveServerUp_result result = new receiveServerUp_result();
-            {
-              msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
-              msg = (org.apache.thrift.TBase)new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
-            }
-            try {
-              fcall.sendResponse(fb,msg,msgType,seqid);
-              return;
-            } catch (Exception ex) {
-              LOGGER.error("Exception writing to internal frame buffer", ex);
-            }
-            fb.close();
-          }
-        };
-      }
-
-      protected boolean isOneway() {
-        return false;
-      }
-
-      public void start(I iface, receiveServerUp_args args, org.apache.thrift.async.AsyncMethodCallback<Void> resultHandler) throws TException {
-        iface.receiveServerUp(args.broadcast,resultHandler);
+      public void start(I iface, sendHeartbeat_args args, org.apache.thrift.async.AsyncMethodCallback<Void> resultHandler) throws TException {
+        iface.sendHeartbeat(args.heartbeat,resultHandler);
       }
     }
 
@@ -1375,373 +1115,14 @@ public class A1Management {
 
   }
 
-  public static class sendHealthcheck_args implements org.apache.thrift.TBase<sendHealthcheck_args, sendHealthcheck_args._Fields>, java.io.Serializable, Cloneable, Comparable<sendHealthcheck_args>   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("sendHealthcheck_args");
-
-    private static final org.apache.thrift.protocol.TField NUMBER_OF_CORES_FIELD_DESC = new org.apache.thrift.protocol.TField("numberOfCores", org.apache.thrift.protocol.TType.I16, (short)1);
-
-    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
-    static {
-      schemes.put(StandardScheme.class, new sendHealthcheck_argsStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new sendHealthcheck_argsTupleSchemeFactory());
-    }
-
-    public short numberOfCores; // required
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      NUMBER_OF_CORES((short)1, "numberOfCores");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 1: // NUMBER_OF_CORES
-            return NUMBER_OF_CORES;
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-
-    // isset id assignments
-    private static final int __NUMBEROFCORES_ISSET_ID = 0;
-    private byte __isset_bitfield = 0;
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.NUMBER_OF_CORES, new org.apache.thrift.meta_data.FieldMetaData("numberOfCores", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I16)));
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(sendHealthcheck_args.class, metaDataMap);
-    }
-
-    public sendHealthcheck_args() {
-    }
-
-    public sendHealthcheck_args(
-      short numberOfCores)
-    {
-      this();
-      this.numberOfCores = numberOfCores;
-      setNumberOfCoresIsSet(true);
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public sendHealthcheck_args(sendHealthcheck_args other) {
-      __isset_bitfield = other.__isset_bitfield;
-      this.numberOfCores = other.numberOfCores;
-    }
-
-    public sendHealthcheck_args deepCopy() {
-      return new sendHealthcheck_args(this);
-    }
-
-    @Override
-    public void clear() {
-      setNumberOfCoresIsSet(false);
-      this.numberOfCores = 0;
-    }
-
-    public short getNumberOfCores() {
-      return this.numberOfCores;
-    }
-
-    public sendHealthcheck_args setNumberOfCores(short numberOfCores) {
-      this.numberOfCores = numberOfCores;
-      setNumberOfCoresIsSet(true);
-      return this;
-    }
-
-    public void unsetNumberOfCores() {
-      __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __NUMBEROFCORES_ISSET_ID);
-    }
-
-    /** Returns true if field numberOfCores is set (has been assigned a value) and false otherwise */
-    public boolean isSetNumberOfCores() {
-      return EncodingUtils.testBit(__isset_bitfield, __NUMBEROFCORES_ISSET_ID);
-    }
-
-    public void setNumberOfCoresIsSet(boolean value) {
-      __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __NUMBEROFCORES_ISSET_ID, value);
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      case NUMBER_OF_CORES:
-        if (value == null) {
-          unsetNumberOfCores();
-        } else {
-          setNumberOfCores((Short)value);
-        }
-        break;
-
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      case NUMBER_OF_CORES:
-        return Short.valueOf(getNumberOfCores());
-
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      case NUMBER_OF_CORES:
-        return isSetNumberOfCores();
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof sendHealthcheck_args)
-        return this.equals((sendHealthcheck_args)that);
-      return false;
-    }
-
-    public boolean equals(sendHealthcheck_args that) {
-      if (that == null)
-        return false;
-
-      boolean this_present_numberOfCores = true;
-      boolean that_present_numberOfCores = true;
-      if (this_present_numberOfCores || that_present_numberOfCores) {
-        if (!(this_present_numberOfCores && that_present_numberOfCores))
-          return false;
-        if (this.numberOfCores != that.numberOfCores)
-          return false;
-      }
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      List<Object> list = new ArrayList<Object>();
-
-      boolean present_numberOfCores = true;
-      list.add(present_numberOfCores);
-      if (present_numberOfCores)
-        list.add(numberOfCores);
-
-      return list.hashCode();
-    }
-
-    @Override
-    public int compareTo(sendHealthcheck_args other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-
-      lastComparison = Boolean.valueOf(isSetNumberOfCores()).compareTo(other.isSetNumberOfCores());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetNumberOfCores()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.numberOfCores, other.numberOfCores);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("sendHealthcheck_args(");
-      boolean first = true;
-
-      sb.append("numberOfCores:");
-      sb.append(this.numberOfCores);
-      first = false;
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-      // check for sub-struct validity
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
-        __isset_bitfield = 0;
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private static class sendHealthcheck_argsStandardSchemeFactory implements SchemeFactory {
-      public sendHealthcheck_argsStandardScheme getScheme() {
-        return new sendHealthcheck_argsStandardScheme();
-      }
-    }
-
-    private static class sendHealthcheck_argsStandardScheme extends StandardScheme<sendHealthcheck_args> {
-
-      public void read(org.apache.thrift.protocol.TProtocol iprot, sendHealthcheck_args struct) throws org.apache.thrift.TException {
-        org.apache.thrift.protocol.TField schemeField;
-        iprot.readStructBegin();
-        while (true)
-        {
-          schemeField = iprot.readFieldBegin();
-          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
-            break;
-          }
-          switch (schemeField.id) {
-            case 1: // NUMBER_OF_CORES
-              if (schemeField.type == org.apache.thrift.protocol.TType.I16) {
-                struct.numberOfCores = iprot.readI16();
-                struct.setNumberOfCoresIsSet(true);
-              } else { 
-                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-              }
-              break;
-            default:
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-          }
-          iprot.readFieldEnd();
-        }
-        iprot.readStructEnd();
-
-        // check for required fields of primitive type, which can't be checked in the validate method
-        struct.validate();
-      }
-
-      public void write(org.apache.thrift.protocol.TProtocol oprot, sendHealthcheck_args struct) throws org.apache.thrift.TException {
-        struct.validate();
-
-        oprot.writeStructBegin(STRUCT_DESC);
-        oprot.writeFieldBegin(NUMBER_OF_CORES_FIELD_DESC);
-        oprot.writeI16(struct.numberOfCores);
-        oprot.writeFieldEnd();
-        oprot.writeFieldStop();
-        oprot.writeStructEnd();
-      }
-
-    }
-
-    private static class sendHealthcheck_argsTupleSchemeFactory implements SchemeFactory {
-      public sendHealthcheck_argsTupleScheme getScheme() {
-        return new sendHealthcheck_argsTupleScheme();
-      }
-    }
-
-    private static class sendHealthcheck_argsTupleScheme extends TupleScheme<sendHealthcheck_args> {
-
-      @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, sendHealthcheck_args struct) throws org.apache.thrift.TException {
-        TTupleProtocol oprot = (TTupleProtocol) prot;
-        BitSet optionals = new BitSet();
-        if (struct.isSetNumberOfCores()) {
-          optionals.set(0);
-        }
-        oprot.writeBitSet(optionals, 1);
-        if (struct.isSetNumberOfCores()) {
-          oprot.writeI16(struct.numberOfCores);
-        }
-      }
-
-      @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, sendHealthcheck_args struct) throws org.apache.thrift.TException {
-        TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(1);
-        if (incoming.get(0)) {
-          struct.numberOfCores = iprot.readI16();
-          struct.setNumberOfCoresIsSet(true);
-        }
-      }
-    }
-
-  }
-
-  public static class sendHealthcheck_result implements org.apache.thrift.TBase<sendHealthcheck_result, sendHealthcheck_result._Fields>, java.io.Serializable, Cloneable, Comparable<sendHealthcheck_result>   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("sendHealthcheck_result");
+  public static class getUpdatedBEList_args implements org.apache.thrift.TBase<getUpdatedBEList_args, getUpdatedBEList_args._Fields>, java.io.Serializable, Cloneable, Comparable<getUpdatedBEList_args>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getUpdatedBEList_args");
 
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
-      schemes.put(StandardScheme.class, new sendHealthcheck_resultStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new sendHealthcheck_resultTupleSchemeFactory());
+      schemes.put(StandardScheme.class, new getUpdatedBEList_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getUpdatedBEList_argsTupleSchemeFactory());
     }
 
 
@@ -1804,20 +1185,20 @@ public class A1Management {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(sendHealthcheck_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getUpdatedBEList_args.class, metaDataMap);
     }
 
-    public sendHealthcheck_result() {
+    public getUpdatedBEList_args() {
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public sendHealthcheck_result(sendHealthcheck_result other) {
+    public getUpdatedBEList_args(getUpdatedBEList_args other) {
     }
 
-    public sendHealthcheck_result deepCopy() {
-      return new sendHealthcheck_result(this);
+    public getUpdatedBEList_args deepCopy() {
+      return new getUpdatedBEList_args(this);
     }
 
     @Override
@@ -1850,12 +1231,12 @@ public class A1Management {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof sendHealthcheck_result)
-        return this.equals((sendHealthcheck_result)that);
+      if (that instanceof getUpdatedBEList_args)
+        return this.equals((getUpdatedBEList_args)that);
       return false;
     }
 
-    public boolean equals(sendHealthcheck_result that) {
+    public boolean equals(getUpdatedBEList_args that) {
       if (that == null)
         return false;
 
@@ -1870,7 +1251,7 @@ public class A1Management {
     }
 
     @Override
-    public int compareTo(sendHealthcheck_result other) {
+    public int compareTo(getUpdatedBEList_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
@@ -1890,11 +1271,11 @@ public class A1Management {
 
     public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
       schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
-      }
+    }
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("sendHealthcheck_result(");
+      StringBuilder sb = new StringBuilder("getUpdatedBEList_args(");
       boolean first = true;
 
       sb.append(")");
@@ -1922,15 +1303,15 @@ public class A1Management {
       }
     }
 
-    private static class sendHealthcheck_resultStandardSchemeFactory implements SchemeFactory {
-      public sendHealthcheck_resultStandardScheme getScheme() {
-        return new sendHealthcheck_resultStandardScheme();
+    private static class getUpdatedBEList_argsStandardSchemeFactory implements SchemeFactory {
+      public getUpdatedBEList_argsStandardScheme getScheme() {
+        return new getUpdatedBEList_argsStandardScheme();
       }
     }
 
-    private static class sendHealthcheck_resultStandardScheme extends StandardScheme<sendHealthcheck_result> {
+    private static class getUpdatedBEList_argsStandardScheme extends StandardScheme<getUpdatedBEList_args> {
 
-      public void read(org.apache.thrift.protocol.TProtocol iprot, sendHealthcheck_result struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getUpdatedBEList_args struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TField schemeField;
         iprot.readStructBegin();
         while (true)
@@ -1951,7 +1332,7 @@ public class A1Management {
         struct.validate();
       }
 
-      public void write(org.apache.thrift.protocol.TProtocol oprot, sendHealthcheck_result struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getUpdatedBEList_args struct) throws org.apache.thrift.TException {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
@@ -1961,46 +1342,43 @@ public class A1Management {
 
     }
 
-    private static class sendHealthcheck_resultTupleSchemeFactory implements SchemeFactory {
-      public sendHealthcheck_resultTupleScheme getScheme() {
-        return new sendHealthcheck_resultTupleScheme();
+    private static class getUpdatedBEList_argsTupleSchemeFactory implements SchemeFactory {
+      public getUpdatedBEList_argsTupleScheme getScheme() {
+        return new getUpdatedBEList_argsTupleScheme();
       }
     }
 
-    private static class sendHealthcheck_resultTupleScheme extends TupleScheme<sendHealthcheck_result> {
+    private static class getUpdatedBEList_argsTupleScheme extends TupleScheme<getUpdatedBEList_args> {
 
       @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, sendHealthcheck_result struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol prot, getUpdatedBEList_args struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
       }
 
       @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, sendHealthcheck_result struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol prot, getUpdatedBEList_args struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
       }
     }
 
   }
 
-  public static class sendServerUp_args implements org.apache.thrift.TBase<sendServerUp_args, sendServerUp_args._Fields>, java.io.Serializable, Cloneable, Comparable<sendServerUp_args>   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("sendServerUp_args");
+  public static class getUpdatedBEList_result implements org.apache.thrift.TBase<getUpdatedBEList_result, getUpdatedBEList_result._Fields>, java.io.Serializable, Cloneable, Comparable<getUpdatedBEList_result>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getUpdatedBEList_result");
 
-    private static final org.apache.thrift.protocol.TField PORT_NUMBER_FIELD_DESC = new org.apache.thrift.protocol.TField("portNumber", org.apache.thrift.protocol.TType.I16, (short)1);
-    private static final org.apache.thrift.protocol.TField NUMBER_OF_CORES_FIELD_DESC = new org.apache.thrift.protocol.TField("numberOfCores", org.apache.thrift.protocol.TType.I16, (short)2);
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.SET, (short)0);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
-      schemes.put(StandardScheme.class, new sendServerUp_argsStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new sendServerUp_argsTupleSchemeFactory());
+      schemes.put(StandardScheme.class, new getUpdatedBEList_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getUpdatedBEList_resultTupleSchemeFactory());
     }
 
-    public short portNumber; // required
-    public short numberOfCores; // required
+    public Set<Heartbeat> success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      PORT_NUMBER((short)1, "portNumber"),
-      NUMBER_OF_CORES((short)2, "numberOfCores");
+      SUCCESS((short)0, "success");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -2015,711 +1393,8 @@ public class A1Management {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          case 1: // PORT_NUMBER
-            return PORT_NUMBER;
-          case 2: // NUMBER_OF_CORES
-            return NUMBER_OF_CORES;
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-
-    // isset id assignments
-    private static final int __PORTNUMBER_ISSET_ID = 0;
-    private static final int __NUMBEROFCORES_ISSET_ID = 1;
-    private byte __isset_bitfield = 0;
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.PORT_NUMBER, new org.apache.thrift.meta_data.FieldMetaData("portNumber", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I16)));
-      tmpMap.put(_Fields.NUMBER_OF_CORES, new org.apache.thrift.meta_data.FieldMetaData("numberOfCores", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I16)));
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(sendServerUp_args.class, metaDataMap);
-    }
-
-    public sendServerUp_args() {
-    }
-
-    public sendServerUp_args(
-      short portNumber,
-      short numberOfCores)
-    {
-      this();
-      this.portNumber = portNumber;
-      setPortNumberIsSet(true);
-      this.numberOfCores = numberOfCores;
-      setNumberOfCoresIsSet(true);
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public sendServerUp_args(sendServerUp_args other) {
-      __isset_bitfield = other.__isset_bitfield;
-      this.portNumber = other.portNumber;
-      this.numberOfCores = other.numberOfCores;
-    }
-
-    public sendServerUp_args deepCopy() {
-      return new sendServerUp_args(this);
-    }
-
-    @Override
-    public void clear() {
-      setPortNumberIsSet(false);
-      this.portNumber = 0;
-      setNumberOfCoresIsSet(false);
-      this.numberOfCores = 0;
-    }
-
-    public short getPortNumber() {
-      return this.portNumber;
-    }
-
-    public sendServerUp_args setPortNumber(short portNumber) {
-      this.portNumber = portNumber;
-      setPortNumberIsSet(true);
-      return this;
-    }
-
-    public void unsetPortNumber() {
-      __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __PORTNUMBER_ISSET_ID);
-    }
-
-    /** Returns true if field portNumber is set (has been assigned a value) and false otherwise */
-    public boolean isSetPortNumber() {
-      return EncodingUtils.testBit(__isset_bitfield, __PORTNUMBER_ISSET_ID);
-    }
-
-    public void setPortNumberIsSet(boolean value) {
-      __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __PORTNUMBER_ISSET_ID, value);
-    }
-
-    public short getNumberOfCores() {
-      return this.numberOfCores;
-    }
-
-    public sendServerUp_args setNumberOfCores(short numberOfCores) {
-      this.numberOfCores = numberOfCores;
-      setNumberOfCoresIsSet(true);
-      return this;
-    }
-
-    public void unsetNumberOfCores() {
-      __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __NUMBEROFCORES_ISSET_ID);
-    }
-
-    /** Returns true if field numberOfCores is set (has been assigned a value) and false otherwise */
-    public boolean isSetNumberOfCores() {
-      return EncodingUtils.testBit(__isset_bitfield, __NUMBEROFCORES_ISSET_ID);
-    }
-
-    public void setNumberOfCoresIsSet(boolean value) {
-      __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __NUMBEROFCORES_ISSET_ID, value);
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      case PORT_NUMBER:
-        if (value == null) {
-          unsetPortNumber();
-        } else {
-          setPortNumber((Short)value);
-        }
-        break;
-
-      case NUMBER_OF_CORES:
-        if (value == null) {
-          unsetNumberOfCores();
-        } else {
-          setNumberOfCores((Short)value);
-        }
-        break;
-
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      case PORT_NUMBER:
-        return Short.valueOf(getPortNumber());
-
-      case NUMBER_OF_CORES:
-        return Short.valueOf(getNumberOfCores());
-
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      case PORT_NUMBER:
-        return isSetPortNumber();
-      case NUMBER_OF_CORES:
-        return isSetNumberOfCores();
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof sendServerUp_args)
-        return this.equals((sendServerUp_args)that);
-      return false;
-    }
-
-    public boolean equals(sendServerUp_args that) {
-      if (that == null)
-        return false;
-
-      boolean this_present_portNumber = true;
-      boolean that_present_portNumber = true;
-      if (this_present_portNumber || that_present_portNumber) {
-        if (!(this_present_portNumber && that_present_portNumber))
-          return false;
-        if (this.portNumber != that.portNumber)
-          return false;
-      }
-
-      boolean this_present_numberOfCores = true;
-      boolean that_present_numberOfCores = true;
-      if (this_present_numberOfCores || that_present_numberOfCores) {
-        if (!(this_present_numberOfCores && that_present_numberOfCores))
-          return false;
-        if (this.numberOfCores != that.numberOfCores)
-          return false;
-      }
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      List<Object> list = new ArrayList<Object>();
-
-      boolean present_portNumber = true;
-      list.add(present_portNumber);
-      if (present_portNumber)
-        list.add(portNumber);
-
-      boolean present_numberOfCores = true;
-      list.add(present_numberOfCores);
-      if (present_numberOfCores)
-        list.add(numberOfCores);
-
-      return list.hashCode();
-    }
-
-    @Override
-    public int compareTo(sendServerUp_args other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-
-      lastComparison = Boolean.valueOf(isSetPortNumber()).compareTo(other.isSetPortNumber());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetPortNumber()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.portNumber, other.portNumber);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      lastComparison = Boolean.valueOf(isSetNumberOfCores()).compareTo(other.isSetNumberOfCores());
-      if (lastComparison != 0) {
-        return lastComparison;
-      }
-      if (isSetNumberOfCores()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.numberOfCores, other.numberOfCores);
-        if (lastComparison != 0) {
-          return lastComparison;
-        }
-      }
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
-    }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("sendServerUp_args(");
-      boolean first = true;
-
-      sb.append("portNumber:");
-      sb.append(this.portNumber);
-      first = false;
-      if (!first) sb.append(", ");
-      sb.append("numberOfCores:");
-      sb.append(this.numberOfCores);
-      first = false;
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-      // check for sub-struct validity
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
-        __isset_bitfield = 0;
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private static class sendServerUp_argsStandardSchemeFactory implements SchemeFactory {
-      public sendServerUp_argsStandardScheme getScheme() {
-        return new sendServerUp_argsStandardScheme();
-      }
-    }
-
-    private static class sendServerUp_argsStandardScheme extends StandardScheme<sendServerUp_args> {
-
-      public void read(org.apache.thrift.protocol.TProtocol iprot, sendServerUp_args struct) throws org.apache.thrift.TException {
-        org.apache.thrift.protocol.TField schemeField;
-        iprot.readStructBegin();
-        while (true)
-        {
-          schemeField = iprot.readFieldBegin();
-          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
-            break;
-          }
-          switch (schemeField.id) {
-            case 1: // PORT_NUMBER
-              if (schemeField.type == org.apache.thrift.protocol.TType.I16) {
-                struct.portNumber = iprot.readI16();
-                struct.setPortNumberIsSet(true);
-              } else { 
-                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-              }
-              break;
-            case 2: // NUMBER_OF_CORES
-              if (schemeField.type == org.apache.thrift.protocol.TType.I16) {
-                struct.numberOfCores = iprot.readI16();
-                struct.setNumberOfCoresIsSet(true);
-              } else { 
-                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-              }
-              break;
-            default:
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-          }
-          iprot.readFieldEnd();
-        }
-        iprot.readStructEnd();
-
-        // check for required fields of primitive type, which can't be checked in the validate method
-        struct.validate();
-      }
-
-      public void write(org.apache.thrift.protocol.TProtocol oprot, sendServerUp_args struct) throws org.apache.thrift.TException {
-        struct.validate();
-
-        oprot.writeStructBegin(STRUCT_DESC);
-        oprot.writeFieldBegin(PORT_NUMBER_FIELD_DESC);
-        oprot.writeI16(struct.portNumber);
-        oprot.writeFieldEnd();
-        oprot.writeFieldBegin(NUMBER_OF_CORES_FIELD_DESC);
-        oprot.writeI16(struct.numberOfCores);
-        oprot.writeFieldEnd();
-        oprot.writeFieldStop();
-        oprot.writeStructEnd();
-      }
-
-    }
-
-    private static class sendServerUp_argsTupleSchemeFactory implements SchemeFactory {
-      public sendServerUp_argsTupleScheme getScheme() {
-        return new sendServerUp_argsTupleScheme();
-      }
-    }
-
-    private static class sendServerUp_argsTupleScheme extends TupleScheme<sendServerUp_args> {
-
-      @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, sendServerUp_args struct) throws org.apache.thrift.TException {
-        TTupleProtocol oprot = (TTupleProtocol) prot;
-        BitSet optionals = new BitSet();
-        if (struct.isSetPortNumber()) {
-          optionals.set(0);
-        }
-        if (struct.isSetNumberOfCores()) {
-          optionals.set(1);
-        }
-        oprot.writeBitSet(optionals, 2);
-        if (struct.isSetPortNumber()) {
-          oprot.writeI16(struct.portNumber);
-        }
-        if (struct.isSetNumberOfCores()) {
-          oprot.writeI16(struct.numberOfCores);
-        }
-      }
-
-      @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, sendServerUp_args struct) throws org.apache.thrift.TException {
-        TTupleProtocol iprot = (TTupleProtocol) prot;
-        BitSet incoming = iprot.readBitSet(2);
-        if (incoming.get(0)) {
-          struct.portNumber = iprot.readI16();
-          struct.setPortNumberIsSet(true);
-        }
-        if (incoming.get(1)) {
-          struct.numberOfCores = iprot.readI16();
-          struct.setNumberOfCoresIsSet(true);
-        }
-      }
-    }
-
-  }
-
-  public static class sendServerUp_result implements org.apache.thrift.TBase<sendServerUp_result, sendServerUp_result._Fields>, java.io.Serializable, Cloneable, Comparable<sendServerUp_result>   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("sendServerUp_result");
-
-
-    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
-    static {
-      schemes.put(StandardScheme.class, new sendServerUp_resultStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new sendServerUp_resultTupleSchemeFactory());
-    }
-
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-;
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(sendServerUp_result.class, metaDataMap);
-    }
-
-    public sendServerUp_result() {
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public sendServerUp_result(sendServerUp_result other) {
-    }
-
-    public sendServerUp_result deepCopy() {
-      return new sendServerUp_result(this);
-    }
-
-    @Override
-    public void clear() {
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof sendServerUp_result)
-        return this.equals((sendServerUp_result)that);
-      return false;
-    }
-
-    public boolean equals(sendServerUp_result that) {
-      if (that == null)
-        return false;
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      List<Object> list = new ArrayList<Object>();
-
-      return list.hashCode();
-    }
-
-    @Override
-    public int compareTo(sendServerUp_result other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
-      }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("sendServerUp_result(");
-      boolean first = true;
-
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-      // check for sub-struct validity
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private static class sendServerUp_resultStandardSchemeFactory implements SchemeFactory {
-      public sendServerUp_resultStandardScheme getScheme() {
-        return new sendServerUp_resultStandardScheme();
-      }
-    }
-
-    private static class sendServerUp_resultStandardScheme extends StandardScheme<sendServerUp_result> {
-
-      public void read(org.apache.thrift.protocol.TProtocol iprot, sendServerUp_result struct) throws org.apache.thrift.TException {
-        org.apache.thrift.protocol.TField schemeField;
-        iprot.readStructBegin();
-        while (true)
-        {
-          schemeField = iprot.readFieldBegin();
-          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
-            break;
-          }
-          switch (schemeField.id) {
-            default:
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-          }
-          iprot.readFieldEnd();
-        }
-        iprot.readStructEnd();
-
-        // check for required fields of primitive type, which can't be checked in the validate method
-        struct.validate();
-      }
-
-      public void write(org.apache.thrift.protocol.TProtocol oprot, sendServerUp_result struct) throws org.apache.thrift.TException {
-        struct.validate();
-
-        oprot.writeStructBegin(STRUCT_DESC);
-        oprot.writeFieldStop();
-        oprot.writeStructEnd();
-      }
-
-    }
-
-    private static class sendServerUp_resultTupleSchemeFactory implements SchemeFactory {
-      public sendServerUp_resultTupleScheme getScheme() {
-        return new sendServerUp_resultTupleScheme();
-      }
-    }
-
-    private static class sendServerUp_resultTupleScheme extends TupleScheme<sendServerUp_result> {
-
-      @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, sendServerUp_result struct) throws org.apache.thrift.TException {
-        TTupleProtocol oprot = (TTupleProtocol) prot;
-      }
-
-      @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, sendServerUp_result struct) throws org.apache.thrift.TException {
-        TTupleProtocol iprot = (TTupleProtocol) prot;
-      }
-    }
-
-  }
-
-  public static class receiveHealthCheck_args implements org.apache.thrift.TBase<receiveHealthCheck_args, receiveHealthCheck_args._Fields>, java.io.Serializable, Cloneable, Comparable<receiveHealthCheck_args>   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("receiveHealthCheck_args");
-
-    private static final org.apache.thrift.protocol.TField HEALTH_CHECK_FIELD_DESC = new org.apache.thrift.protocol.TField("healthCheck", org.apache.thrift.protocol.TType.STRUCT, (short)1);
-
-    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
-    static {
-      schemes.put(StandardScheme.class, new receiveHealthCheck_argsStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new receiveHealthCheck_argsTupleSchemeFactory());
-    }
-
-    public ServerHealthcheck healthCheck; // required
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      HEALTH_CHECK((short)1, "healthCheck");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 1: // HEALTH_CHECK
-            return HEALTH_CHECK;
+          case 0: // SUCCESS
+            return SUCCESS;
           default:
             return null;
         }
@@ -2763,71 +1438,91 @@ public class A1Management {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.HEALTH_CHECK, new org.apache.thrift.meta_data.FieldMetaData("healthCheck", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, ServerHealthcheck.class)));
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.SetMetaData(org.apache.thrift.protocol.TType.SET, 
+              new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Heartbeat.class))));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(receiveHealthCheck_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getUpdatedBEList_result.class, metaDataMap);
     }
 
-    public receiveHealthCheck_args() {
+    public getUpdatedBEList_result() {
     }
 
-    public receiveHealthCheck_args(
-      ServerHealthcheck healthCheck)
+    public getUpdatedBEList_result(
+      Set<Heartbeat> success)
     {
       this();
-      this.healthCheck = healthCheck;
+      this.success = success;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public receiveHealthCheck_args(receiveHealthCheck_args other) {
-      if (other.isSetHealthCheck()) {
-        this.healthCheck = new ServerHealthcheck(other.healthCheck);
+    public getUpdatedBEList_result(getUpdatedBEList_result other) {
+      if (other.isSetSuccess()) {
+        Set<Heartbeat> __this__success = new HashSet<Heartbeat>(other.success.size());
+        for (Heartbeat other_element : other.success) {
+          __this__success.add(new Heartbeat(other_element));
+        }
+        this.success = __this__success;
       }
     }
 
-    public receiveHealthCheck_args deepCopy() {
-      return new receiveHealthCheck_args(this);
+    public getUpdatedBEList_result deepCopy() {
+      return new getUpdatedBEList_result(this);
     }
 
     @Override
     public void clear() {
-      this.healthCheck = null;
+      this.success = null;
     }
 
-    public ServerHealthcheck getHealthCheck() {
-      return this.healthCheck;
+    public int getSuccessSize() {
+      return (this.success == null) ? 0 : this.success.size();
     }
 
-    public receiveHealthCheck_args setHealthCheck(ServerHealthcheck healthCheck) {
-      this.healthCheck = healthCheck;
+    public java.util.Iterator<Heartbeat> getSuccessIterator() {
+      return (this.success == null) ? null : this.success.iterator();
+    }
+
+    public void addToSuccess(Heartbeat elem) {
+      if (this.success == null) {
+        this.success = new HashSet<Heartbeat>();
+      }
+      this.success.add(elem);
+    }
+
+    public Set<Heartbeat> getSuccess() {
+      return this.success;
+    }
+
+    public getUpdatedBEList_result setSuccess(Set<Heartbeat> success) {
+      this.success = success;
       return this;
     }
 
-    public void unsetHealthCheck() {
-      this.healthCheck = null;
+    public void unsetSuccess() {
+      this.success = null;
     }
 
-    /** Returns true if field healthCheck is set (has been assigned a value) and false otherwise */
-    public boolean isSetHealthCheck() {
-      return this.healthCheck != null;
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
     }
 
-    public void setHealthCheckIsSet(boolean value) {
+    public void setSuccessIsSet(boolean value) {
       if (!value) {
-        this.healthCheck = null;
+        this.success = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case HEALTH_CHECK:
+      case SUCCESS:
         if (value == null) {
-          unsetHealthCheck();
+          unsetSuccess();
         } else {
-          setHealthCheck((ServerHealthcheck)value);
+          setSuccess((Set<Heartbeat>)value);
         }
         break;
 
@@ -2836,8 +1531,8 @@ public class A1Management {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case HEALTH_CHECK:
-        return getHealthCheck();
+      case SUCCESS:
+        return getSuccess();
 
       }
       throw new IllegalStateException();
@@ -2850,8 +1545,8 @@ public class A1Management {
       }
 
       switch (field) {
-      case HEALTH_CHECK:
-        return isSetHealthCheck();
+      case SUCCESS:
+        return isSetSuccess();
       }
       throw new IllegalStateException();
     }
@@ -2860,21 +1555,21 @@ public class A1Management {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof receiveHealthCheck_args)
-        return this.equals((receiveHealthCheck_args)that);
+      if (that instanceof getUpdatedBEList_result)
+        return this.equals((getUpdatedBEList_result)that);
       return false;
     }
 
-    public boolean equals(receiveHealthCheck_args that) {
+    public boolean equals(getUpdatedBEList_result that) {
       if (that == null)
         return false;
 
-      boolean this_present_healthCheck = true && this.isSetHealthCheck();
-      boolean that_present_healthCheck = true && that.isSetHealthCheck();
-      if (this_present_healthCheck || that_present_healthCheck) {
-        if (!(this_present_healthCheck && that_present_healthCheck))
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
           return false;
-        if (!this.healthCheck.equals(that.healthCheck))
+        if (!this.success.equals(that.success))
           return false;
       }
 
@@ -2885,28 +1580,28 @@ public class A1Management {
     public int hashCode() {
       List<Object> list = new ArrayList<Object>();
 
-      boolean present_healthCheck = true && (isSetHealthCheck());
-      list.add(present_healthCheck);
-      if (present_healthCheck)
-        list.add(healthCheck);
+      boolean present_success = true && (isSetSuccess());
+      list.add(present_success);
+      if (present_success)
+        list.add(success);
 
       return list.hashCode();
     }
 
     @Override
-    public int compareTo(receiveHealthCheck_args other) {
+    public int compareTo(getUpdatedBEList_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
 
-      lastComparison = Boolean.valueOf(isSetHealthCheck()).compareTo(other.isSetHealthCheck());
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(other.isSetSuccess());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetHealthCheck()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.healthCheck, other.healthCheck);
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, other.success);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -2924,18 +1619,18 @@ public class A1Management {
 
     public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
       schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
-    }
+      }
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("receiveHealthCheck_args(");
+      StringBuilder sb = new StringBuilder("getUpdatedBEList_result(");
       boolean first = true;
 
-      sb.append("healthCheck:");
-      if (this.healthCheck == null) {
+      sb.append("success:");
+      if (this.success == null) {
         sb.append("null");
       } else {
-        sb.append(this.healthCheck);
+        sb.append(this.success);
       }
       first = false;
       sb.append(")");
@@ -2945,9 +1640,6 @@ public class A1Management {
     public void validate() throws org.apache.thrift.TException {
       // check for required fields
       // check for sub-struct validity
-      if (healthCheck != null) {
-        healthCheck.validate();
-      }
     }
 
     private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
@@ -2966,15 +1658,15 @@ public class A1Management {
       }
     }
 
-    private static class receiveHealthCheck_argsStandardSchemeFactory implements SchemeFactory {
-      public receiveHealthCheck_argsStandardScheme getScheme() {
-        return new receiveHealthCheck_argsStandardScheme();
+    private static class getUpdatedBEList_resultStandardSchemeFactory implements SchemeFactory {
+      public getUpdatedBEList_resultStandardScheme getScheme() {
+        return new getUpdatedBEList_resultStandardScheme();
       }
     }
 
-    private static class receiveHealthCheck_argsStandardScheme extends StandardScheme<receiveHealthCheck_args> {
+    private static class getUpdatedBEList_resultStandardScheme extends StandardScheme<getUpdatedBEList_result> {
 
-      public void read(org.apache.thrift.protocol.TProtocol iprot, receiveHealthCheck_args struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getUpdatedBEList_result struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TField schemeField;
         iprot.readStructBegin();
         while (true)
@@ -2984,11 +1676,21 @@ public class A1Management {
             break;
           }
           switch (schemeField.id) {
-            case 1: // HEALTH_CHECK
-              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.healthCheck = new ServerHealthcheck();
-                struct.healthCheck.read(iprot);
-                struct.setHealthCheckIsSet(true);
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.SET) {
+                {
+                  org.apache.thrift.protocol.TSet _set0 = iprot.readSetBegin();
+                  struct.success = new HashSet<Heartbeat>(2*_set0.size);
+                  Heartbeat _elem1;
+                  for (int _i2 = 0; _i2 < _set0.size; ++_i2)
+                  {
+                    _elem1 = new Heartbeat();
+                    _elem1.read(iprot);
+                    struct.success.add(_elem1);
+                  }
+                  iprot.readSetEnd();
+                }
+                struct.setSuccessIsSet(true);
               } else { 
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
@@ -3004,13 +1706,20 @@ public class A1Management {
         struct.validate();
       }
 
-      public void write(org.apache.thrift.protocol.TProtocol oprot, receiveHealthCheck_args struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getUpdatedBEList_result struct) throws org.apache.thrift.TException {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
-        if (struct.healthCheck != null) {
-          oprot.writeFieldBegin(HEALTH_CHECK_FIELD_DESC);
-          struct.healthCheck.write(oprot);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          {
+            oprot.writeSetBegin(new org.apache.thrift.protocol.TSet(org.apache.thrift.protocol.TType.STRUCT, struct.success.size()));
+            for (Heartbeat _iter3 : struct.success)
+            {
+              _iter3.write(oprot);
+            }
+            oprot.writeSetEnd();
+          }
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -3019,55 +1728,72 @@ public class A1Management {
 
     }
 
-    private static class receiveHealthCheck_argsTupleSchemeFactory implements SchemeFactory {
-      public receiveHealthCheck_argsTupleScheme getScheme() {
-        return new receiveHealthCheck_argsTupleScheme();
+    private static class getUpdatedBEList_resultTupleSchemeFactory implements SchemeFactory {
+      public getUpdatedBEList_resultTupleScheme getScheme() {
+        return new getUpdatedBEList_resultTupleScheme();
       }
     }
 
-    private static class receiveHealthCheck_argsTupleScheme extends TupleScheme<receiveHealthCheck_args> {
+    private static class getUpdatedBEList_resultTupleScheme extends TupleScheme<getUpdatedBEList_result> {
 
       @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, receiveHealthCheck_args struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol prot, getUpdatedBEList_result struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
         BitSet optionals = new BitSet();
-        if (struct.isSetHealthCheck()) {
+        if (struct.isSetSuccess()) {
           optionals.set(0);
         }
         oprot.writeBitSet(optionals, 1);
-        if (struct.isSetHealthCheck()) {
-          struct.healthCheck.write(oprot);
+        if (struct.isSetSuccess()) {
+          {
+            oprot.writeI32(struct.success.size());
+            for (Heartbeat _iter4 : struct.success)
+            {
+              _iter4.write(oprot);
+            }
+          }
         }
       }
 
       @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, receiveHealthCheck_args struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol prot, getUpdatedBEList_result struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
-          struct.healthCheck = new ServerHealthcheck();
-          struct.healthCheck.read(iprot);
-          struct.setHealthCheckIsSet(true);
+          {
+            org.apache.thrift.protocol.TSet _set5 = new org.apache.thrift.protocol.TSet(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
+            struct.success = new HashSet<Heartbeat>(2*_set5.size);
+            Heartbeat _elem6;
+            for (int _i7 = 0; _i7 < _set5.size; ++_i7)
+            {
+              _elem6 = new Heartbeat();
+              _elem6.read(iprot);
+              struct.success.add(_elem6);
+            }
+          }
+          struct.setSuccessIsSet(true);
         }
       }
     }
 
   }
 
-  public static class receiveHealthCheck_result implements org.apache.thrift.TBase<receiveHealthCheck_result, receiveHealthCheck_result._Fields>, java.io.Serializable, Cloneable, Comparable<receiveHealthCheck_result>   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("receiveHealthCheck_result");
+  public static class sendHeartbeat_args implements org.apache.thrift.TBase<sendHeartbeat_args, sendHeartbeat_args._Fields>, java.io.Serializable, Cloneable, Comparable<sendHeartbeat_args>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("sendHeartbeat_args");
 
+    private static final org.apache.thrift.protocol.TField HEARTBEAT_FIELD_DESC = new org.apache.thrift.protocol.TField("heartbeat", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
-      schemes.put(StandardScheme.class, new receiveHealthCheck_resultStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new receiveHealthCheck_resultTupleSchemeFactory());
+      schemes.put(StandardScheme.class, new sendHeartbeat_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new sendHeartbeat_argsTupleSchemeFactory());
     }
 
+    public Heartbeat heartbeat; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-;
+      HEARTBEAT((short)1, "heartbeat");
 
       private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
 
@@ -3082,258 +1808,8 @@ public class A1Management {
        */
       public static _Fields findByThriftId(int fieldId) {
         switch(fieldId) {
-          default:
-            return null;
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, throwing an exception
-       * if it is not found.
-       */
-      public static _Fields findByThriftIdOrThrow(int fieldId) {
-        _Fields fields = findByThriftId(fieldId);
-        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
-        return fields;
-      }
-
-      /**
-       * Find the _Fields constant that matches name, or null if its not found.
-       */
-      public static _Fields findByName(String name) {
-        return byName.get(name);
-      }
-
-      private final short _thriftId;
-      private final String _fieldName;
-
-      _Fields(short thriftId, String fieldName) {
-        _thriftId = thriftId;
-        _fieldName = fieldName;
-      }
-
-      public short getThriftFieldId() {
-        return _thriftId;
-      }
-
-      public String getFieldName() {
-        return _fieldName;
-      }
-    }
-    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
-    static {
-      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(receiveHealthCheck_result.class, metaDataMap);
-    }
-
-    public receiveHealthCheck_result() {
-    }
-
-    /**
-     * Performs a deep copy on <i>other</i>.
-     */
-    public receiveHealthCheck_result(receiveHealthCheck_result other) {
-    }
-
-    public receiveHealthCheck_result deepCopy() {
-      return new receiveHealthCheck_result(this);
-    }
-
-    @Override
-    public void clear() {
-    }
-
-    public void setFieldValue(_Fields field, Object value) {
-      switch (field) {
-      }
-    }
-
-    public Object getFieldValue(_Fields field) {
-      switch (field) {
-      }
-      throw new IllegalStateException();
-    }
-
-    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
-    public boolean isSet(_Fields field) {
-      if (field == null) {
-        throw new IllegalArgumentException();
-      }
-
-      switch (field) {
-      }
-      throw new IllegalStateException();
-    }
-
-    @Override
-    public boolean equals(Object that) {
-      if (that == null)
-        return false;
-      if (that instanceof receiveHealthCheck_result)
-        return this.equals((receiveHealthCheck_result)that);
-      return false;
-    }
-
-    public boolean equals(receiveHealthCheck_result that) {
-      if (that == null)
-        return false;
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      List<Object> list = new ArrayList<Object>();
-
-      return list.hashCode();
-    }
-
-    @Override
-    public int compareTo(receiveHealthCheck_result other) {
-      if (!getClass().equals(other.getClass())) {
-        return getClass().getName().compareTo(other.getClass().getName());
-      }
-
-      int lastComparison = 0;
-
-      return 0;
-    }
-
-    public _Fields fieldForId(int fieldId) {
-      return _Fields.findByThriftId(fieldId);
-    }
-
-    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
-      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
-    }
-
-    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
-      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
-      }
-
-    @Override
-    public String toString() {
-      StringBuilder sb = new StringBuilder("receiveHealthCheck_result(");
-      boolean first = true;
-
-      sb.append(")");
-      return sb.toString();
-    }
-
-    public void validate() throws org.apache.thrift.TException {
-      // check for required fields
-      // check for sub-struct validity
-    }
-
-    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
-      try {
-        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
-      try {
-        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
-      } catch (org.apache.thrift.TException te) {
-        throw new java.io.IOException(te);
-      }
-    }
-
-    private static class receiveHealthCheck_resultStandardSchemeFactory implements SchemeFactory {
-      public receiveHealthCheck_resultStandardScheme getScheme() {
-        return new receiveHealthCheck_resultStandardScheme();
-      }
-    }
-
-    private static class receiveHealthCheck_resultStandardScheme extends StandardScheme<receiveHealthCheck_result> {
-
-      public void read(org.apache.thrift.protocol.TProtocol iprot, receiveHealthCheck_result struct) throws org.apache.thrift.TException {
-        org.apache.thrift.protocol.TField schemeField;
-        iprot.readStructBegin();
-        while (true)
-        {
-          schemeField = iprot.readFieldBegin();
-          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
-            break;
-          }
-          switch (schemeField.id) {
-            default:
-              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
-          }
-          iprot.readFieldEnd();
-        }
-        iprot.readStructEnd();
-
-        // check for required fields of primitive type, which can't be checked in the validate method
-        struct.validate();
-      }
-
-      public void write(org.apache.thrift.protocol.TProtocol oprot, receiveHealthCheck_result struct) throws org.apache.thrift.TException {
-        struct.validate();
-
-        oprot.writeStructBegin(STRUCT_DESC);
-        oprot.writeFieldStop();
-        oprot.writeStructEnd();
-      }
-
-    }
-
-    private static class receiveHealthCheck_resultTupleSchemeFactory implements SchemeFactory {
-      public receiveHealthCheck_resultTupleScheme getScheme() {
-        return new receiveHealthCheck_resultTupleScheme();
-      }
-    }
-
-    private static class receiveHealthCheck_resultTupleScheme extends TupleScheme<receiveHealthCheck_result> {
-
-      @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, receiveHealthCheck_result struct) throws org.apache.thrift.TException {
-        TTupleProtocol oprot = (TTupleProtocol) prot;
-      }
-
-      @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, receiveHealthCheck_result struct) throws org.apache.thrift.TException {
-        TTupleProtocol iprot = (TTupleProtocol) prot;
-      }
-    }
-
-  }
-
-  public static class receiveServerUp_args implements org.apache.thrift.TBase<receiveServerUp_args, receiveServerUp_args._Fields>, java.io.Serializable, Cloneable, Comparable<receiveServerUp_args>   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("receiveServerUp_args");
-
-    private static final org.apache.thrift.protocol.TField BROADCAST_FIELD_DESC = new org.apache.thrift.protocol.TField("broadcast", org.apache.thrift.protocol.TType.STRUCT, (short)1);
-
-    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
-    static {
-      schemes.put(StandardScheme.class, new receiveServerUp_argsStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new receiveServerUp_argsTupleSchemeFactory());
-    }
-
-    public ServerUpBroadcast broadcast; // required
-
-    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
-    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
-      BROADCAST((short)1, "broadcast");
-
-      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
-
-      static {
-        for (_Fields field : EnumSet.allOf(_Fields.class)) {
-          byName.put(field.getFieldName(), field);
-        }
-      }
-
-      /**
-       * Find the _Fields constant that matches fieldId, or null if its not found.
-       */
-      public static _Fields findByThriftId(int fieldId) {
-        switch(fieldId) {
-          case 1: // BROADCAST
-            return BROADCAST;
+          case 1: // HEARTBEAT
+            return HEARTBEAT;
           default:
             return null;
         }
@@ -3377,71 +1853,71 @@ public class A1Management {
     public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
-      tmpMap.put(_Fields.BROADCAST, new org.apache.thrift.meta_data.FieldMetaData("broadcast", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, ServerUpBroadcast.class)));
+      tmpMap.put(_Fields.HEARTBEAT, new org.apache.thrift.meta_data.FieldMetaData("heartbeat", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Heartbeat.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(receiveServerUp_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(sendHeartbeat_args.class, metaDataMap);
     }
 
-    public receiveServerUp_args() {
+    public sendHeartbeat_args() {
     }
 
-    public receiveServerUp_args(
-      ServerUpBroadcast broadcast)
+    public sendHeartbeat_args(
+      Heartbeat heartbeat)
     {
       this();
-      this.broadcast = broadcast;
+      this.heartbeat = heartbeat;
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public receiveServerUp_args(receiveServerUp_args other) {
-      if (other.isSetBroadcast()) {
-        this.broadcast = new ServerUpBroadcast(other.broadcast);
+    public sendHeartbeat_args(sendHeartbeat_args other) {
+      if (other.isSetHeartbeat()) {
+        this.heartbeat = new Heartbeat(other.heartbeat);
       }
     }
 
-    public receiveServerUp_args deepCopy() {
-      return new receiveServerUp_args(this);
+    public sendHeartbeat_args deepCopy() {
+      return new sendHeartbeat_args(this);
     }
 
     @Override
     public void clear() {
-      this.broadcast = null;
+      this.heartbeat = null;
     }
 
-    public ServerUpBroadcast getBroadcast() {
-      return this.broadcast;
+    public Heartbeat getHeartbeat() {
+      return this.heartbeat;
     }
 
-    public receiveServerUp_args setBroadcast(ServerUpBroadcast broadcast) {
-      this.broadcast = broadcast;
+    public sendHeartbeat_args setHeartbeat(Heartbeat heartbeat) {
+      this.heartbeat = heartbeat;
       return this;
     }
 
-    public void unsetBroadcast() {
-      this.broadcast = null;
+    public void unsetHeartbeat() {
+      this.heartbeat = null;
     }
 
-    /** Returns true if field broadcast is set (has been assigned a value) and false otherwise */
-    public boolean isSetBroadcast() {
-      return this.broadcast != null;
+    /** Returns true if field heartbeat is set (has been assigned a value) and false otherwise */
+    public boolean isSetHeartbeat() {
+      return this.heartbeat != null;
     }
 
-    public void setBroadcastIsSet(boolean value) {
+    public void setHeartbeatIsSet(boolean value) {
       if (!value) {
-        this.broadcast = null;
+        this.heartbeat = null;
       }
     }
 
     public void setFieldValue(_Fields field, Object value) {
       switch (field) {
-      case BROADCAST:
+      case HEARTBEAT:
         if (value == null) {
-          unsetBroadcast();
+          unsetHeartbeat();
         } else {
-          setBroadcast((ServerUpBroadcast)value);
+          setHeartbeat((Heartbeat)value);
         }
         break;
 
@@ -3450,8 +1926,8 @@ public class A1Management {
 
     public Object getFieldValue(_Fields field) {
       switch (field) {
-      case BROADCAST:
-        return getBroadcast();
+      case HEARTBEAT:
+        return getHeartbeat();
 
       }
       throw new IllegalStateException();
@@ -3464,8 +1940,8 @@ public class A1Management {
       }
 
       switch (field) {
-      case BROADCAST:
-        return isSetBroadcast();
+      case HEARTBEAT:
+        return isSetHeartbeat();
       }
       throw new IllegalStateException();
     }
@@ -3474,21 +1950,21 @@ public class A1Management {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof receiveServerUp_args)
-        return this.equals((receiveServerUp_args)that);
+      if (that instanceof sendHeartbeat_args)
+        return this.equals((sendHeartbeat_args)that);
       return false;
     }
 
-    public boolean equals(receiveServerUp_args that) {
+    public boolean equals(sendHeartbeat_args that) {
       if (that == null)
         return false;
 
-      boolean this_present_broadcast = true && this.isSetBroadcast();
-      boolean that_present_broadcast = true && that.isSetBroadcast();
-      if (this_present_broadcast || that_present_broadcast) {
-        if (!(this_present_broadcast && that_present_broadcast))
+      boolean this_present_heartbeat = true && this.isSetHeartbeat();
+      boolean that_present_heartbeat = true && that.isSetHeartbeat();
+      if (this_present_heartbeat || that_present_heartbeat) {
+        if (!(this_present_heartbeat && that_present_heartbeat))
           return false;
-        if (!this.broadcast.equals(that.broadcast))
+        if (!this.heartbeat.equals(that.heartbeat))
           return false;
       }
 
@@ -3499,28 +1975,28 @@ public class A1Management {
     public int hashCode() {
       List<Object> list = new ArrayList<Object>();
 
-      boolean present_broadcast = true && (isSetBroadcast());
-      list.add(present_broadcast);
-      if (present_broadcast)
-        list.add(broadcast);
+      boolean present_heartbeat = true && (isSetHeartbeat());
+      list.add(present_heartbeat);
+      if (present_heartbeat)
+        list.add(heartbeat);
 
       return list.hashCode();
     }
 
     @Override
-    public int compareTo(receiveServerUp_args other) {
+    public int compareTo(sendHeartbeat_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
 
       int lastComparison = 0;
 
-      lastComparison = Boolean.valueOf(isSetBroadcast()).compareTo(other.isSetBroadcast());
+      lastComparison = Boolean.valueOf(isSetHeartbeat()).compareTo(other.isSetHeartbeat());
       if (lastComparison != 0) {
         return lastComparison;
       }
-      if (isSetBroadcast()) {
-        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.broadcast, other.broadcast);
+      if (isSetHeartbeat()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.heartbeat, other.heartbeat);
         if (lastComparison != 0) {
           return lastComparison;
         }
@@ -3542,14 +2018,14 @@ public class A1Management {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("receiveServerUp_args(");
+      StringBuilder sb = new StringBuilder("sendHeartbeat_args(");
       boolean first = true;
 
-      sb.append("broadcast:");
-      if (this.broadcast == null) {
+      sb.append("heartbeat:");
+      if (this.heartbeat == null) {
         sb.append("null");
       } else {
-        sb.append(this.broadcast);
+        sb.append(this.heartbeat);
       }
       first = false;
       sb.append(")");
@@ -3559,8 +2035,8 @@ public class A1Management {
     public void validate() throws org.apache.thrift.TException {
       // check for required fields
       // check for sub-struct validity
-      if (broadcast != null) {
-        broadcast.validate();
+      if (heartbeat != null) {
+        heartbeat.validate();
       }
     }
 
@@ -3580,15 +2056,15 @@ public class A1Management {
       }
     }
 
-    private static class receiveServerUp_argsStandardSchemeFactory implements SchemeFactory {
-      public receiveServerUp_argsStandardScheme getScheme() {
-        return new receiveServerUp_argsStandardScheme();
+    private static class sendHeartbeat_argsStandardSchemeFactory implements SchemeFactory {
+      public sendHeartbeat_argsStandardScheme getScheme() {
+        return new sendHeartbeat_argsStandardScheme();
       }
     }
 
-    private static class receiveServerUp_argsStandardScheme extends StandardScheme<receiveServerUp_args> {
+    private static class sendHeartbeat_argsStandardScheme extends StandardScheme<sendHeartbeat_args> {
 
-      public void read(org.apache.thrift.protocol.TProtocol iprot, receiveServerUp_args struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol iprot, sendHeartbeat_args struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TField schemeField;
         iprot.readStructBegin();
         while (true)
@@ -3598,11 +2074,11 @@ public class A1Management {
             break;
           }
           switch (schemeField.id) {
-            case 1: // BROADCAST
+            case 1: // HEARTBEAT
               if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-                struct.broadcast = new ServerUpBroadcast();
-                struct.broadcast.read(iprot);
-                struct.setBroadcastIsSet(true);
+                struct.heartbeat = new Heartbeat();
+                struct.heartbeat.read(iprot);
+                struct.setHeartbeatIsSet(true);
               } else { 
                 org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
               }
@@ -3618,13 +2094,13 @@ public class A1Management {
         struct.validate();
       }
 
-      public void write(org.apache.thrift.protocol.TProtocol oprot, receiveServerUp_args struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol oprot, sendHeartbeat_args struct) throws org.apache.thrift.TException {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
-        if (struct.broadcast != null) {
-          oprot.writeFieldBegin(BROADCAST_FIELD_DESC);
-          struct.broadcast.write(oprot);
+        if (struct.heartbeat != null) {
+          oprot.writeFieldBegin(HEARTBEAT_FIELD_DESC);
+          struct.heartbeat.write(oprot);
           oprot.writeFieldEnd();
         }
         oprot.writeFieldStop();
@@ -3633,49 +2109,49 @@ public class A1Management {
 
     }
 
-    private static class receiveServerUp_argsTupleSchemeFactory implements SchemeFactory {
-      public receiveServerUp_argsTupleScheme getScheme() {
-        return new receiveServerUp_argsTupleScheme();
+    private static class sendHeartbeat_argsTupleSchemeFactory implements SchemeFactory {
+      public sendHeartbeat_argsTupleScheme getScheme() {
+        return new sendHeartbeat_argsTupleScheme();
       }
     }
 
-    private static class receiveServerUp_argsTupleScheme extends TupleScheme<receiveServerUp_args> {
+    private static class sendHeartbeat_argsTupleScheme extends TupleScheme<sendHeartbeat_args> {
 
       @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, receiveServerUp_args struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol prot, sendHeartbeat_args struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
         BitSet optionals = new BitSet();
-        if (struct.isSetBroadcast()) {
+        if (struct.isSetHeartbeat()) {
           optionals.set(0);
         }
         oprot.writeBitSet(optionals, 1);
-        if (struct.isSetBroadcast()) {
-          struct.broadcast.write(oprot);
+        if (struct.isSetHeartbeat()) {
+          struct.heartbeat.write(oprot);
         }
       }
 
       @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, receiveServerUp_args struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol prot, sendHeartbeat_args struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
-          struct.broadcast = new ServerUpBroadcast();
-          struct.broadcast.read(iprot);
-          struct.setBroadcastIsSet(true);
+          struct.heartbeat = new Heartbeat();
+          struct.heartbeat.read(iprot);
+          struct.setHeartbeatIsSet(true);
         }
       }
     }
 
   }
 
-  public static class receiveServerUp_result implements org.apache.thrift.TBase<receiveServerUp_result, receiveServerUp_result._Fields>, java.io.Serializable, Cloneable, Comparable<receiveServerUp_result>   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("receiveServerUp_result");
+  public static class sendHeartbeat_result implements org.apache.thrift.TBase<sendHeartbeat_result, sendHeartbeat_result._Fields>, java.io.Serializable, Cloneable, Comparable<sendHeartbeat_result>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("sendHeartbeat_result");
 
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
-      schemes.put(StandardScheme.class, new receiveServerUp_resultStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new receiveServerUp_resultTupleSchemeFactory());
+      schemes.put(StandardScheme.class, new sendHeartbeat_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new sendHeartbeat_resultTupleSchemeFactory());
     }
 
 
@@ -3738,20 +2214,20 @@ public class A1Management {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(receiveServerUp_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(sendHeartbeat_result.class, metaDataMap);
     }
 
-    public receiveServerUp_result() {
+    public sendHeartbeat_result() {
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public receiveServerUp_result(receiveServerUp_result other) {
+    public sendHeartbeat_result(sendHeartbeat_result other) {
     }
 
-    public receiveServerUp_result deepCopy() {
-      return new receiveServerUp_result(this);
+    public sendHeartbeat_result deepCopy() {
+      return new sendHeartbeat_result(this);
     }
 
     @Override
@@ -3784,12 +2260,12 @@ public class A1Management {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof receiveServerUp_result)
-        return this.equals((receiveServerUp_result)that);
+      if (that instanceof sendHeartbeat_result)
+        return this.equals((sendHeartbeat_result)that);
       return false;
     }
 
-    public boolean equals(receiveServerUp_result that) {
+    public boolean equals(sendHeartbeat_result that) {
       if (that == null)
         return false;
 
@@ -3804,7 +2280,7 @@ public class A1Management {
     }
 
     @Override
-    public int compareTo(receiveServerUp_result other) {
+    public int compareTo(sendHeartbeat_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
@@ -3828,7 +2304,7 @@ public class A1Management {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("receiveServerUp_result(");
+      StringBuilder sb = new StringBuilder("sendHeartbeat_result(");
       boolean first = true;
 
       sb.append(")");
@@ -3856,15 +2332,15 @@ public class A1Management {
       }
     }
 
-    private static class receiveServerUp_resultStandardSchemeFactory implements SchemeFactory {
-      public receiveServerUp_resultStandardScheme getScheme() {
-        return new receiveServerUp_resultStandardScheme();
+    private static class sendHeartbeat_resultStandardSchemeFactory implements SchemeFactory {
+      public sendHeartbeat_resultStandardScheme getScheme() {
+        return new sendHeartbeat_resultStandardScheme();
       }
     }
 
-    private static class receiveServerUp_resultStandardScheme extends StandardScheme<receiveServerUp_result> {
+    private static class sendHeartbeat_resultStandardScheme extends StandardScheme<sendHeartbeat_result> {
 
-      public void read(org.apache.thrift.protocol.TProtocol iprot, receiveServerUp_result struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol iprot, sendHeartbeat_result struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TField schemeField;
         iprot.readStructBegin();
         while (true)
@@ -3885,7 +2361,7 @@ public class A1Management {
         struct.validate();
       }
 
-      public void write(org.apache.thrift.protocol.TProtocol oprot, receiveServerUp_result struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol oprot, sendHeartbeat_result struct) throws org.apache.thrift.TException {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
@@ -3895,21 +2371,21 @@ public class A1Management {
 
     }
 
-    private static class receiveServerUp_resultTupleSchemeFactory implements SchemeFactory {
-      public receiveServerUp_resultTupleScheme getScheme() {
-        return new receiveServerUp_resultTupleScheme();
+    private static class sendHeartbeat_resultTupleSchemeFactory implements SchemeFactory {
+      public sendHeartbeat_resultTupleScheme getScheme() {
+        return new sendHeartbeat_resultTupleScheme();
       }
     }
 
-    private static class receiveServerUp_resultTupleScheme extends TupleScheme<receiveServerUp_result> {
+    private static class sendHeartbeat_resultTupleScheme extends TupleScheme<sendHeartbeat_result> {
 
       @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, receiveServerUp_result struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol prot, sendHeartbeat_result struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
       }
 
       @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, receiveServerUp_result struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol prot, sendHeartbeat_result struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
       }
     }

@@ -19,6 +19,8 @@
 
 import org.apache.thrift.TException;
 import org.apache.thrift.async.AsyncMethodCallback;
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 // Generated code
 import ece454.*;
@@ -26,14 +28,21 @@ import ece454.*;
 import org.mindrot.jbcrypt.*;
 import java.util.HashMap;
 
-public class BEPasswordHandler implements A1Password.Iface {
+public class BEServiceHandler implements A1Management.Iface {
+    public PerfCounters getPerfCounters() throws org.apache.thrift.TException {
+        return new PerfCounters(1, 1, 1);
+    }
 
-  public String hashPassword(String password, short logRounds) throws ServiceUnavailableException, org.apache.thrift.TException {
-    return "call back end node bro";
-  }
+    public Set<Heartbeat> getUpdatedBEList() throws org.apache.thrift.TException {
+        return new ConcurrentSkipListSet<Heartbeat>(); 
+    }
 
-  public boolean checkPassword(String password, String hash) throws org.apache.thrift.TException {
-    return false;
-  }
+    public void sendHeartbeat(Heartbeat heartbeat) throws org.apache.thrift.TException {
+        
+    }
+
+    public void receiveHeartbeat(Heartbeat heartbeat) throws org.apache.thrift.TException {
+
+    }
 }
 

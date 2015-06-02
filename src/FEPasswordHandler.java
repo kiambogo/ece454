@@ -26,10 +26,10 @@ import ece454.*;
 import org.mindrot.jbcrypt.*;
 import java.util.HashMap;
 
-public class BEPasswordHandler implements A1Password.Iface {
+public class FEPasswordHandler implements A1Password.Iface {
 
   public String hashPassword(String password, short logRounds) throws ServiceUnavailableException, org.apache.thrift.TException {
-    return "call back end node bro";
+    return "call backend node to hash password";
   }
 
   public boolean checkPassword(String password, String hash) throws org.apache.thrift.TException {

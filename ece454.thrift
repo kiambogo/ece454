@@ -6,7 +6,7 @@ struct PerfCounters {
   3:i32 numRequestsCompleted
 }
 
-struct ServerUpBroadcast {
+struct Heartbeat {
   1:string hostname,
   2:i32 numberOfCores,
   3:i32 servicePort,
@@ -27,10 +27,8 @@ service A1Password {
 }
 
 service A1Management {
-  PerfCounters getPerfCounters ()
-  void sendHealthcheck(1:i16 numberOfCores)
-  void sendServerUp(1:i16 portNumber, 2:i16 numberOfCores)
-  void receiveHealthCheck(1:ServerHealthcheck healthCheck)
-  void receiveServerUp(1:ServerUpBroadcast broadcast)
+  PerfCounters getPerfCounters()
+  set<Heartbeat> getUpdatedBEList()
+  void sendHeartbeat(1:Heartbeat heartbeat)
 }
 
