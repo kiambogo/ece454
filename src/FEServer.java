@@ -36,16 +36,16 @@ import java.util.HashMap;
 
 public class FEServer {
 
-  public static HashServiceHandler handler;
+  public static BEPasswordHandler handler;
 
-  public static HashService.Processor processor;
+  public static A1Password.Processor processor;
 
   public static void main(String [] args) {
     final int port = 9090; 
 
     try {
-      handler = new HashServiceHandler();
-      processor = new HashService.Processor(handler);
+      handler = new BEPasswordHandler();
+      processor = new A1Password.Processor(handler);
 
       Runnable simple = new Runnable() {
         public void run() {
@@ -59,7 +59,7 @@ public class FEServer {
     }
   }
 
-  public static void nonblocking(HashService.Processor processor, Integer port) {
+  public static void nonblocking(A1Password.Processor processor, Integer port) {
     try {
       TNonblockingServerTransport serverTransport = new TNonblockingServerSocket(port);
       TServer server = new TNonblockingServer(

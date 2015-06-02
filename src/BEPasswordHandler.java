@@ -26,24 +26,15 @@ import ece454.*;
 import org.mindrot.jbcrypt.*;
 import java.util.HashMap;
 
-public class HashServiceHandler implements HashService.Iface {
+public class BEPasswordHandler implements A1Password.Iface {
 
-  private HashMap<Integer,String> map;
-
-  public HashServiceHandler() {
-    map = new HashMap<Integer, String>();
-  }
-
-  public String hashPassword(String password, short logRounds) throws ServiceUnavailableException, TException {
+  public String hashPassword(String password, short logRounds) throws ServiceUnavailableException, org.apache.thrift.TException {
     return BCrypt.hashpw(password, BCrypt.gensalt((int)logRounds));
   }
 
-  public boolean checkPassword(String password, String hash) throws TException {
-    return true;
+  public boolean checkPassword(String password, String hash) throws org.apache.thrift.TException {
+    if (BCrypt.checkpw(password, hash)) return true;
+    else return false;
   }
-
-  public PerfCounters getPerfCounters() throws TException {
-    return new PerfCounters();
-    }
 }
 

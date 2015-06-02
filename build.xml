@@ -92,8 +92,8 @@
     </java>
   </target>
 
-  <target name="server" description="Run a tutorial server" depends="compile">
-      <java classname="JavaServer" fork="true"
+  <target name="be" description="Run the backend server" depends="compile">
+      <java classname="BEServer" fork="true"
         classpathref="ece454.classpath" failonerror="false" output="${build}/log/server.log">
       </java>
   </target>

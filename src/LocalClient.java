@@ -43,7 +43,7 @@ public class LocalClient {
       transport.open();
 
       TProtocol protocol = new  TBinaryProtocol(transport);
-      HashService.Client client = new HashService.Client(protocol);
+      A1Password.Client client = new A1Password.Client(protocol);
 
       perform(client);
 
@@ -53,9 +53,9 @@ public class LocalClient {
     } 
   }
 
-  private static void perform(HashService.Client client) throws TException
+  private static void perform(A1Password.Client client) throws TException
   {
-    String response = client.hashPassword("", (short)9);
+    String response = client.hashPassword("sampletext", (short)9);
     System.out.println(""+response);
   }
 }

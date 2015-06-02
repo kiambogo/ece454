@@ -44,7 +44,7 @@ public class RemoteClient {
       transport.open();
 
       TProtocol protocol = new  TBinaryProtocol(transport);
-      HashService.Client client = new HashService.Client(protocol);
+      A1Password.Client client = new A1Password.Client(protocol);
 
       perform(client);
 
@@ -54,9 +54,8 @@ public class RemoteClient {
     } 
   }
 
-  private static void perform(HashService.Client client) throws TException {
-    String response = client.hashPassword("", (short)9);
+  private static void perform(A1Password.Client client) throws TException {
+    String response = client.hashPassword("sampletext", (short)9);
     System.out.println(""+response);
-    System.out.println("shits working yo");
   }
 }

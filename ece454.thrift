@@ -7,8 +7,10 @@ struct PerfCounters {
 }
 
 struct ServerUpBroadcast {
-  1:i32 portNumber,
-  2:i32 numberOfCores
+  1:string hostname,
+  2:i32 numberOfCores,
+  3:i32 servicePort,
+  4:i32 managementPort 
 }
 
 struct ServerHealthcheck {
@@ -19,13 +21,13 @@ exception ServiceUnavailableException {
   1:string msg
 }
 
-service HashService {
+service A1Password {
   string hashPassword (1:string password, 2:i16 logRounds) throws (1: ServiceUnavailableException e)
   bool checkPassword (1:string password, 2:string hash)
-  PerfCounters getPerfCounters ()
 }
 
-service BroadcastService {
+service A1Management {
+  PerfCounters getPerfCounters ()
   void sendHealthcheck(1:i16 numberOfCores)
   void sendServerUp(1:i16 portNumber, 2:i16 numberOfCores)
   void receiveHealthCheck(1:ServerHealthcheck healthCheck)
