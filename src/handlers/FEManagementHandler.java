@@ -25,7 +25,7 @@ public class FEManagementHandler implements A1Management.Iface {
         return nodeService.getListOfBENodes(); 
     }
 
-    public void sendHeartbeat(Heartbeat heartbeat) throws org.apache.thrift.TException {
+    public void beat(Heartbeat heartbeat) throws org.apache.thrift.TException {
         
     }
 

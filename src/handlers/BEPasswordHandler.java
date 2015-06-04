@@ -15,7 +15,6 @@ public class BEPasswordHandler implements A1Password.Iface {
         String hashed = BCrypt.hashpw(password, BCrypt.gensalt(logRounds));
         System.out.println("hashing...");
         while (hashed == null) { }
-
         countersService.incrementRequestsCompleted();
       return hashed;
     }

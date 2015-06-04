@@ -43,7 +43,7 @@ public class A1Management {
 
     public Set<Heartbeat> getUpdatedBEList() throws org.apache.thrift.TException;
 
-    public void sendHeartbeat(Heartbeat heartbeat) throws org.apache.thrift.TException;
+    public void beat(Heartbeat heartbeat) throws org.apache.thrift.TException;
 
     public List<String> getGroupMembers() throws org.apache.thrift.TException;
 
@@ -55,7 +55,7 @@ public class A1Management {
 
     public void getUpdatedBEList(org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
-    public void sendHeartbeat(Heartbeat heartbeat, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
+    public void beat(Heartbeat heartbeat, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
     public void getGroupMembers(org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException;
 
@@ -125,23 +125,23 @@ public class A1Management {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getUpdatedBEList failed: unknown result");
     }
 
-    public void sendHeartbeat(Heartbeat heartbeat) throws org.apache.thrift.TException
+    public void beat(Heartbeat heartbeat) throws org.apache.thrift.TException
     {
-      send_sendHeartbeat(heartbeat);
-      recv_sendHeartbeat();
+      send_beat(heartbeat);
+      recv_beat();
     }
 
-    public void send_sendHeartbeat(Heartbeat heartbeat) throws org.apache.thrift.TException
+    public void send_beat(Heartbeat heartbeat) throws org.apache.thrift.TException
     {
-      sendHeartbeat_args args = new sendHeartbeat_args();
+      beat_args args = new beat_args();
       args.setHeartbeat(heartbeat);
-      sendBase("sendHeartbeat", args);
+      sendBase("beat", args);
     }
 
-    public void recv_sendHeartbeat() throws org.apache.thrift.TException
+    public void recv_beat() throws org.apache.thrift.TException
     {
-      sendHeartbeat_result result = new sendHeartbeat_result();
-      receiveBase(result, "sendHeartbeat");
+      beat_result result = new beat_result();
+      receiveBase(result, "beat");
       return;
     }
 
@@ -243,23 +243,23 @@ public class A1Management {
       }
     }
 
-    public void sendHeartbeat(Heartbeat heartbeat, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+    public void beat(Heartbeat heartbeat, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
       checkReady();
-      sendHeartbeat_call method_call = new sendHeartbeat_call(heartbeat, resultHandler, this, ___protocolFactory, ___transport);
+      beat_call method_call = new beat_call(heartbeat, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
-    public static class sendHeartbeat_call extends org.apache.thrift.async.TAsyncMethodCall {
+    public static class beat_call extends org.apache.thrift.async.TAsyncMethodCall {
       private Heartbeat heartbeat;
-      public sendHeartbeat_call(Heartbeat heartbeat, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      public beat_call(Heartbeat heartbeat, org.apache.thrift.async.AsyncMethodCallback resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.heartbeat = heartbeat;
       }
 
       public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
-        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("sendHeartbeat", org.apache.thrift.protocol.TMessageType.CALL, 0));
-        sendHeartbeat_args args = new sendHeartbeat_args();
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("beat", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        beat_args args = new beat_args();
         args.setHeartbeat(heartbeat);
         args.write(prot);
         prot.writeMessageEnd();
@@ -271,7 +271,7 @@ public class A1Management {
         }
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
-        (new Client(prot)).recv_sendHeartbeat();
+        (new Client(prot)).recv_beat();
       }
     }
 
@@ -319,7 +319,7 @@ public class A1Management {
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
       processMap.put("getPerfCounters", new getPerfCounters());
       processMap.put("getUpdatedBEList", new getUpdatedBEList());
-      processMap.put("sendHeartbeat", new sendHeartbeat());
+      processMap.put("beat", new beat());
       processMap.put("getGroupMembers", new getGroupMembers());
       return processMap;
     }
@@ -364,22 +364,22 @@ public class A1Management {
       }
     }
 
-    public static class sendHeartbeat<I extends Iface> extends org.apache.thrift.ProcessFunction<I, sendHeartbeat_args> {
-      public sendHeartbeat() {
-        super("sendHeartbeat");
+    public static class beat<I extends Iface> extends org.apache.thrift.ProcessFunction<I, beat_args> {
+      public beat() {
+        super("beat");
       }
 
-      public sendHeartbeat_args getEmptyArgsInstance() {
-        return new sendHeartbeat_args();
+      public beat_args getEmptyArgsInstance() {
+        return new beat_args();
       }
 
       protected boolean isOneway() {
         return false;
       }
 
-      public sendHeartbeat_result getResult(I iface, sendHeartbeat_args args) throws org.apache.thrift.TException {
-        sendHeartbeat_result result = new sendHeartbeat_result();
-        iface.sendHeartbeat(args.heartbeat);
+      public beat_result getResult(I iface, beat_args args) throws org.apache.thrift.TException {
+        beat_result result = new beat_result();
+        iface.beat(args.heartbeat);
         return result;
       }
     }
@@ -419,7 +419,7 @@ public class A1Management {
     private static <I extends AsyncIface> Map<String,  org.apache.thrift.AsyncProcessFunction<I, ? extends  org.apache.thrift.TBase,?>> getProcessMap(Map<String,  org.apache.thrift.AsyncProcessFunction<I, ? extends  org.apache.thrift.TBase, ?>> processMap) {
       processMap.put("getPerfCounters", new getPerfCounters());
       processMap.put("getUpdatedBEList", new getUpdatedBEList());
-      processMap.put("sendHeartbeat", new sendHeartbeat());
+      processMap.put("beat", new beat());
       processMap.put("getGroupMembers", new getGroupMembers());
       return processMap;
     }
@@ -526,20 +526,20 @@ public class A1Management {
       }
     }
 
-    public static class sendHeartbeat<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, sendHeartbeat_args, Void> {
-      public sendHeartbeat() {
-        super("sendHeartbeat");
+    public static class beat<I extends AsyncIface> extends org.apache.thrift.AsyncProcessFunction<I, beat_args, Void> {
+      public beat() {
+        super("beat");
       }
 
-      public sendHeartbeat_args getEmptyArgsInstance() {
-        return new sendHeartbeat_args();
+      public beat_args getEmptyArgsInstance() {
+        return new beat_args();
       }
 
       public AsyncMethodCallback<Void> getResultHandler(final AsyncFrameBuffer fb, final int seqid) {
         final org.apache.thrift.AsyncProcessFunction fcall = this;
         return new AsyncMethodCallback<Void>() { 
           public void onComplete(Void o) {
-            sendHeartbeat_result result = new sendHeartbeat_result();
+            beat_result result = new beat_result();
             try {
               fcall.sendResponse(fb,result, org.apache.thrift.protocol.TMessageType.REPLY,seqid);
               return;
@@ -551,7 +551,7 @@ public class A1Management {
           public void onError(Exception e) {
             byte msgType = org.apache.thrift.protocol.TMessageType.REPLY;
             org.apache.thrift.TBase msg;
-            sendHeartbeat_result result = new sendHeartbeat_result();
+            beat_result result = new beat_result();
             {
               msgType = org.apache.thrift.protocol.TMessageType.EXCEPTION;
               msg = (org.apache.thrift.TBase)new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, e.getMessage());
@@ -571,8 +571,8 @@ public class A1Management {
         return false;
       }
 
-      public void start(I iface, sendHeartbeat_args args, org.apache.thrift.async.AsyncMethodCallback<Void> resultHandler) throws TException {
-        iface.sendHeartbeat(args.heartbeat,resultHandler);
+      public void start(I iface, beat_args args, org.apache.thrift.async.AsyncMethodCallback<Void> resultHandler) throws TException {
+        iface.beat(args.heartbeat,resultHandler);
       }
     }
 
@@ -1906,15 +1906,15 @@ public class A1Management {
 
   }
 
-  public static class sendHeartbeat_args implements org.apache.thrift.TBase<sendHeartbeat_args, sendHeartbeat_args._Fields>, java.io.Serializable, Cloneable, Comparable<sendHeartbeat_args>   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("sendHeartbeat_args");
+  public static class beat_args implements org.apache.thrift.TBase<beat_args, beat_args._Fields>, java.io.Serializable, Cloneable, Comparable<beat_args>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("beat_args");
 
     private static final org.apache.thrift.protocol.TField HEARTBEAT_FIELD_DESC = new org.apache.thrift.protocol.TField("heartbeat", org.apache.thrift.protocol.TType.STRUCT, (short)1);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
-      schemes.put(StandardScheme.class, new sendHeartbeat_argsStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new sendHeartbeat_argsTupleSchemeFactory());
+      schemes.put(StandardScheme.class, new beat_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new beat_argsTupleSchemeFactory());
     }
 
     public Heartbeat heartbeat; // required
@@ -1984,13 +1984,13 @@ public class A1Management {
       tmpMap.put(_Fields.HEARTBEAT, new org.apache.thrift.meta_data.FieldMetaData("heartbeat", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Heartbeat.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(sendHeartbeat_args.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(beat_args.class, metaDataMap);
     }
 
-    public sendHeartbeat_args() {
+    public beat_args() {
     }
 
-    public sendHeartbeat_args(
+    public beat_args(
       Heartbeat heartbeat)
     {
       this();
@@ -2000,14 +2000,14 @@ public class A1Management {
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public sendHeartbeat_args(sendHeartbeat_args other) {
+    public beat_args(beat_args other) {
       if (other.isSetHeartbeat()) {
         this.heartbeat = new Heartbeat(other.heartbeat);
       }
     }
 
-    public sendHeartbeat_args deepCopy() {
-      return new sendHeartbeat_args(this);
+    public beat_args deepCopy() {
+      return new beat_args(this);
     }
 
     @Override
@@ -2019,7 +2019,7 @@ public class A1Management {
       return this.heartbeat;
     }
 
-    public sendHeartbeat_args setHeartbeat(Heartbeat heartbeat) {
+    public beat_args setHeartbeat(Heartbeat heartbeat) {
       this.heartbeat = heartbeat;
       return this;
     }
@@ -2078,12 +2078,12 @@ public class A1Management {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof sendHeartbeat_args)
-        return this.equals((sendHeartbeat_args)that);
+      if (that instanceof beat_args)
+        return this.equals((beat_args)that);
       return false;
     }
 
-    public boolean equals(sendHeartbeat_args that) {
+    public boolean equals(beat_args that) {
       if (that == null)
         return false;
 
@@ -2112,7 +2112,7 @@ public class A1Management {
     }
 
     @Override
-    public int compareTo(sendHeartbeat_args other) {
+    public int compareTo(beat_args other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
@@ -2146,7 +2146,7 @@ public class A1Management {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("sendHeartbeat_args(");
+      StringBuilder sb = new StringBuilder("beat_args(");
       boolean first = true;
 
       sb.append("heartbeat:");
@@ -2184,15 +2184,15 @@ public class A1Management {
       }
     }
 
-    private static class sendHeartbeat_argsStandardSchemeFactory implements SchemeFactory {
-      public sendHeartbeat_argsStandardScheme getScheme() {
-        return new sendHeartbeat_argsStandardScheme();
+    private static class beat_argsStandardSchemeFactory implements SchemeFactory {
+      public beat_argsStandardScheme getScheme() {
+        return new beat_argsStandardScheme();
       }
     }
 
-    private static class sendHeartbeat_argsStandardScheme extends StandardScheme<sendHeartbeat_args> {
+    private static class beat_argsStandardScheme extends StandardScheme<beat_args> {
 
-      public void read(org.apache.thrift.protocol.TProtocol iprot, sendHeartbeat_args struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol iprot, beat_args struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TField schemeField;
         iprot.readStructBegin();
         while (true)
@@ -2222,7 +2222,7 @@ public class A1Management {
         struct.validate();
       }
 
-      public void write(org.apache.thrift.protocol.TProtocol oprot, sendHeartbeat_args struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol oprot, beat_args struct) throws org.apache.thrift.TException {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
@@ -2237,16 +2237,16 @@ public class A1Management {
 
     }
 
-    private static class sendHeartbeat_argsTupleSchemeFactory implements SchemeFactory {
-      public sendHeartbeat_argsTupleScheme getScheme() {
-        return new sendHeartbeat_argsTupleScheme();
+    private static class beat_argsTupleSchemeFactory implements SchemeFactory {
+      public beat_argsTupleScheme getScheme() {
+        return new beat_argsTupleScheme();
       }
     }
 
-    private static class sendHeartbeat_argsTupleScheme extends TupleScheme<sendHeartbeat_args> {
+    private static class beat_argsTupleScheme extends TupleScheme<beat_args> {
 
       @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, sendHeartbeat_args struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol prot, beat_args struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
         BitSet optionals = new BitSet();
         if (struct.isSetHeartbeat()) {
@@ -2259,7 +2259,7 @@ public class A1Management {
       }
 
       @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, sendHeartbeat_args struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol prot, beat_args struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
@@ -2272,14 +2272,14 @@ public class A1Management {
 
   }
 
-  public static class sendHeartbeat_result implements org.apache.thrift.TBase<sendHeartbeat_result, sendHeartbeat_result._Fields>, java.io.Serializable, Cloneable, Comparable<sendHeartbeat_result>   {
-    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("sendHeartbeat_result");
+  public static class beat_result implements org.apache.thrift.TBase<beat_result, beat_result._Fields>, java.io.Serializable, Cloneable, Comparable<beat_result>   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("beat_result");
 
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
-      schemes.put(StandardScheme.class, new sendHeartbeat_resultStandardSchemeFactory());
-      schemes.put(TupleScheme.class, new sendHeartbeat_resultTupleSchemeFactory());
+      schemes.put(StandardScheme.class, new beat_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new beat_resultTupleSchemeFactory());
     }
 
 
@@ -2342,20 +2342,20 @@ public class A1Management {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       metaDataMap = Collections.unmodifiableMap(tmpMap);
-      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(sendHeartbeat_result.class, metaDataMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(beat_result.class, metaDataMap);
     }
 
-    public sendHeartbeat_result() {
+    public beat_result() {
     }
 
     /**
      * Performs a deep copy on <i>other</i>.
      */
-    public sendHeartbeat_result(sendHeartbeat_result other) {
+    public beat_result(beat_result other) {
     }
 
-    public sendHeartbeat_result deepCopy() {
-      return new sendHeartbeat_result(this);
+    public beat_result deepCopy() {
+      return new beat_result(this);
     }
 
     @Override
@@ -2388,12 +2388,12 @@ public class A1Management {
     public boolean equals(Object that) {
       if (that == null)
         return false;
-      if (that instanceof sendHeartbeat_result)
-        return this.equals((sendHeartbeat_result)that);
+      if (that instanceof beat_result)
+        return this.equals((beat_result)that);
       return false;
     }
 
-    public boolean equals(sendHeartbeat_result that) {
+    public boolean equals(beat_result that) {
       if (that == null)
         return false;
 
@@ -2408,7 +2408,7 @@ public class A1Management {
     }
 
     @Override
-    public int compareTo(sendHeartbeat_result other) {
+    public int compareTo(beat_result other) {
       if (!getClass().equals(other.getClass())) {
         return getClass().getName().compareTo(other.getClass().getName());
       }
@@ -2432,7 +2432,7 @@ public class A1Management {
 
     @Override
     public String toString() {
-      StringBuilder sb = new StringBuilder("sendHeartbeat_result(");
+      StringBuilder sb = new StringBuilder("beat_result(");
       boolean first = true;
 
       sb.append(")");
@@ -2460,15 +2460,15 @@ public class A1Management {
       }
     }
 
-    private static class sendHeartbeat_resultStandardSchemeFactory implements SchemeFactory {
-      public sendHeartbeat_resultStandardScheme getScheme() {
-        return new sendHeartbeat_resultStandardScheme();
+    private static class beat_resultStandardSchemeFactory implements SchemeFactory {
+      public beat_resultStandardScheme getScheme() {
+        return new beat_resultStandardScheme();
       }
     }
 
-    private static class sendHeartbeat_resultStandardScheme extends StandardScheme<sendHeartbeat_result> {
+    private static class beat_resultStandardScheme extends StandardScheme<beat_result> {
 
-      public void read(org.apache.thrift.protocol.TProtocol iprot, sendHeartbeat_result struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol iprot, beat_result struct) throws org.apache.thrift.TException {
         org.apache.thrift.protocol.TField schemeField;
         iprot.readStructBegin();
         while (true)
@@ -2489,7 +2489,7 @@ public class A1Management {
         struct.validate();
       }
 
-      public void write(org.apache.thrift.protocol.TProtocol oprot, sendHeartbeat_result struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol oprot, beat_result struct) throws org.apache.thrift.TException {
         struct.validate();
 
         oprot.writeStructBegin(STRUCT_DESC);
@@ -2499,21 +2499,21 @@ public class A1Management {
 
     }
 
-    private static class sendHeartbeat_resultTupleSchemeFactory implements SchemeFactory {
-      public sendHeartbeat_resultTupleScheme getScheme() {
-        return new sendHeartbeat_resultTupleScheme();
+    private static class beat_resultTupleSchemeFactory implements SchemeFactory {
+      public beat_resultTupleScheme getScheme() {
+        return new beat_resultTupleScheme();
       }
     }
 
-    private static class sendHeartbeat_resultTupleScheme extends TupleScheme<sendHeartbeat_result> {
+    private static class beat_resultTupleScheme extends TupleScheme<beat_result> {
 
       @Override
-      public void write(org.apache.thrift.protocol.TProtocol prot, sendHeartbeat_result struct) throws org.apache.thrift.TException {
+      public void write(org.apache.thrift.protocol.TProtocol prot, beat_result struct) throws org.apache.thrift.TException {
         TTupleProtocol oprot = (TTupleProtocol) prot;
       }
 
       @Override
-      public void read(org.apache.thrift.protocol.TProtocol prot, sendHeartbeat_result struct) throws org.apache.thrift.TException {
+      public void read(org.apache.thrift.protocol.TProtocol prot, beat_result struct) throws org.apache.thrift.TException {
         TTupleProtocol iprot = (TTupleProtocol) prot;
       }
     }

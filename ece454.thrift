@@ -29,7 +29,7 @@ service A1Password {
 service A1Management {
   PerfCounters getPerfCounters()
   set<Heartbeat> getUpdatedBEList()
-  void sendHeartbeat(1:Heartbeat heartbeat)
+  void beat(1:Heartbeat heartbeat)
   list<string> getGroupMembers()
 }
 

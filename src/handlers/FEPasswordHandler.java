@@ -17,9 +17,8 @@ public class FEPasswordHandler implements A1Password.AsyncIface {
       // Increment request counter
       countersService.incrementRequestsReceived();
       // Calculate which BE to connect to
-      //
       System.out.println("FE node received request to hash. Contacting BE");
-      BEPasswordClient BEPassClient = new BEPasswordClient("localhost", 10100);
+      BEPasswordSyncClient BEPassClient = new BEPasswordSyncClient("localhost", 10100);
       BEPassClient.hashPassword(password, logRounds);
     }
 

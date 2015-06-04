@@ -25,6 +25,14 @@ public class BEServer {
   public static int mPort;
 
   public static void main(String [] args) {
+
+//    if (args.length < 5 || 
+//        !args.contains("host") || !args.contains("pport") || !args.contains("mport") ||
+//        !args.contains("ncores") || !args.contains("seeds")) {
+//      System.out.println("Please enter 'simple' ");
+//      System.exit(0);
+//    }
+
     pPort = 10100; 
     mPort = 10101; 
       try {
@@ -101,13 +109,13 @@ public class BEServer {
 
   private static class HeartbeatBroadcast implements Runnable {
     public void run(){
-      System.out.println("Broadcasting hearbeat");
+//      System.out.println("Broadcasting hearbeat");
       try {
         managementHandler = new BEManagementHandler();
         String hostname = InetAddress.getLocalHost().getHostName();
         int cores = Runtime.getRuntime().availableProcessors();
         Heartbeat hb = new Heartbeat(hostname, cores, pPort, mPort);
-        managementHandler.sendHeartbeat(hb);
+        managementHandler.beat(hb);
       } catch (UnknownHostException e) {
         e.printStackTrace();
       } catch (TException e) {  

@@ -3,6 +3,7 @@ import org.apache.thrift.server.TServer.Args;
 import org.apache.thrift.server.TSimpleServer;
 import org.apache.thrift.server.TNonblockingServer;
 import org.apache.thrift.server.TThreadPoolServer;
+import org.apache.thrift.TException;
 import org.apache.thrift.transport.TSSLTransportFactory;
 import org.apache.thrift.transport.TServerSocket;
 import org.apache.thrift.transport.TServerTransport;
@@ -15,11 +16,13 @@ import services.*;
 import handlers.*;
 
 import java.util.HashMap;
+import java.util.concurrent.*;
+import java.net.UnknownHostException;
 
 public class FEServer {
 
-  public static FEPasswordHandler passwordHandler;
-  public static A1Password.AsyncProcessor passwordProcessor;
+  public static FEPasswordSyncHandler passwordHandler;
+  public static A1Password.Processor passwordProcessor;
   public static FEManagementHandler managementHandler; 
     public static A1Management.Processor managementProcessor;
 
@@ -27,8 +30,8 @@ public class FEServer {
     final int port = 9090; 
 
     try {
-      passwordHandler = new FEPasswordHandler();
-      passwordProcessor = new A1Password.AsyncProcessor(passwordHandler);
+      passwordHandler = new FEPasswordSyncHandler();
+      passwordProcessor = new A1Password.Processor(passwordHandler);
 
       managementHandler = new FEManagementHandler();
       managementProcessor = new A1Management.Processor(managementHandler);
@@ -52,13 +55,13 @@ public class FEServer {
     }
   }
 
-  private static void password(A1Password.AsyncProcessor processor, int port) {
+  private static void password(A1Password.Processor processor, int port) {
     try {
       TNonblockingServerTransport serverTransport = new TNonblockingServerSocket(9091);
       TServer server = new TNonblockingServer(
               new TNonblockingServer.Args(serverTransport).processor(processor));
 
-      System.out.println("Starting the FE (nonblocking) server...");
+      System.out.println("Starting the FE password server on port 9091 "  );
       PerfCountersService countersService = new PerfCountersService();
       countersService.setStartTime();
       server.serve();
@@ -73,12 +76,24 @@ public class FEServer {
           TServer server = new TNonblockingServer(
                   new TNonblockingServer.Args(serverTransport).processor(processor));
 
-          System.out.println("Starting the FE (nonblocking) server...");
+          System.out.println("Starting the FE management server on port " + port);
           PerfCountersService countersService = new PerfCountersService();
           countersService.setStartTime();
+          ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+          scheduler.scheduleAtFixedRate(new HeartbeatBroadcast(), 100, 100, TimeUnit.MILLISECONDS);
           server.serve();
       } catch (Exception e) {
           e.printStackTrace();
       }
+  }
+
+  private static class HeartbeatBroadcast implements Runnable {
+    public void run(){
+        managementHandler = new FEManagementHandler();
+        //String hostname = InetAddress.getLocalHost().getHostName();
+        //int cores = Runtime.getRuntime().availableProcessors();
+        //Heartbeat hb = new Heartbeat(hostname, cores, pPort, mPort);
+        //managementHandler.sendHeartbeat(hb);
+    }
   }
 }

@@ -20,7 +20,7 @@ public class BEPasswordClient{
         this.port = port;
     }
 
-  public void hashPassword(String password, short rounds) {
+  public void hashPassword(String password, short rounds, AsyncMethodCallback callback) {
       try {
           TProtocolFactory protocolFactory = new TBinaryProtocol.Factory();
           TAsyncClientManager clientManager = new TAsyncClientManager();
@@ -28,7 +28,7 @@ public class BEPasswordClient{
           A1Password.AsyncClient client = new A1Password.AsyncClient(
             protocolFactory, clientManager, transport);
 
-          client.hashPassword(password, rounds, new HashPasswordCallBack());
+          client.hashPassword(password, rounds, callback);
           while (!finish) {  }
       } catch (TException x) {
           x.printStackTrace();
