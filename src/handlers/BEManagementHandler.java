@@ -29,7 +29,11 @@ public class BEManagementHandler implements A1Management.Iface {
     }
 
     public void sendHeartbeat(Heartbeat heartbeat) throws org.apache.thrift.TException {
-        
+        System.out.println("SENDING HEARTBEAT: ");        
+        System.out.println("Hostname: "+heartbeat.hostname);        
+        System.out.println("# of Cores: "+heartbeat.numberOfCores);        
+        System.out.println("Service Port: "+heartbeat.servicePort);        
+        System.out.println("Management Port: "+heartbeat.managementPort);        
     }
 
     public List<String> getGroupMembers() throws org.apache.thrift.TException {

@@ -37,9 +37,8 @@ public class LocalClient {
             //A1Password.AsyncClient passwordClient = new A1Password.AsyncClient(
              //         protocolFactory, clientManager, transport);
   
-            System.out.println("Calling hash now");
             passwordClient.hashPassword("somesamplepassword", (short)12, new HashPasswordCallBack());
-            System.out.println("Called");
+            System.out.println(managementClient.getGroupMembers());
 
 
       int i = 0;
