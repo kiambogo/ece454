@@ -13,12 +13,30 @@ public class FEPasswordSyncHandler implements A1Password.Iface {
     static volatile boolean finish = false;
 
     public String hashPassword(String password, short logRounds) throws ServiceUnavailableException, org.apache.thrift.TException {
-     FEPasswordHandler passHandler = new FEPasswordHandler();
+      try {
+      // Increment request counter
+      countersService.incrementRequestsReceived();
+      // Calculate which BE to connect to
+      //
       BEPasswordSyncClient BEPassClient = new BEPasswordSyncClient("localhost", 10100);
+      // Send request to that BE
       return BEPassClient.hashPassword(password, logRounds);
+      } finally {
+        countersService.incrementRequestsCompleted();
+      }
     }
 
     public boolean checkPassword(String password, String hash) throws org.apache.thrift.TException {
-      return true;
+      try {
+        // Increment request counter
+        countersService.incrementRequestsReceived();
+        // Calculate which BE to connect to
+        //
+        BEPasswordSyncClient BEPassClient = new BEPasswordSyncClient("localhost", 10100);
+        // Send request to that BE
+        return BEPassClient.checkPassword(password, hash);
+      } finally {
+        countersService.incrementRequestsCompleted();
+      }
     }
 }

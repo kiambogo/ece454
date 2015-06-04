@@ -29,8 +29,11 @@ public class LocalClient {
               A1Password.Client passwordClient = new A1Password.Client(passwordProtocol);
               A1Management.Client managementClient = new A1Management.Client(manageProtocol);
 
+              System.out.println(managementClient.getPerfCounters());
               System.out.println(managementClient.getGroupMembers());
               System.out.println(passwordClient.hashPassword("somesamplepassword", (short)12));
+              System.out.println(passwordClient.checkPassword("somesamplepassword", "$2a$12$1I2Fld0pGlqblbj7z7zA0ufwULhWkOD9bEJ1rz3jFJYDNM1lXYXim"));
+              System.out.println(managementClient.getPerfCounters());
               
               managementTransport.close();
               passwordTransport.close();
