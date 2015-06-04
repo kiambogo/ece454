@@ -1,3 +1,5 @@
+package clients;
+
 import ece454.*;
 
 import java.util.Set;
@@ -10,31 +12,31 @@ import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 
 public class FEManagementClient {
-  private static String uri;
-  private static int port;
+  private String uri;
+  private int port;
 
   public FEManagementClient(String uri, int port) { 
-    uri = uri;
-    port = port;
+    this.uri = uri;
+    this.port = port;
   }
 
-  public static void getPerfCounters() {
-    try {
-      TProtocolFactory protocolFactory = new TBinaryProtocol.Factory();
-      TAsyncClientManager clientManager = new TAsyncClientManager();
-      TNonblockingTransport transport = new TNonblockingSocket(uri, port); 
-      A1Management.AsyncClient client = new A1Management.AsyncClient(
-          protocolFactory, clientManager, transport);
+  public void getPerfCounters() {
+      try {
+          TProtocolFactory protocolFactory = new TBinaryProtocol.Factory();
+          TAsyncClientManager clientManager = new TAsyncClientManager();
+          TNonblockingTransport transport = new TNonblockingSocket(uri, port); 
+          A1Management.AsyncClient client = new A1Management.AsyncClient(
+              protocolFactory, clientManager, transport);
 
-      client.getPerfCounters(new PerfCountersCallBack());
-    } catch (TException x) {
-      x.printStackTrace();
-    } catch (IOException e) {  
-      e.printStackTrace();
-    } 
+          client.getPerfCounters(new PerfCountersCallBack());
+      } catch (TException x) {
+          x.printStackTrace();
+      } catch (IOException e) {  
+          e.printStackTrace();
+      } 
   }
 
-  public static void getUpdatedBEList() {
+  public void getUpdatedBEList() {
       try {
           TProtocolFactory protocolFactory = new TBinaryProtocol.Factory();
           TAsyncClientManager clientManager = new TAsyncClientManager();
@@ -44,13 +46,13 @@ public class FEManagementClient {
 
           client.getPerfCounters(new BEListCallBack());
       } catch (TException x) {
-        x.printStackTrace();
+          x.printStackTrace();
       } catch (IOException e) {  
-        e.printStackTrace();
+          e.printStackTrace();
       } 
   }
 
-  public static void sendHeartbeat(Heartbeat heartbeat) {
+  public void sendHeartbeat(Heartbeat heartbeat) {
       try {
           TProtocolFactory protocolFactory = new TBinaryProtocol.Factory();
           TAsyncClientManager clientManager = new TAsyncClientManager();
@@ -60,13 +62,13 @@ public class FEManagementClient {
 
           client.sendHeartbeat(heartbeat, new SendHeartbeatCallBack());
       } catch (TException x) {
-        x.printStackTrace();
+          x.printStackTrace();
       } catch (IOException e) {  
-        e.printStackTrace();
+          e.printStackTrace();
       } 
   }
 
-  static class PerfCountersCallBack 
+  class PerfCountersCallBack 
     implements AsyncMethodCallback<A1Management.AsyncClient.getPerfCounters_call> {
         public void onComplete(A1Management.AsyncClient.getPerfCounters_call perfCountersCall) {
             try {
@@ -83,32 +85,32 @@ public class FEManagementClient {
         }
   }    
 
-  static class BEListCallBack 
-      implements AsyncMethodCallback<A1Management.AsyncClient.getUpdatedBEList_call> {
+  class BEListCallBack 
+    implements AsyncMethodCallback<A1Management.AsyncClient.getUpdatedBEList_call> {
       public void onComplete(A1Management.AsyncClient.getUpdatedBEList_call beListCall) {
-        try {
-          Set<Heartbeat> beList = beListCall.getResult();
-          System.out.println("BE List from server: " + beList);
-        } catch (TException e) {
-          e.printStackTrace();
-        }
+          try {
+              Set<Heartbeat> beList = beListCall.getResult();
+              System.out.println("BE List from server: " + beList);
+          } catch (TException e) {
+              e.printStackTrace();
+          }
       }
 
       public void onError(Exception e) {
-        System.out.println("Error: ");
-        e.printStackTrace();
+          System.out.println("Error: ");
+          e.printStackTrace();
       }
   }    
 
-  static class SendHeartbeatCallBack  
-      implements AsyncMethodCallback<A1Management.AsyncClient.sendHeartbeat_call> {
+  class SendHeartbeatCallBack  
+    implements AsyncMethodCallback<A1Management.AsyncClient.sendHeartbeat_call> {
       public void onComplete(A1Management.AsyncClient.sendHeartbeat_call heartbeatCall) {
-        System.out.println("Heartbeat sent");
+          System.out.println("Heartbeat sent");
       }
 
       public void onError(Exception e) {
-        System.out.println("Error: ");
-        e.printStackTrace();
+          System.out.println("Error: ");
+          e.printStackTrace();
       }
   }    
 }

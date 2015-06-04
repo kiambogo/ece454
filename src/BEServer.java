@@ -1,34 +1,13 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-
-import org.apache.thrift.server.TServer;
+import org.apache.thrift.server.*;
+import org.apache.thrift.protocol.*; 
+import org.apache.thrift.transport.*;
+import org.apache.thrift.TProcessorFactory;  
 import org.apache.thrift.server.TServer.Args;
-import org.apache.thrift.server.TThreadPoolServer;
-import org.apache.thrift.transport.TSSLTransportFactory;
-import org.apache.thrift.transport.TServerSocket;
-import org.apache.thrift.transport.TServerTransport;
-import org.apache.thrift.transport.TNonblockingServerTransport;
-import org.apache.thrift.transport.TNonblockingServerSocket;
 import org.apache.thrift.transport.TSSLTransportFactory.TSSLTransportParameters;
 
-// Generated code
 import ece454.*;
+import services.*;
+import handlers.*;
 
 import java.util.HashMap;
 
@@ -39,34 +18,27 @@ public class BEServer {
   public static A1Password.Processor processor;
 
   public static void main(String [] args) {
-    final int port = 9090; 
+    final int port = 10100; 
+      try {
+        handler = new BEPasswordHandler();
+        processor = new A1Password.Processor(handler);
 
-    try {
-      handler = new BEPasswordHandler();
-      processor = new A1Password.Processor(handler);
+        TNonblockingServerSocket socket = new TNonblockingServerSocket(port);  
+        THsHaServer.Args arg = new THsHaServer.Args(socket); 
+        arg.protocolFactory(new TBinaryProtocol.Factory());  
+        arg.transportFactory(new TFramedTransport.Factory()); 
+        arg.processorFactory(new TProcessorFactory(processor));  
+        arg.workerThreads(5);
 
-      Runnable simple = new Runnable() {
-        public void run() {
-          threadpool(processor, port);
-        }
-      };      
-
-      new Thread(simple).start();
-    } catch (Exception x) {
-      x.printStackTrace();
-    }
-  }
-
-  public static void threadpool(A1Password.Processor processor, Integer port) {
-    try {
-      TNonblockingServerTransport serverTransport = new TNonblockingServerSocket(port);
-      TServer server = new TThreadPoolServer(
-              new TThreadPoolServer.Args(serverTransport).processor(processor));
-
-      System.out.println("Starting the BE (threadpool) server...");
-      server.serve();
-    } catch (Exception e) {
-      e.printStackTrace();
-    }
+        TServer server = new THsHaServer(arg);  
+        PerfCountersService countersService = new PerfCountersService();
+        countersService.setStartTime();
+        System.out.println("HsHa server started on port "+ port);  
+        server.serve();  
+      } catch (TTransportException e) {  
+        e.printStackTrace();  
+      } catch (Exception e) {  
+    e.printStackTrace();  
+      }
   }
 }
