@@ -30,5 +30,6 @@ service A1Management {
   PerfCounters getPerfCounters()
   set<Heartbeat> getUpdatedBEList()
   void sendHeartbeat(1:Heartbeat heartbeat)
+  list<string> getGroupMembers()
 }
 

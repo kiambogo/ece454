@@ -92,6 +92,20 @@
     </java>
   </target>
 
+  <target name="TestClient" description="Run a tutorial client" >
+    <echo>Launching remoteclient, connecting to eceubuntu...:</echo>
+    <java classname="TestClient"
+      classpathref="ece454.classpath" failonerror="true">
+      <arg line="simple"/>
+    </java>
+  </target>
+
+  <target name="fe" description="Run the frontend server" depends="compile">
+      <java classname="FEServer" fork="true"
+        classpathref="ece454.classpath" failonerror="false" output="${build}/log/server.log">
+      </java>
+  </target>
+
   <target name="be" description="Run the backend server" depends="compile">
       <java classname="BEServer" fork="true"
         classpathref="ece454.classpath" failonerror="false" output="${build}/log/server.log">

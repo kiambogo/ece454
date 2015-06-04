@@ -1,22 +1,3 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TServer.Args;
 import org.apache.thrift.server.TSimpleServer;
@@ -29,46 +10,75 @@ import org.apache.thrift.transport.TNonblockingServerTransport;
 import org.apache.thrift.transport.TNonblockingServerSocket;
 import org.apache.thrift.transport.TSSLTransportFactory.TSSLTransportParameters;
 
-// Generated code
 import ece454.*;
+import services.*;
+import handlers.*;
 
 import java.util.HashMap;
 
 public class FEServer {
 
-  public static BEPasswordHandler handler;
-
-  public static A1Password.Processor processor;
+  public static FEPasswordHandler passwordHandler;
+  public static A1Password.AsyncProcessor passwordProcessor;
+  public static FEManagementHandler managementHandler; 
+    public static A1Management.Processor managementProcessor;
 
   public static void main(String [] args) {
     final int port = 9090; 
 
     try {
-      handler = new BEPasswordHandler();
-      processor = new A1Password.Processor(handler);
+      passwordHandler = new FEPasswordHandler();
+      passwordProcessor = new A1Password.AsyncProcessor(passwordHandler);
 
-      Runnable simple = new Runnable() {
+      managementHandler = new FEManagementHandler();
+      managementProcessor = new A1Management.Processor(managementHandler);
+
+      Runnable a1Password = new Runnable() {
         public void run() {
-          nonblocking(processor, port);
+          password(passwordProcessor, port);
         }
       };      
+      Runnable a1Management = new Runnable() {
+        public void run() {
+          management(managementProcessor, port);
+        }
+      };
 
-      new Thread(simple).start();
+      new Thread(a1Password).start();
+      new Thread(a1Management).start();
+
     } catch (Exception x) {
-      x.printStackTrace();
+        x.printStackTrace();
     }
   }
 
-  public static void nonblocking(A1Password.Processor processor, Integer port) {
+  private static void password(A1Password.AsyncProcessor processor, int port) {
     try {
-      TNonblockingServerTransport serverTransport = new TNonblockingServerSocket(port);
+      TNonblockingServerTransport serverTransport = new TNonblockingServerSocket(9091);
       TServer server = new TNonblockingServer(
               new TNonblockingServer.Args(serverTransport).processor(processor));
 
       System.out.println("Starting the FE (nonblocking) server...");
+      PerfCountersService countersService = new PerfCountersService();
+      countersService.setStartTime();
       server.serve();
     } catch (Exception e) {
       e.printStackTrace();
     }
+  }
+
+  private static void management(A1Management.Processor processor, int port) {
+      try {
+          TNonblockingServerTransport serverTransport = new TNonblockingServerSocket(port);
+          TServer server = new TNonblockingServer(
+                  new TNonblockingServer.Args(serverTransport).processor(processor));
+
+          System.out.println("Starting the FE (nonblocking) server...");
+          PerfCountersService countersService = new PerfCountersService();
+          countersService.setStartTime();
+          server.serve();
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
   }
 }

@@ -1,3 +1,5 @@
+package clients;
+
 import ece454.*;
 
 import java.io.IOException;  
@@ -9,15 +11,16 @@ import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 
 public class BEPasswordClient{
-  private static String uri;
-  private static int port;
+    private String uri;
+    private int port;
+    static volatile boolean finish = false;
 
-  public BEPasswordClient(String uri, int port) { 
-    uri = uri;
-    port = port;
-  }
+    public BEPasswordClient(String uri, int port) { 
+        this.uri = uri;
+        this.port = port;
+    }
 
-  public static void hashPassword(String password, short rounds) {
+  public void hashPassword(String password, short rounds) {
       try {
           TProtocolFactory protocolFactory = new TBinaryProtocol.Factory();
           TAsyncClientManager clientManager = new TAsyncClientManager();
@@ -26,14 +29,15 @@ public class BEPasswordClient{
             protocolFactory, clientManager, transport);
 
           client.hashPassword(password, rounds, new HashPasswordCallBack());
+          while (!finish) {  }
       } catch (TException x) {
-        x.printStackTrace();
+          x.printStackTrace();
       } catch (IOException e) {  
-        e.printStackTrace();
+          e.printStackTrace();
       } 
   }
 
-  public static void checkPassword(String password, String hash) {
+  public void checkPassword(String password, String hash) {
       try {
           TProtocolFactory protocolFactory = new TBinaryProtocol.Factory();
           TAsyncClientManager clientManager = new TAsyncClientManager();
@@ -43,9 +47,9 @@ public class BEPasswordClient{
 
           client.checkPassword(password, hash, new CheckPasswordCallBack());
       } catch (TException x) {
-        x.printStackTrace();
+          x.printStackTrace();
       } catch (IOException e) {  
-        e.printStackTrace();
+          e.printStackTrace();
       } 
   }
 
@@ -58,11 +62,13 @@ public class BEPasswordClient{
             } catch (TException e) {
                 e.printStackTrace();
             }
+            finish = true;
         }
     
         public void onError(Exception e) {
             System.out.println("Error: ");
             e.printStackTrace();
+            finish = true;
         }
   }    
 
@@ -75,11 +81,13 @@ public class BEPasswordClient{
             } catch (TException e) {
                 e.printStackTrace();
             }
+            finish = true;
         }
 
         public void onError(Exception e) {
-          System.out.println("Error: ");
-          e.printStackTrace();
+            System.out.println("Error: ");
+            e.printStackTrace();
+            finish = true;
         }
     }
 }
