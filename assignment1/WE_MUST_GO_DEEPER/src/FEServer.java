@@ -1,4 +1,4 @@
-package ece454s15a1;
+package ece454750s15a1;
 
 import org.apache.thrift.server.*;
 import org.apache.thrift.protocol.*; 
@@ -16,7 +16,7 @@ import clients.*;
 import java.util.HashMap;
 import java.util.concurrent.*;
 import java.net.UnknownHostException;
-import java.time.LocalTime;
+import java.util.Date;
 
 public class FEServer {
 
@@ -30,6 +30,8 @@ public class FEServer {
   public static int mPort;
   public static int nCores;
   public static String seeds;
+
+  private static NodeService nodeService = new NodeService();
 
   public static void main(String [] args) {
     int i = 0, j;
@@ -118,7 +120,7 @@ public class FEServer {
         arg.protocolFactory(new TBinaryProtocol.Factory());  
         arg.transportFactory(new TFramedTransport.Factory()); 
         arg.processorFactory(new TProcessorFactory(managementProcessor));  
-        arg.workerThreads(1);
+        arg.workerThreads(2);
 
         TServer server = new THsHaServer(arg);  
 
@@ -127,11 +129,12 @@ public class FEServer {
           countersService.setStartTime();
           parseSeeds();
           // Only run this if NOT seed node
-          ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
           if (!isSeed()) {
+          ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
             scheduler.scheduleAtFixedRate(new RefreshBEList(), 500, 500, TimeUnit.MILLISECONDS);
             //scheduler.scheduleAtFixedRate(new RefreshBEList(), 2, 2, TimeUnit.SECONDS);
           } else {
+          ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
             scheduler.scheduleAtFixedRate(new RemoveOldBENodes(), 0, 1, TimeUnit.SECONDS);
           }
           server.serve();
@@ -146,9 +149,8 @@ public class FEServer {
         for (Heartbeat seedNode : nodeService.seedList) {
             FEManagementClient client = new FEManagementClient(seedNode.hostname, seedNode.managementPort);
             UpdatedNodeList list = client.getUpdatedBEList();
-            LocalTime updateTime = LocalTime.parse(list.timestamp);
-            if (updateTime.isAfter(nodeService.lastUpdated)) {
-              nodeService.lastUpdated = updateTime;
+            if (list.timestamp > (nodeService.lastUpdated)) {
+              nodeService.lastUpdated = list.timestamp;
               nodeService.BEList = list.beNodes;
               //System.out.println("Received List: " +list.beNodes);
               //System.out.println("My new BE List: " +nodeService.BEList);
@@ -178,7 +180,6 @@ public class FEServer {
   }
 
   private static boolean isSeed() {
-    NodeService nodeService = new NodeService();
     boolean isSeed = false;
     for (Heartbeat node: nodeService.seedList) {
       if (node.hostname.equals(hostname) && node.managementPort == mPort) {

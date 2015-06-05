@@ -13,7 +13,7 @@ import org.mindrot.jbcrypt.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
-import java.time.LocalTime;
+import java.util.Date;
 
 public class BEManagementHandler implements A1Management.Iface {
     PerfCountersService countersService = new PerfCountersService();
@@ -27,7 +27,7 @@ public class BEManagementHandler implements A1Management.Iface {
     }
 
     public UpdatedNodeList getUpdatedBEList() throws org.apache.thrift.TException {
-        UpdatedNodeList list = new UpdatedNodeList(LocalTime.now().toString(), nodeService.getListOfBENodes()); 
+        UpdatedNodeList list = new UpdatedNodeList(new Date().getTime(), nodeService.getListOfBENodes()); 
         return list; 
     }
 

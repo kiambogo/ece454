@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 public class UpdatedNodeList implements org.apache.thrift.TBase<UpdatedNodeList, UpdatedNodeList._Fields>, java.io.Serializable, Cloneable, Comparable<UpdatedNodeList> {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("UpdatedNodeList");
 
-  private static final org.apache.thrift.protocol.TField TIMESTAMP_FIELD_DESC = new org.apache.thrift.protocol.TField("timestamp", org.apache.thrift.protocol.TType.STRING, (short)1);
+  private static final org.apache.thrift.protocol.TField TIMESTAMP_FIELD_DESC = new org.apache.thrift.protocol.TField("timestamp", org.apache.thrift.protocol.TType.I64, (short)1);
   private static final org.apache.thrift.protocol.TField BE_NODES_FIELD_DESC = new org.apache.thrift.protocol.TField("beNodes", org.apache.thrift.protocol.TType.LIST, (short)3);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
@@ -47,7 +47,7 @@ public class UpdatedNodeList implements org.apache.thrift.TBase<UpdatedNodeList,
     schemes.put(TupleScheme.class, new UpdatedNodeListTupleSchemeFactory());
   }
 
-  public String timestamp; // required
+  public long timestamp; // required
   public List<TimedHeartbeat> beNodes; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
@@ -112,11 +112,13 @@ public class UpdatedNodeList implements org.apache.thrift.TBase<UpdatedNodeList,
   }
 
   // isset id assignments
+  private static final int __TIMESTAMP_ISSET_ID = 0;
+  private byte __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.TIMESTAMP, new org.apache.thrift.meta_data.FieldMetaData("timestamp", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     tmpMap.put(_Fields.BE_NODES, new org.apache.thrift.meta_data.FieldMetaData("beNodes", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
             new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, TimedHeartbeat.class))));
@@ -128,11 +130,12 @@ public class UpdatedNodeList implements org.apache.thrift.TBase<UpdatedNodeList,
   }
 
   public UpdatedNodeList(
-    String timestamp,
+    long timestamp,
     List<TimedHeartbeat> beNodes)
   {
     this();
     this.timestamp = timestamp;
+    setTimestampIsSet(true);
     this.beNodes = beNodes;
   }
 
@@ -140,9 +143,8 @@ public class UpdatedNodeList implements org.apache.thrift.TBase<UpdatedNodeList,
    * Performs a deep copy on <i>other</i>.
    */
   public UpdatedNodeList(UpdatedNodeList other) {
-    if (other.isSetTimestamp()) {
-      this.timestamp = other.timestamp;
-    }
+    __isset_bitfield = other.__isset_bitfield;
+    this.timestamp = other.timestamp;
     if (other.isSetBeNodes()) {
       List<TimedHeartbeat> __this__beNodes = new ArrayList<TimedHeartbeat>(other.beNodes.size());
       for (TimedHeartbeat other_element : other.beNodes) {
@@ -158,32 +160,32 @@ public class UpdatedNodeList implements org.apache.thrift.TBase<UpdatedNodeList,
 
   @Override
   public void clear() {
-    this.timestamp = null;
+    setTimestampIsSet(false);
+    this.timestamp = 0;
     this.beNodes = null;
   }
 
-  public String getTimestamp() {
+  public long getTimestamp() {
     return this.timestamp;
   }
 
-  public UpdatedNodeList setTimestamp(String timestamp) {
+  public UpdatedNodeList setTimestamp(long timestamp) {
     this.timestamp = timestamp;
+    setTimestampIsSet(true);
     return this;
   }
 
   public void unsetTimestamp() {
-    this.timestamp = null;
+    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __TIMESTAMP_ISSET_ID);
   }
 
   /** Returns true if field timestamp is set (has been assigned a value) and false otherwise */
   public boolean isSetTimestamp() {
-    return this.timestamp != null;
+    return EncodingUtils.testBit(__isset_bitfield, __TIMESTAMP_ISSET_ID);
   }
 
   public void setTimestampIsSet(boolean value) {
-    if (!value) {
-      this.timestamp = null;
-    }
+    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __TIMESTAMP_ISSET_ID, value);
   }
 
   public int getBeNodesSize() {
@@ -231,7 +233,7 @@ public class UpdatedNodeList implements org.apache.thrift.TBase<UpdatedNodeList,
       if (value == null) {
         unsetTimestamp();
       } else {
-        setTimestamp((String)value);
+        setTimestamp((Long)value);
       }
       break;
 
@@ -249,7 +251,7 @@ public class UpdatedNodeList implements org.apache.thrift.TBase<UpdatedNodeList,
   public Object getFieldValue(_Fields field) {
     switch (field) {
     case TIMESTAMP:
-      return getTimestamp();
+      return Long.valueOf(getTimestamp());
 
     case BE_NODES:
       return getBeNodes();
@@ -286,12 +288,12 @@ public class UpdatedNodeList implements org.apache.thrift.TBase<UpdatedNodeList,
     if (that == null)
       return false;
 
-    boolean this_present_timestamp = true && this.isSetTimestamp();
-    boolean that_present_timestamp = true && that.isSetTimestamp();
+    boolean this_present_timestamp = true;
+    boolean that_present_timestamp = true;
     if (this_present_timestamp || that_present_timestamp) {
       if (!(this_present_timestamp && that_present_timestamp))
         return false;
-      if (!this.timestamp.equals(that.timestamp))
+      if (this.timestamp != that.timestamp)
         return false;
     }
 
@@ -311,7 +313,7 @@ public class UpdatedNodeList implements org.apache.thrift.TBase<UpdatedNodeList,
   public int hashCode() {
     List<Object> list = new ArrayList<Object>();
 
-    boolean present_timestamp = true && (isSetTimestamp());
+    boolean present_timestamp = true;
     list.add(present_timestamp);
     if (present_timestamp)
       list.add(timestamp);
@@ -373,11 +375,7 @@ public class UpdatedNodeList implements org.apache.thrift.TBase<UpdatedNodeList,
     boolean first = true;
 
     sb.append("timestamp:");
-    if (this.timestamp == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.timestamp);
-    }
+    sb.append(this.timestamp);
     first = false;
     if (!first) sb.append(", ");
     sb.append("beNodes:");
@@ -406,6 +404,8 @@ public class UpdatedNodeList implements org.apache.thrift.TBase<UpdatedNodeList,
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
+      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+      __isset_bitfield = 0;
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);
@@ -431,8 +431,8 @@ public class UpdatedNodeList implements org.apache.thrift.TBase<UpdatedNodeList,
         }
         switch (schemeField.id) {
           case 1: // TIMESTAMP
-            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-              struct.timestamp = iprot.readString();
+            if (schemeField.type == org.apache.thrift.protocol.TType.I64) {
+              struct.timestamp = iprot.readI64();
               struct.setTimestampIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
@@ -472,11 +472,9 @@ public class UpdatedNodeList implements org.apache.thrift.TBase<UpdatedNodeList,
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (struct.timestamp != null) {
-        oprot.writeFieldBegin(TIMESTAMP_FIELD_DESC);
-        oprot.writeString(struct.timestamp);
-        oprot.writeFieldEnd();
-      }
+      oprot.writeFieldBegin(TIMESTAMP_FIELD_DESC);
+      oprot.writeI64(struct.timestamp);
+      oprot.writeFieldEnd();
       if (struct.beNodes != null) {
         oprot.writeFieldBegin(BE_NODES_FIELD_DESC);
         {
@@ -515,7 +513,7 @@ public class UpdatedNodeList implements org.apache.thrift.TBase<UpdatedNodeList,
       }
       oprot.writeBitSet(optionals, 2);
       if (struct.isSetTimestamp()) {
-        oprot.writeString(struct.timestamp);
+        oprot.writeI64(struct.timestamp);
       }
       if (struct.isSetBeNodes()) {
         {
@@ -533,7 +531,7 @@ public class UpdatedNodeList implements org.apache.thrift.TBase<UpdatedNodeList,
       TTupleProtocol iprot = (TTupleProtocol) prot;
       BitSet incoming = iprot.readBitSet(2);
       if (incoming.get(0)) {
-        struct.timestamp = iprot.readString();
+        struct.timestamp = iprot.readI64();
         struct.setTimestampIsSet(true);
       }
       if (incoming.get(1)) {

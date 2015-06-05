@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 public class TimedHeartbeat implements org.apache.thrift.TBase<TimedHeartbeat, TimedHeartbeat._Fields>, java.io.Serializable, Cloneable, Comparable<TimedHeartbeat> {
   private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("TimedHeartbeat");
 
-  private static final org.apache.thrift.protocol.TField TIMESTAMP_FIELD_DESC = new org.apache.thrift.protocol.TField("timestamp", org.apache.thrift.protocol.TType.STRING, (short)1);
+  private static final org.apache.thrift.protocol.TField TIMESTAMP_FIELD_DESC = new org.apache.thrift.protocol.TField("timestamp", org.apache.thrift.protocol.TType.I64, (short)1);
   private static final org.apache.thrift.protocol.TField HEARTBEAT_FIELD_DESC = new org.apache.thrift.protocol.TField("heartbeat", org.apache.thrift.protocol.TType.STRUCT, (short)2);
 
   private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
@@ -47,7 +47,7 @@ public class TimedHeartbeat implements org.apache.thrift.TBase<TimedHeartbeat, T
     schemes.put(TupleScheme.class, new TimedHeartbeatTupleSchemeFactory());
   }
 
-  public String timestamp; // required
+  public long timestamp; // required
   public Heartbeat heartbeat; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
@@ -112,11 +112,13 @@ public class TimedHeartbeat implements org.apache.thrift.TBase<TimedHeartbeat, T
   }
 
   // isset id assignments
+  private static final int __TIMESTAMP_ISSET_ID = 0;
+  private byte __isset_bitfield = 0;
   public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
   static {
     Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
     tmpMap.put(_Fields.TIMESTAMP, new org.apache.thrift.meta_data.FieldMetaData("timestamp", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+        new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     tmpMap.put(_Fields.HEARTBEAT, new org.apache.thrift.meta_data.FieldMetaData("heartbeat", org.apache.thrift.TFieldRequirementType.DEFAULT, 
         new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Heartbeat.class)));
     metaDataMap = Collections.unmodifiableMap(tmpMap);
@@ -127,11 +129,12 @@ public class TimedHeartbeat implements org.apache.thrift.TBase<TimedHeartbeat, T
   }
 
   public TimedHeartbeat(
-    String timestamp,
+    long timestamp,
     Heartbeat heartbeat)
   {
     this();
     this.timestamp = timestamp;
+    setTimestampIsSet(true);
     this.heartbeat = heartbeat;
   }
 
@@ -139,9 +142,8 @@ public class TimedHeartbeat implements org.apache.thrift.TBase<TimedHeartbeat, T
    * Performs a deep copy on <i>other</i>.
    */
   public TimedHeartbeat(TimedHeartbeat other) {
-    if (other.isSetTimestamp()) {
-      this.timestamp = other.timestamp;
-    }
+    __isset_bitfield = other.__isset_bitfield;
+    this.timestamp = other.timestamp;
     if (other.isSetHeartbeat()) {
       this.heartbeat = new Heartbeat(other.heartbeat);
     }
@@ -153,32 +155,32 @@ public class TimedHeartbeat implements org.apache.thrift.TBase<TimedHeartbeat, T
 
   @Override
   public void clear() {
-    this.timestamp = null;
+    setTimestampIsSet(false);
+    this.timestamp = 0;
     this.heartbeat = null;
   }
 
-  public String getTimestamp() {
+  public long getTimestamp() {
     return this.timestamp;
   }
 
-  public TimedHeartbeat setTimestamp(String timestamp) {
+  public TimedHeartbeat setTimestamp(long timestamp) {
     this.timestamp = timestamp;
+    setTimestampIsSet(true);
     return this;
   }
 
   public void unsetTimestamp() {
-    this.timestamp = null;
+    __isset_bitfield = EncodingUtils.clearBit(__isset_bitfield, __TIMESTAMP_ISSET_ID);
   }
 
   /** Returns true if field timestamp is set (has been assigned a value) and false otherwise */
   public boolean isSetTimestamp() {
-    return this.timestamp != null;
+    return EncodingUtils.testBit(__isset_bitfield, __TIMESTAMP_ISSET_ID);
   }
 
   public void setTimestampIsSet(boolean value) {
-    if (!value) {
-      this.timestamp = null;
-    }
+    __isset_bitfield = EncodingUtils.setBit(__isset_bitfield, __TIMESTAMP_ISSET_ID, value);
   }
 
   public Heartbeat getHeartbeat() {
@@ -211,7 +213,7 @@ public class TimedHeartbeat implements org.apache.thrift.TBase<TimedHeartbeat, T
       if (value == null) {
         unsetTimestamp();
       } else {
-        setTimestamp((String)value);
+        setTimestamp((Long)value);
       }
       break;
 
@@ -229,7 +231,7 @@ public class TimedHeartbeat implements org.apache.thrift.TBase<TimedHeartbeat, T
   public Object getFieldValue(_Fields field) {
     switch (field) {
     case TIMESTAMP:
-      return getTimestamp();
+      return Long.valueOf(getTimestamp());
 
     case HEARTBEAT:
       return getHeartbeat();
@@ -266,12 +268,12 @@ public class TimedHeartbeat implements org.apache.thrift.TBase<TimedHeartbeat, T
     if (that == null)
       return false;
 
-    boolean this_present_timestamp = true && this.isSetTimestamp();
-    boolean that_present_timestamp = true && that.isSetTimestamp();
+    boolean this_present_timestamp = true;
+    boolean that_present_timestamp = true;
     if (this_present_timestamp || that_present_timestamp) {
       if (!(this_present_timestamp && that_present_timestamp))
         return false;
-      if (!this.timestamp.equals(that.timestamp))
+      if (this.timestamp != that.timestamp)
         return false;
     }
 
@@ -291,7 +293,7 @@ public class TimedHeartbeat implements org.apache.thrift.TBase<TimedHeartbeat, T
   public int hashCode() {
     List<Object> list = new ArrayList<Object>();
 
-    boolean present_timestamp = true && (isSetTimestamp());
+    boolean present_timestamp = true;
     list.add(present_timestamp);
     if (present_timestamp)
       list.add(timestamp);
@@ -353,11 +355,7 @@ public class TimedHeartbeat implements org.apache.thrift.TBase<TimedHeartbeat, T
     boolean first = true;
 
     sb.append("timestamp:");
-    if (this.timestamp == null) {
-      sb.append("null");
-    } else {
-      sb.append(this.timestamp);
-    }
+    sb.append(this.timestamp);
     first = false;
     if (!first) sb.append(", ");
     sb.append("heartbeat:");
@@ -389,6 +387,8 @@ public class TimedHeartbeat implements org.apache.thrift.TBase<TimedHeartbeat, T
 
   private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
     try {
+      // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
+      __isset_bitfield = 0;
       read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
     } catch (org.apache.thrift.TException te) {
       throw new java.io.IOException(te);
@@ -414,8 +414,8 @@ public class TimedHeartbeat implements org.apache.thrift.TBase<TimedHeartbeat, T
         }
         switch (schemeField.id) {
           case 1: // TIMESTAMP
-            if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
-              struct.timestamp = iprot.readString();
+            if (schemeField.type == org.apache.thrift.protocol.TType.I64) {
+              struct.timestamp = iprot.readI64();
               struct.setTimestampIsSet(true);
             } else { 
               org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
@@ -445,11 +445,9 @@ public class TimedHeartbeat implements org.apache.thrift.TBase<TimedHeartbeat, T
       struct.validate();
 
       oprot.writeStructBegin(STRUCT_DESC);
-      if (struct.timestamp != null) {
-        oprot.writeFieldBegin(TIMESTAMP_FIELD_DESC);
-        oprot.writeString(struct.timestamp);
-        oprot.writeFieldEnd();
-      }
+      oprot.writeFieldBegin(TIMESTAMP_FIELD_DESC);
+      oprot.writeI64(struct.timestamp);
+      oprot.writeFieldEnd();
       if (struct.heartbeat != null) {
         oprot.writeFieldBegin(HEARTBEAT_FIELD_DESC);
         struct.heartbeat.write(oprot);
@@ -481,7 +479,7 @@ public class TimedHeartbeat implements org.apache.thrift.TBase<TimedHeartbeat, T
       }
       oprot.writeBitSet(optionals, 2);
       if (struct.isSetTimestamp()) {
-        oprot.writeString(struct.timestamp);
+        oprot.writeI64(struct.timestamp);
       }
       if (struct.isSetHeartbeat()) {
         struct.heartbeat.write(oprot);
@@ -493,7 +491,7 @@ public class TimedHeartbeat implements org.apache.thrift.TBase<TimedHeartbeat, T
       TTupleProtocol iprot = (TTupleProtocol) prot;
       BitSet incoming = iprot.readBitSet(2);
       if (incoming.get(0)) {
-        struct.timestamp = iprot.readString();
+        struct.timestamp = iprot.readI64();
         struct.setTimestampIsSet(true);
       }
       if (incoming.get(1)) {

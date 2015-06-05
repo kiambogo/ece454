@@ -14,12 +14,12 @@ struct Heartbeat {
 }
 
 struct TimedHeartbeat {
-  1:string timestamp,
+  1:i64 timestamp,
   2:Heartbeat heartbeat
 }
 
 struct UpdatedNodeList {
-  1:string timestamp,
+  1:i64 timestamp,
   3:list<TimedHeartbeat> beNodes
 }
 

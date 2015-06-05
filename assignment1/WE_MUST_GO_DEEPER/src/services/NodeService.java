@@ -2,12 +2,11 @@ package services;
 
 import com.sun.xml.internal.xsom.impl.scd.Iterators;
 import ece454.*;
-import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class NodeService {
-    public static LocalTime lastUpdated = LocalTime.now();
+    public static long lastUpdated = new Date().getTime();
     public static List<TimedHeartbeat> BEList = new CopyOnWriteArrayList<TimedHeartbeat>();
     private static Random random = new Random();
     public static List<Heartbeat> seedList = new ArrayList<Heartbeat>();
@@ -23,14 +22,14 @@ public class NodeService {
             BEList.remove(node);
           }
         }
-        BEList.add(new TimedHeartbeat(LocalTime.now().toString(), beNode));
+        BEList.add(new TimedHeartbeat(new Date().getTime(), beNode));
     }
 
     public void removeOldNodes() {
-      LocalTime currentTime = LocalTime.now();
+      long currentTime = new Date().getTime();
+      long testTime = currentTime - 1000;
       for (TimedHeartbeat node: BEList) {
-        LocalTime timestamp = LocalTime.parse(node.timestamp);
-        if (timestamp.isBefore(currentTime.minusSeconds(1))) {
+        if (node.timestamp < testTime) {
           BEList.remove(node);
         }
       }

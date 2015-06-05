@@ -1,23 +1,23 @@
 package services;
 
 import ece454.*;
-import java.time.LocalTime;
+import java.util.Date;
 
 public class PerfCountersService {
-    private static LocalTime startTime;
+    private static Date startTime;
     private static int requestsReceived;
     private static int requestsCompleted;
 
     public int getSecondsUp() {
-      LocalTime now = LocalTime.now();
-      int hours = (now.minusHours(startTime.getHour())).getHour(); 
-      int minutes = (now.minusMinutes(startTime.getMinute())).getMinute(); 
-      int seconds = (now.minusSeconds(startTime.getSecond())).getSecond(); 
+      Date now = new Date();
+      int hours = now.getHours() - startTime.getHours();
+      int minutes = now.getMinutes() - startTime.getMinutes(); 
+      int seconds = now.getSeconds() - startTime.getSeconds(); 
       return hours*3600 + minutes*60 + seconds;
     }
 
     public void setStartTime() {
-      this.startTime = LocalTime.now(); 
+      this.startTime = new Date(); 
     }
 
     public int getRequestsReceived() {

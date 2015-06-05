@@ -3,7 +3,7 @@ package handlers;
 import org.apache.thrift.TException;
 import org.apache.thrift.async.AsyncMethodCallback;
 import java.util.Set;
-import java.time.LocalTime;
+import java.util.Date;
 
 import ece454.*;
 import services.*;
@@ -23,7 +23,7 @@ public class FEManagementHandler implements A1Management.Iface {
     }
 
     public UpdatedNodeList getUpdatedBEList() throws org.apache.thrift.TException {
-        UpdatedNodeList list = new UpdatedNodeList(LocalTime.now().toString(), nodeService.getListOfBENodes()); 
+        UpdatedNodeList list = new UpdatedNodeList(new Date().getTime(), nodeService.getListOfBENodes()); 
         return list; 
     }
 

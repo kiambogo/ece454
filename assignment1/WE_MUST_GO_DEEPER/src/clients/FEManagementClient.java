@@ -38,7 +38,7 @@ public class FEManagementClient {
   }
 
   public UpdatedNodeList getUpdatedBEList() {
-    UpdatedNodeList result = new UpdatedNodeList("", new ArrayList<TimedHeartbeat>());
+    UpdatedNodeList result = new UpdatedNodeList(0, new ArrayList<TimedHeartbeat>());
       try {
           TTransport transport;
           transport = new TFramedTransport(new TSocket(uri, port));
