@@ -25,9 +25,12 @@
   <property name="build" location="build" />
 
   <path id="libs.classpath">
-    <fileset dir="lib">
+    <fileset dir="../../lib/java/build">
       <include name="*.jar" />
       <exclude name="-test.jar" />
+    </fileset>
+    <fileset dir="../../lib/java/build/lib">
+      <include name="*.jar" />
     </fileset>
   </path>
   <path id="build.classpath">
