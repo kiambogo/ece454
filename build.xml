@@ -114,7 +114,7 @@
   <target name="be" description="Run the backend server" depends="compile">
       <java classname="ece454s15a1.BEServer" fork="true"
         classpathref="ece454.classpath" failonerror="true" output="${build}/log/server.log">
-        <arg line="-host localhost -pport 10200 -mport 10300 -ncores 8"/>
+        <arg line="-host localhost -pport 10200 -mport 10300 -ncores 8 -seeds localhost:10101"/>
       </java>
   </target>
 
