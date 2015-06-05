@@ -17,8 +17,8 @@ public class LocalClient {
         try {
               TTransport managementTransport;
               TTransport passwordTransport;
-              managementTransport = new TFramedTransport(new TSocket("localhost", 9090));
-              passwordTransport = new TFramedTransport(new TSocket("localhost", 9091)); 
+              managementTransport = new TFramedTransport(new TSocket("localhost", 10101));
+              passwordTransport = new TFramedTransport(new TSocket("localhost", 10100)); 
               managementTransport.open();
               passwordTransport.open();
 

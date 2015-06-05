@@ -20,6 +20,7 @@ public class NodeService {
     }
 
     public void removeOldNodes() {
+        System.out.println("Removing old nodes");
         Iterator<LocalTime> timestamps = (BEMap.keySet()).iterator();
         timestamps.next();
         LocalTime currentTime = LocalTime.now();

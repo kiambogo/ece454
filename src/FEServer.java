@@ -1,3 +1,5 @@
+package ece454s15a1;
+
 import org.apache.thrift.server.TServer;
 import org.apache.thrift.server.TServer.Args;
 import org.apache.thrift.server.TSimpleServer;
@@ -90,7 +92,6 @@ public class FEServer {
 
       new Thread(a1Password).start();
       new Thread(a1Management).start();
-
     } catch (Exception x) {
         x.printStackTrace();
     }
@@ -98,7 +99,7 @@ public class FEServer {
 
   private static void password(A1Password.Processor processor, int port) {
     try {
-      TNonblockingServerTransport serverTransport = new TNonblockingServerSocket(9091);
+      TNonblockingServerTransport serverTransport = new TNonblockingServerSocket(port);
       TServer server = new TNonblockingServer(
               new TNonblockingServer.Args(serverTransport).processor(processor));
 
@@ -120,8 +121,8 @@ public class FEServer {
       System.out.println("Nonblocking FE management server started at "+ hostname +":"+ port+". Cores: "+ nCores);  
           PerfCountersService countersService = new PerfCountersService();
           countersService.setStartTime();
-          ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-          scheduler.scheduleAtFixedRate(new HeartbeatBroadcast(), 100, 100, TimeUnit.MILLISECONDS);
+  //        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+//          scheduler.scheduleAtFixedRate(new HeartbeatBroadcast(), 1, 1, TimeUnit.SECONDS);
           server.serve();
       } catch (Exception e) {
           e.printStackTrace();
@@ -129,7 +130,11 @@ public class FEServer {
   }
 
   private static class HeartbeatBroadcast implements Runnable {
+      NodeService nodeService = new NodeService();
     public void run(){
+        // Remove old BE nodes
+        nodeService.removeOldNodes(); 
+         
         managementHandler = new FEManagementHandler();
         //String hostname = InetAddress.getLocalHost().getHostName();
         //int cores = Runtime.getRuntime().availableProcessors();

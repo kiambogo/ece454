@@ -105,14 +105,16 @@
   </target>
 
   <target name="fe" description="Run the frontend server" depends="compile">
-      <java classname="FEServer" fork="true"
+      <java classname="ece454s15a1.FEServer" fork="true"
         classpathref="ece454.classpath" failonerror="true" output="${build}/log/server.log">
+        <arg line="-host localhost -pport 10100 -mport 10101 -ncores 8"/>
       </java>
   </target>
 
   <target name="be" description="Run the backend server" depends="compile">
-      <java classname="BEServer" fork="true"
+      <java classname="ece454s15a1.BEServer" fork="true"
         classpathref="ece454.classpath" failonerror="true" output="${build}/log/server.log">
+        <arg line="-host localhost -pport 10200 -mport 10300 -ncores 8"/>
       </java>
   </target>
 
