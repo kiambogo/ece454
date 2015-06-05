@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class NodeService {
     public static ConcurrentHashMap<LocalTime, Heartbeat> BEMap = new ConcurrentHashMap<LocalTime, Heartbeat>(); 
+    public static List<Node> seedList = new ArrayList<Node>();
 
     public Set<Heartbeat> getListOfBENodes() {
         Set<Heartbeat> nodeSet = new HashSet<Heartbeat>(BEMap.values()); 
@@ -28,6 +29,17 @@ public class NodeService {
           LocalTime timestamp = timestamps.next();
           if (timestamp.isBefore(currentTime.minusSeconds(1)))
             BEMap.remove(timestamp);
+        }
+    }
+
+
+    public class Node {
+        String uri;
+        int port;
+
+        public Node(String uri, int port) {
+           this.uri = uri;
+           this.port = port;
         }
     }
 }
