@@ -147,6 +147,7 @@ public class FEServer {
       NodeService nodeService = new NodeService();
     public void run(){
         for (Heartbeat seedNode : nodeService.seedList) {
+          try {
             FEManagementClient client = new FEManagementClient(seedNode.hostname, seedNode.managementPort);
             UpdatedNodeList list = client.getUpdatedBEList();
             if (list.timestamp > (nodeService.lastUpdated)) {
@@ -156,6 +157,9 @@ public class FEServer {
               //System.out.println("My new BE List: " +nodeService.BEList);
               break;
             }
+          } catch (TException e) {
+
+          }
         }
     }
   }

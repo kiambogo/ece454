@@ -33,8 +33,11 @@ public class BEManagementHandler implements A1Management.Iface {
 
     public void beat(Heartbeat heartbeat) throws org.apache.thrift.TException {
       for(Heartbeat node: nodeService.seedList) {
-        FEManagementClient feManagementClient = new FEManagementClient(node.hostname, node.managementPort);
-        feManagementClient.beat(heartbeat); 
+        try {
+          FEManagementClient feManagementClient = new FEManagementClient(node.hostname, node.managementPort);
+          feManagementClient.beat(heartbeat); 
+        } catch (TException e) {
+        }
       }
     }
 

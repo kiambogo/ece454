@@ -37,33 +37,25 @@ public class FEManagementClient {
       return result;
   }
 
-  public UpdatedNodeList getUpdatedBEList() {
+  public UpdatedNodeList getUpdatedBEList() throws TException {
     UpdatedNodeList result = new UpdatedNodeList(0, new ArrayList<TimedHeartbeat>());
-      try {
-          TTransport transport;
-          transport = new TFramedTransport(new TSocket(uri, port));
-          TProtocol protocol = new TBinaryProtocol(transport);
-          transport.open();
-          A1Management.Client client = new A1Management.Client(protocol);
-          result = client.getUpdatedBEList();
-          transport.close();
-      } catch (TException x) {
-          x.printStackTrace();
-      }
-      return result;
+    TTransport transport;
+    transport = new TFramedTransport(new TSocket(uri, port));
+    TProtocol protocol = new TBinaryProtocol(transport);
+    transport.open();
+    A1Management.Client client = new A1Management.Client(protocol);
+    result = client.getUpdatedBEList();
+    transport.close();
+    return result;
   }
 
-  public void beat(Heartbeat heartbeat) {
-      try {
-          TTransport transport;
-          transport = new TFramedTransport(new TSocket(uri, port));
-          TProtocol protocol = new TBinaryProtocol(transport);
-          A1Management.Client client = new A1Management.Client(protocol);
-          transport.open();
-          client.beat(heartbeat);
-          transport.close();
-      } catch (TException x) {
-          x.printStackTrace();
-      }
+  public void beat(Heartbeat heartbeat) throws TException {
+    TTransport transport;
+    transport = new TFramedTransport(new TSocket(uri, port));
+    TProtocol protocol = new TBinaryProtocol(transport);
+    A1Management.Client client = new A1Management.Client(protocol);
+    transport.open();
+    client.beat(heartbeat);
+    transport.close();
   }
 }
