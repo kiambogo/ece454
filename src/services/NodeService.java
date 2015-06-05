@@ -17,10 +17,6 @@ public class NodeService {
     private static Random random = new Random();
     public static List<Heartbeat> seedList = new ArrayList<Heartbeat>();
 
-    public NodeService() {
-      this.seedList = new ArrayList<Heartbeat>();
-    }
-
     public Set<Heartbeat> getListOfBENodes() {
         Set<Heartbeat> nodeSet = new HashSet<Heartbeat>(BEMap.values()); 
         return nodeSet; 

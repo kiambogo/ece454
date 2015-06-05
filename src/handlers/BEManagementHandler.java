@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 import ece454.*;
 import services.*;
+import clients.*;
 
 import org.mindrot.jbcrypt.*;
 import java.util.HashMap;
@@ -29,11 +30,11 @@ public class BEManagementHandler implements A1Management.Iface {
     }
 
     public void beat(Heartbeat heartbeat) throws org.apache.thrift.TException {
-//        System.out.println("SENDING HEARTBEAT: ");        
-//        System.out.println("Hostname: "+heartbeat.hostname);        
-//        System.out.println("# of Cores: "+heartbeat.numberOfCores);        
-//        System.out.println("Service Port: "+heartbeat.servicePort);        
-//        System.out.println("Management Port: "+heartbeat.managementPort);        
+      for(Heartbeat node: nodeService.seedList) {
+        FEManagementClient feManagementClient = new FEManagementClient(node.hostname, node.managementPort);
+        //System.out.println("Sending heartbeat to "+node.hostname+":"+node.managementPort);        
+        feManagementClient.beat(heartbeat); 
+      }
     }
 
     public List<String> getGroupMembers() throws org.apache.thrift.TException {

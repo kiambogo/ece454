@@ -129,7 +129,7 @@ public class BEServer {
       countersService.setStartTime();
       parseSeeds();
       ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-      scheduler.scheduleAtFixedRate(new HeartbeatBroadcast(), 2, 1, TimeUnit.SECONDS);
+      scheduler.scheduleAtFixedRate(new HeartbeatBroadcast(), 100, 100, TimeUnit.MILLISECONDS);
       System.out.println("HsHa BE management server started at "+ hostname +":"+ port+". Cores: "+ nCores);  
 
       server.serve();  
@@ -143,7 +143,6 @@ public class BEServer {
 
   private static class HeartbeatBroadcast implements Runnable {
     public void run(){
-//      System.out.println("Broadcasting hearbeat");
       try {
         managementHandler = new BEManagementHandler();
         String hostname = InetAddress.getLocalHost().getHostName();
