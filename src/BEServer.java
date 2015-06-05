@@ -21,20 +21,51 @@ public class BEServer {
   public static A1Password.Processor passwordProcessor;
   public static BEManagementHandler managementHandler;
   public static A1Management.Processor managementProcessor;
+
+  public static String hostname;
   public static int pPort;
   public static int mPort;
+  public static int nCores;
+  public static String seeds;
 
   public static void main(String [] args) {
+    int i = 0, j;
+    String arg;
+    char flag;
+    boolean vflag = false;
+    String outputfile = "";
 
-//    if (args.length < 5 || 
-//        !args.contains("host") || !args.contains("pport") || !args.contains("mport") ||
-//        !args.contains("ncores") || !args.contains("seeds")) {
-//      System.out.println("Please enter 'simple' ");
-//      System.exit(0);
-//    }
+    while (i < args.length && args[i].startsWith("-")) {
+      arg = args[i++];
 
-    pPort = 10100; 
-    mPort = 10101; 
+      if (arg.equals("-host")) {
+        if (i < args.length)
+          hostname = args[i++];
+        else
+          System.err.println("-host requires a defined hostname");
+      } else if (arg.equals("-pport")) {
+        if (i < args.length)
+          pPort = Integer.parseInt(args[i++]);
+        else
+          System.err.println("-pport requires a defined port");
+      } else if (arg.equals("-mport")) {
+        if (i < args.length)
+          mPort = Integer.parseInt(args[i++]);
+        else
+          System.err.println("-mport requires a defined port");
+      } else if (arg.equals("-ncores")) {
+        if (i < args.length)
+          nCores = Integer.parseInt(args[i++]);
+        else
+          System.err.println("-ncores requires a number of cores");
+      } else if (arg.equals("-seeds")) {
+        if (i < args.length)
+          seeds = args[i++];
+        else
+          System.err.println("-seeds requires a comma seperated list of seeds");
+      }
+    }
+
       try {
         Runnable a1Password = new Runnable() {
           public void run() {
@@ -70,7 +101,7 @@ public class BEServer {
       TServer server = new THsHaServer(arg);  
       PerfCountersService countersService = new PerfCountersService();
       countersService.setStartTime();
-      System.out.println("HsHa BE password server started on port "+ port);  
+      System.out.println("HsHa BE password server started at "+ hostname +":"+ port+". Cores: "+ nCores);  
       server.serve();  
     } catch (TTransportException e) {  
       e.printStackTrace();  
@@ -96,7 +127,7 @@ public class BEServer {
       countersService.setStartTime();
       ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
       scheduler.scheduleAtFixedRate(new HeartbeatBroadcast(), 2, 1, TimeUnit.SECONDS);
-      System.out.println("HsHa BE management server started on port "+ port);  
+      System.out.println("HsHa BE management server started at "+ hostname +":"+ port+". Cores: "+ nCores);  
 
       server.serve();  
 

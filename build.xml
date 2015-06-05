@@ -53,6 +53,10 @@
 
   <target name="test" depends="run" />
 
+  <target name="package" description="Package the jar" depends="compile">
+    <jar jarfile="ece454.jar" basedir="${build}"/>
+  </target>
+
   <target name="run" description="Run the tutorial" depends="compile" >
     <jar jarfile="ece454.jar" basedir="${build}"/>
     <parallel>

@@ -24,10 +24,51 @@ public class FEServer {
   public static FEPasswordSyncHandler passwordHandler;
   public static A1Password.Processor passwordProcessor;
   public static FEManagementHandler managementHandler; 
-    public static A1Management.Processor managementProcessor;
+  public static A1Management.Processor managementProcessor;
+
+  public static String hostname;
+  public static int pPort;
+  public static int mPort;
+  public static int nCores;
+  public static String seeds;
 
   public static void main(String [] args) {
-    final int port = 9090; 
+    int i = 0, j;
+    String arg;
+    char flag;
+    boolean vflag = false;
+    String outputfile = "";
+
+    while (i < args.length && args[i].startsWith("-")) {
+      arg = args[i++];
+
+      if (arg.equals("-host")) {
+        if (i < args.length)
+          hostname = args[i++];
+        else
+          System.err.println("-host requires a defined hostname");
+      } else if (arg.equals("-pport")) {
+        if (i < args.length)
+          pPort = Integer.parseInt(args[i++]);
+        else
+          System.err.println("-pport requires a defined port");
+      } else if (arg.equals("-mport")) {
+        if (i < args.length)
+          mPort = Integer.parseInt(args[i++]);
+        else
+          System.err.println("-mport requires a defined port");
+      } else if (arg.equals("-ncores")) {
+        if (i < args.length)
+          nCores = Integer.parseInt(args[i++]);
+        else
+          System.err.println("-ncores requires a number of cores");
+      } else if (arg.equals("-seeds")) {
+        if (i < args.length)
+          seeds = args[i++];
+        else
+          System.err.println("-seeds requires a comma seperated list of seeds");
+      }
+    }
 
     try {
       passwordHandler = new FEPasswordSyncHandler();
@@ -38,12 +79,12 @@ public class FEServer {
 
       Runnable a1Password = new Runnable() {
         public void run() {
-          password(passwordProcessor, port);
+          password(passwordProcessor, pPort);
         }
       };      
       Runnable a1Management = new Runnable() {
         public void run() {
-          management(managementProcessor, port);
+          management(managementProcessor, mPort);
         }
       };
 
@@ -61,7 +102,7 @@ public class FEServer {
       TServer server = new TNonblockingServer(
               new TNonblockingServer.Args(serverTransport).processor(processor));
 
-      System.out.println("Starting the FE password server on port 9091 "  );
+      System.out.println("Nonblocking FE password server started at "+ hostname +":"+ port+". Cores: "+ nCores);  
       PerfCountersService countersService = new PerfCountersService();
       countersService.setStartTime();
       server.serve();
@@ -76,7 +117,7 @@ public class FEServer {
           TServer server = new TNonblockingServer(
                   new TNonblockingServer.Args(serverTransport).processor(processor));
 
-          System.out.println("Starting the FE management server on port " + port);
+      System.out.println("Nonblocking FE management server started at "+ hostname +":"+ port+". Cores: "+ nCores);  
           PerfCountersService countersService = new PerfCountersService();
           countersService.setStartTime();
           ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
