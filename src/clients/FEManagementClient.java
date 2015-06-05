@@ -52,7 +52,7 @@ public class FEManagementClient {
       } 
   }
 
-  public void sendHeartbeat(Heartbeat heartbeat) {
+  public void beat(Heartbeat heartbeat) {
       try {
           TProtocolFactory protocolFactory = new TBinaryProtocol.Factory();
           TAsyncClientManager clientManager = new TAsyncClientManager();
@@ -60,7 +60,7 @@ public class FEManagementClient {
           A1Management.AsyncClient client = new A1Management.AsyncClient(
           protocolFactory, clientManager, transport);
 
-          client.sendHeartbeat(heartbeat, new SendHeartbeatCallBack());
+          client.beat(heartbeat, new SendHeartbeatCallBack());
       } catch (TException x) {
           x.printStackTrace();
       } catch (IOException e) {  
@@ -103,8 +103,8 @@ public class FEManagementClient {
   }    
 
   class SendHeartbeatCallBack  
-    implements AsyncMethodCallback<A1Management.AsyncClient.sendHeartbeat_call> {
-      public void onComplete(A1Management.AsyncClient.sendHeartbeat_call heartbeatCall) {
+    implements AsyncMethodCallback<A1Management.AsyncClient.beat_call> {
+      public void onComplete(A1Management.AsyncClient.beat_call heartbeatCall) {
           System.out.println("Heartbeat sent");
       }
 

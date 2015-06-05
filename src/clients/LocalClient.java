@@ -16,62 +16,30 @@ public class LocalClient {
     public static void main(String [] args) {
         try {
               TTransport managementTransport;
-              TNonblockingTransport passwordTransport = new TNonblockingSocket("localhost", 9091); 
-              //passwordTransport = new TFramedTransport(new TSocket("localhost", 9090));
+              TTransport passwordTransport;
               managementTransport = new TFramedTransport(new TSocket("localhost", 9090));
+              passwordTransport = new TFramedTransport(new TSocket("localhost", 9091)); 
               managementTransport.open();
+              passwordTransport.open();
 
               TProtocolFactory protocolFactory = new TBinaryProtocol.Factory();
               TProtocol manageProtocol = new  TBinaryProtocol(managementTransport);
+              TProtocol passwordProtocol = new  TBinaryProtocol(passwordTransport);
 
-              TAsyncClientManager clientManager = new TAsyncClientManager();
-
-              A1Password.AsyncClient passwordClient = new A1Password.AsyncClient(
-                      protocolFactory, clientManager, passwordTransport);
+              A1Password.Client passwordClient = new A1Password.Client(passwordProtocol);
               A1Management.Client managementClient = new A1Management.Client(manageProtocol);
 
-
-            //TProtocolFactory protocolFactory = new TBinaryProtocol.Factory();
-            //TAsyncClientManager clientManager = new TAsyncClientManager();
-            //TNonblockingTransport transport = new TNonblockingSocket("localhost", 10100); 
-            //A1Password.AsyncClient passwordClient = new A1Password.AsyncClient(
-             //         protocolFactory, clientManager, transport);
-  
-            passwordClient.hashPassword("somesamplepassword", (short)12, new HashPasswordCallBack());
-            System.out.println(managementClient.getGroupMembers());
-
-
-      int i = 0;
-      while (!finish) {  
-        try{Thread.sleep(1000);}catch(InterruptedException e){System.out.println(e);}
-        i++;    
-        System.out.println("Sleep " + i + " Seconds.");
-      }
-      managementTransport.close();
+              System.out.println(managementClient.getPerfCounters());
+              System.out.println(managementClient.getGroupMembers());
+              System.out.println(passwordClient.hashPassword("somesamplepassword", (short)12));
+              System.out.println(passwordClient.checkPassword("somesamplepassword", "$2a$12$1I2Fld0pGlqblbj7z7zA0ufwULhWkOD9bEJ1rz3jFJYDNM1lXYXim"));
+              System.out.println(managementClient.getPerfCounters());
+              
+              managementTransport.close();
+              passwordTransport.close();
 
         } catch (TException x) {
-            x.printStackTrace();
-        } catch (IOException e) {  
-          e.printStackTrace();
+          x.printStackTrace();
         }
     }
-
-  static class HashPasswordCallBack 
-    implements AsyncMethodCallback<A1Password.AsyncClient.hashPassword_call> {
-        public void onComplete(A1Password.AsyncClient.hashPassword_call hashCall) {
-            try {
-                String hash = hashCall.getResult();
-                System.out.println("Hash from server: " + hash);
-            } catch (TException e) {
-                e.printStackTrace();
-            }
-            finish = true;
-        }
-    
-        public void onError(Exception e) {
-            System.out.println("Error: ");
-            e.printStackTrace();
-            finish = true;
-        }
-  }    
 }

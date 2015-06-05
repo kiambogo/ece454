@@ -53,11 +53,15 @@
 
   <target name="test" depends="run" />
 
+  <target name="package" description="Package the jar" depends="compile">
+    <jar jarfile="ece454.jar" basedir="${build}"/>
+  </target>
+
   <target name="run" description="Run the tutorial" depends="compile" >
     <jar jarfile="ece454.jar" basedir="${build}"/>
     <parallel>
       <java classname="JavaServer" fork="true" timeout="10000"
-        classpathref="ece454.classpath" failonerror="false" output="${build}/log/server.log">
+        classpathref="ece454.classpath" failonerror="true" output="${build}/log/server.log">
       </java>
       <sequential>
         <sleep seconds="2"/>
@@ -102,13 +106,13 @@
 
   <target name="fe" description="Run the frontend server" depends="compile">
       <java classname="FEServer" fork="true"
-        classpathref="ece454.classpath" failonerror="false" output="${build}/log/server.log">
+        classpathref="ece454.classpath" failonerror="true" output="${build}/log/server.log">
       </java>
   </target>
 
   <target name="be" description="Run the backend server" depends="compile">
       <java classname="BEServer" fork="true"
-        classpathref="ece454.classpath" failonerror="false" output="${build}/log/server.log">
+        classpathref="ece454.classpath" failonerror="true" output="${build}/log/server.log">
       </java>
   </target>
 
