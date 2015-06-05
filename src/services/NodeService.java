@@ -3,13 +3,23 @@ package services;
 import com.sun.xml.internal.xsom.impl.scd.Iterators;
 import ece454.*;
 import java.time.LocalTime;
-import java.util.*;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class NodeService {
-    public static ConcurrentHashMap<LocalTime, Heartbeat> BEMap = new ConcurrentHashMap<LocalTime, Heartbeat>(); 
-    public static List<Node> seedList = new ArrayList<Node>();
+    public static ConcurrentHashMap<LocalTime, Heartbeat> BEMap = new ConcurrentHashMap<LocalTime, Heartbeat>();
     private static Random random = new Random();
+    public static List<Heartbeat> seedList = new ArrayList<Heartbeat>();
+
+    public NodeService() {
+      this.seedList = new ArrayList<Heartbeat>();
+    }
 
     public Set<Heartbeat> getListOfBENodes() {
         Set<Heartbeat> nodeSet = new HashSet<Heartbeat>(BEMap.values()); 

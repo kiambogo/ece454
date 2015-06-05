@@ -127,6 +127,7 @@ public class BEServer {
       TServer server = new THsHaServer(arg);  
       PerfCountersService countersService = new PerfCountersService();
       countersService.setStartTime();
+      parseSeeds();
       ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
       scheduler.scheduleAtFixedRate(new HeartbeatBroadcast(), 2, 1, TimeUnit.SECONDS);
       System.out.println("HsHa BE management server started at "+ hostname +":"+ port+". Cores: "+ nCores);  
@@ -153,6 +154,18 @@ public class BEServer {
         e.printStackTrace();
       } catch (TException e) {  
         e.printStackTrace();  
+      }
+    }
+  }
+
+  private static void parseSeeds() {
+    if (seeds != null) {
+      NodeService nodeService = new NodeService();
+      String [] nodes = seeds.split(",");
+      for (String node : nodes) {
+        String [] parts = node.split(":");
+        Heartbeat hb = new Heartbeat(parts[0], 0, 0, Integer.parseInt(parts[1]));
+        nodeService.seedList.add(hb);
       }
     }
   }
