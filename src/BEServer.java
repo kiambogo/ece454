@@ -130,6 +130,7 @@ public class BEServer {
       parseSeeds();
       ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
       scheduler.scheduleAtFixedRate(new HeartbeatBroadcast(), 100, 100, TimeUnit.MILLISECONDS);
+      //scheduler.scheduleAtFixedRate(new HeartbeatBroadcast(), 1, 3, TimeUnit.SECONDS);
       System.out.println("HsHa BE management server started at "+ hostname +":"+ port+". Cores: "+ nCores);  
 
       server.serve();  

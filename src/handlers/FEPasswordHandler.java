@@ -1,33 +1,41 @@
 package handlers;
 
-import org.apache.thrift.TException;
-import org.apache.thrift.async.AsyncMethodCallback;
-
 import ece454.*;
 import clients.*;
 import services.*;
 
-import org.mindrot.jbcrypt.*;
-import java.util.HashMap;
+import org.apache.thrift.TException;
+import org.apache.thrift.async.*;
 
-public class FEPasswordHandler implements A1Password.AsyncIface {
+public class FEPasswordHandler implements A1Password.Iface {
     PerfCountersService countersService = new PerfCountersService();
+    NodeService nodeService = new NodeService();
 
-    public void hashPassword(String password, short logRounds, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
+    public String hashPassword(String password, short logRounds) throws ServiceUnavailableException, org.apache.thrift.TException {
+      try {
       // Increment request counter
       countersService.incrementRequestsReceived();
       // Calculate which BE to connect to
-      System.out.println("FE node received request to hash. Contacting BE");
-      BEPasswordSyncClient BEPassClient = new BEPasswordSyncClient("localhost", 10100);
-      BEPassClient.hashPassword(password, logRounds);
+      Heartbeat beNode = nodeService.getBE();
+      // Send request to that BE
+      BEPasswordClient BEPassClient = new BEPasswordClient(beNode.hostname, beNode.servicePort);
+      return BEPassClient.hashPassword(password, logRounds);
+      } finally {
+        countersService.incrementRequestsCompleted();
+      }
     }
 
-    public void checkPassword(String password, String hash, org.apache.thrift.async.AsyncMethodCallback resultHandler) throws org.apache.thrift.TException {
-      // Increment request counter
-      countersService.incrementRequestsReceived();
-      // Calculate which BE to connect to
-      BEPasswordClient BEPassClient = new BEPasswordClient("localhost", 10100);
-      BEPassClient.checkPassword(password, hash);
+    public boolean checkPassword(String password, String hash) throws org.apache.thrift.TException {
+      try {
+        // Increment request counter
+        countersService.incrementRequestsReceived();
+        // Calculate which BE to connect to
+        Heartbeat beNode = nodeService.getBE();
+        // Send request to that BE
+        BEPasswordClient BEPassClient = new BEPasswordClient(beNode.hostname, beNode.servicePort);
+        return BEPassClient.checkPassword(password, hash);
+      } finally {
+        countersService.incrementRequestsCompleted();
+      }
     }
 }
-

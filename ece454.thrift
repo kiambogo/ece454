@@ -13,6 +13,16 @@ struct Heartbeat {
   4:i32 managementPort 
 }
 
+struct TimedHeartbeat {
+  1:string timestamp,
+  2:Heartbeat heartbeat
+}
+
+struct UpdatedNodeList {
+  1:string timestamp,
+  3:list<TimedHeartbeat> beNodes
+}
+
 struct ServerHealthcheck {
   1:i32 portNumber
 }
@@ -28,7 +38,7 @@ service A1Password {
 
 service A1Management {
   PerfCounters getPerfCounters()
-  set<Heartbeat> getUpdatedBEList()
+  UpdatedNodeList getUpdatedBEList()
   void beat(1:Heartbeat heartbeat)
   list<string> getGroupMembers()
 }

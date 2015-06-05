@@ -84,7 +84,23 @@
     <echo>Launching localclient...:</echo>
     <java classname="LocalClient"
       classpathref="ece454.classpath" failonerror="true">
-      <arg line="simple"/>
+        <arg line="-pport 10300 -mport 10301"/>
+    </java>
+  </target>
+
+  <target name="testclient1" description="Run a tutorial client" depends="compile">
+    <echo>Launching localclient...:</echo>
+    <java classname="TestClient1"
+      classpathref="ece454.classpath" failonerror="true">
+        <arg line="-pport 10400 -mport 10401"/>
+    </java>
+  </target>
+
+  <target name="testclient2" description="Run a tutorial client" depends="compile">
+    <echo>Launching localclient...:</echo>
+    <java classname="TestClient2"
+      classpathref="ece454.classpath" failonerror="true">
+        <arg line="-pport 10500 -mport 10501"/>
     </java>
   </target>
 

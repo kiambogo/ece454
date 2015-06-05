@@ -1,29 +1,26 @@
 package ece454s15a1;
 
-import org.apache.thrift.server.TServer;
+import org.apache.thrift.server.*;
+import org.apache.thrift.protocol.*; 
+import org.apache.thrift.transport.*;
+import org.apache.thrift.TProcessorFactory;  
 import org.apache.thrift.server.TServer.Args;
-import org.apache.thrift.server.TSimpleServer;
-import org.apache.thrift.server.TNonblockingServer;
-import org.apache.thrift.server.TThreadPoolServer;
-import org.apache.thrift.TException;
-import org.apache.thrift.transport.TSSLTransportFactory;
-import org.apache.thrift.transport.TServerSocket;
-import org.apache.thrift.transport.TServerTransport;
-import org.apache.thrift.transport.TNonblockingServerTransport;
-import org.apache.thrift.transport.TNonblockingServerSocket;
 import org.apache.thrift.transport.TSSLTransportFactory.TSSLTransportParameters;
+import org.apache.thrift.TException;
 
 import ece454.*;
 import services.*;
 import handlers.*;
+import clients.*;
 
 import java.util.HashMap;
 import java.util.concurrent.*;
 import java.net.UnknownHostException;
+import java.time.LocalTime;
 
 public class FEServer {
 
-  public static FEPasswordSyncHandler passwordHandler;
+  public static FEPasswordHandler passwordHandler;
   public static A1Password.Processor passwordProcessor;
   public static FEManagementHandler managementHandler; 
   public static A1Management.Processor managementProcessor;
@@ -73,20 +70,14 @@ public class FEServer {
     }
 
     try {
-      passwordHandler = new FEPasswordSyncHandler();
-      passwordProcessor = new A1Password.Processor(passwordHandler);
-
-      managementHandler = new FEManagementHandler();
-      managementProcessor = new A1Management.Processor(managementHandler);
-
       Runnable a1Password = new Runnable() {
         public void run() {
-          password(passwordProcessor, pPort);
+          password(pPort);
         }
       };      
       Runnable a1Management = new Runnable() {
         public void run() {
-          management(managementProcessor, mPort);
+          management(mPort);
         }
       };
 
@@ -97,49 +88,104 @@ public class FEServer {
     }
   }
 
-  private static void password(A1Password.Processor processor, int port) {
+  private static void password(int port) {
     try {
-      TNonblockingServerTransport serverTransport = new TNonblockingServerSocket(port);
-      TServer server = new TNonblockingServer(
-              new TNonblockingServer.Args(serverTransport).processor(processor));
+      passwordHandler = new FEPasswordHandler();
+      passwordProcessor = new A1Password.Processor(passwordHandler);
 
+      TNonblockingServerSocket socket = new TNonblockingServerSocket(port);  
+      THsHaServer.Args arg = new THsHaServer.Args(socket); 
+      arg.protocolFactory(new TBinaryProtocol.Factory());  
+      arg.transportFactory(new TFramedTransport.Factory()); 
+      arg.processorFactory(new TProcessorFactory(passwordProcessor));  
+      arg.workerThreads(4);
+
+      TServer server = new THsHaServer(arg);  
       System.out.println("Nonblocking FE password server started at "+ hostname +":"+ port+". Cores: "+ nCores);  
-      PerfCountersService countersService = new PerfCountersService();
-      countersService.setStartTime();
       server.serve();
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
-  private static void management(A1Management.Processor processor, int port) {
+  private static void management(int port) {
       try {
-          TNonblockingServerTransport serverTransport = new TNonblockingServerSocket(port);
-          TServer server = new TNonblockingServer(
-                  new TNonblockingServer.Args(serverTransport).processor(processor));
+        managementHandler = new FEManagementHandler();
+        managementProcessor = new A1Management.Processor(managementHandler);
+
+        TNonblockingServerSocket socket = new TNonblockingServerSocket(port);  
+        THsHaServer.Args arg = new THsHaServer.Args(socket); 
+        arg.protocolFactory(new TBinaryProtocol.Factory());  
+        arg.transportFactory(new TFramedTransport.Factory()); 
+        arg.processorFactory(new TProcessorFactory(managementProcessor));  
+        arg.workerThreads(1);
+
+        TServer server = new THsHaServer(arg);  
 
       System.out.println("Nonblocking FE management server started at "+ hostname +":"+ port+". Cores: "+ nCores);  
           PerfCountersService countersService = new PerfCountersService();
           countersService.setStartTime();
-  //        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-//          scheduler.scheduleAtFixedRate(new HeartbeatBroadcast(), 1, 1, TimeUnit.SECONDS);
+          parseSeeds();
+          // Only run this if NOT seed node
+          ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+          if (!isSeed()) {
+            scheduler.scheduleAtFixedRate(new RefreshBEList(), 500, 500, TimeUnit.MILLISECONDS);
+            //scheduler.scheduleAtFixedRate(new RefreshBEList(), 2, 2, TimeUnit.SECONDS);
+          } else {
+            scheduler.scheduleAtFixedRate(new RemoveOldBENodes(), 0, 1, TimeUnit.SECONDS);
+          }
           server.serve();
       } catch (Exception e) {
           e.printStackTrace();
       }
   }
 
-  private static class HeartbeatBroadcast implements Runnable {
+  private static class RefreshBEList implements Runnable {
       NodeService nodeService = new NodeService();
     public void run(){
-        // Remove old BE nodes
-        nodeService.removeOldNodes(); 
-         
-        managementHandler = new FEManagementHandler();
-        //String hostname = InetAddress.getLocalHost().getHostName();
-        //int cores = Runtime.getRuntime().availableProcessors();
-        //Heartbeat hb = new Heartbeat(hostname, cores, pPort, mPort);
-        //managementHandler.sendHeartbeat(hb);
+        for (Heartbeat seedNode : nodeService.seedList) {
+            FEManagementClient client = new FEManagementClient(seedNode.hostname, seedNode.managementPort);
+            UpdatedNodeList list = client.getUpdatedBEList();
+            LocalTime updateTime = LocalTime.parse(list.timestamp);
+            if (updateTime.isAfter(nodeService.lastUpdated)) {
+              nodeService.lastUpdated = updateTime;
+              nodeService.BEList = list.beNodes;
+              //System.out.println("Received List: " +list.beNodes);
+              //System.out.println("My new BE List: " +nodeService.BEList);
+              break;
+            }
+        }
     }
+  }
+
+  private static class RemoveOldBENodes implements Runnable {
+      NodeService nodeService = new NodeService();
+    public void run(){
+      nodeService.removeOldNodes();
+    }
+  }
+
+  private static void parseSeeds() {
+    if (seeds != null) {
+      NodeService nodeService = new NodeService();
+      String [] nodes = seeds.split(",");
+      for (String node : nodes) {
+        String [] parts = node.split(":");
+        Heartbeat hb = new Heartbeat(parts[0], 0, 0, Integer.parseInt(parts[1]));
+        nodeService.seedList.add(hb);
+      }
+    }
+  }
+
+  private static boolean isSeed() {
+    NodeService nodeService = new NodeService();
+    boolean isSeed = false;
+    for (Heartbeat node: nodeService.seedList) {
+      if (node.hostname.equals(hostname) && node.managementPort == mPort) {
+        isSeed = true;
+        System.out.println("This is a seed node");
+      }
+    }
+    return isSeed;
   }
 }

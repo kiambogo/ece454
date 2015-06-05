@@ -3,6 +3,7 @@ package handlers;
 import org.apache.thrift.TException;
 import org.apache.thrift.async.AsyncMethodCallback;
 import java.util.Set;
+import java.time.LocalTime;
 
 import ece454.*;
 import services.*;
@@ -21,8 +22,9 @@ public class FEManagementHandler implements A1Management.Iface {
         return new PerfCounters(secondsUp, requestsReceived, requestsCompleted);
     }
 
-    public Set<Heartbeat> getUpdatedBEList() throws org.apache.thrift.TException {
-        return nodeService.getListOfBENodes(); 
+    public UpdatedNodeList getUpdatedBEList() throws org.apache.thrift.TException {
+        UpdatedNodeList list = new UpdatedNodeList(LocalTime.now().toString(), nodeService.getListOfBENodes()); 
+        return list; 
     }
 
     public void beat(Heartbeat heartbeat) throws org.apache.thrift.TException {
@@ -31,8 +33,8 @@ public class FEManagementHandler implements A1Management.Iface {
 
     public List<String> getGroupMembers() throws org.apache.thrift.TException {
       ArrayList<String> list = new ArrayList<String>();
-      list.add("Christopher Poenaru");
-      list.add("Anthony Clark");
+      list.add("cpoenaru");
+      list.add("am3clark");
       return list;       
     }
 }

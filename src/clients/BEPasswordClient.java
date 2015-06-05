@@ -7,87 +7,45 @@ import org.apache.thrift.TException;
 import org.apache.thrift.async.*;
 import org.apache.thrift.TException;
 import org.apache.thrift.transport.*;
-import org.apache.thrift.protocol.TBinaryProtocol;
-import org.apache.thrift.protocol.TProtocolFactory;
+import org.apache.thrift.protocol.*;
 
 public class BEPasswordClient{
     private String uri;
     private int port;
-    static volatile boolean finish = false;
+    private A1Password.Client client;
 
     public BEPasswordClient(String uri, int port) { 
         this.uri = uri;
         this.port = port;
+        try {
+          TTransport transport;
+          transport = new TFramedTransport(new TSocket(uri, port));
+          TProtocol protocol = new TBinaryProtocol(transport);
+          client = new A1Password.Client(protocol);
+          transport.open();
+        } catch (TException e) {  
+          e.printStackTrace();
+        } 
     }
 
-  public void hashPassword(String password, short rounds, AsyncMethodCallback callback) {
-      try {
-          TProtocolFactory protocolFactory = new TBinaryProtocol.Factory();
-          TAsyncClientManager clientManager = new TAsyncClientManager();
-          TNonblockingTransport transport = new TNonblockingSocket(uri, port); 
-          A1Password.AsyncClient client = new A1Password.AsyncClient(
-            protocolFactory, clientManager, transport);
 
-          client.hashPassword(password, rounds, callback);
-          while (!finish) {  }
-      } catch (TException x) {
-          x.printStackTrace();
-      } catch (IOException e) {  
-          e.printStackTrace();
-      } 
-  }
-
-  public void checkPassword(String password, String hash) {
-      try {
-          TProtocolFactory protocolFactory = new TBinaryProtocol.Factory();
-          TAsyncClientManager clientManager = new TAsyncClientManager();
-          TNonblockingTransport transport = new TNonblockingSocket(uri, port); 
-          A1Password.AsyncClient client = new A1Password.AsyncClient(
-            protocolFactory, clientManager, transport);
-
-          client.checkPassword(password, hash, new CheckPasswordCallBack());
-      } catch (TException x) {
-          x.printStackTrace();
-      } catch (IOException e) {  
-          e.printStackTrace();
-      } 
-  }
-
-  static class HashPasswordCallBack 
-    implements AsyncMethodCallback<A1Password.AsyncClient.hashPassword_call> {
-        public void onComplete(A1Password.AsyncClient.hashPassword_call hashCall) {
-            try {
-                String hash = hashCall.getResult();
-                System.out.println("Hash from server: " + hash);
-            } catch (TException e) {
-                e.printStackTrace();
-            }
-            finish = true;
-        }
-    
-        public void onError(Exception e) {
-            System.out.println("Error: ");
-            e.printStackTrace();
-            finish = true;
-        }
-  }    
-
-  static class CheckPasswordCallBack
-    implements AsyncMethodCallback<A1Password.AsyncClient.checkPassword_call> {
-        public void onComplete(A1Password.AsyncClient.checkPassword_call checkPasswordCall) {
-            try {
-                Boolean result = checkPasswordCall.getResult();
-                System.out.println("Response from server: " + result);
-            } catch (TException e) {
-                e.printStackTrace();
-            }
-            finish = true;
-        }
-
-        public void onError(Exception e) {
-            System.out.println("Error: ");
-            e.printStackTrace();
-            finish = true;
-        }
+  public String hashPassword(String password, short rounds) {
+    String hashedPassword = "";
+    try {
+      hashedPassword = client.hashPassword(password, rounds);
+    } catch (TException e) {
+      e.printStackTrace(); 
     }
+    return hashedPassword;
+  }
+
+  public boolean checkPassword(String password, String hash) {
+    boolean response = false;
+    try {
+      response = client.checkPassword(password, hash);
+    } catch (TException e) {
+      e.printStackTrace(); 
+    }
+    return response;
+  }
 }
