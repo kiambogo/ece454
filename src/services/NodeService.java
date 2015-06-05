@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class NodeService {
     public static ConcurrentHashMap<LocalTime, Heartbeat> BEMap = new ConcurrentHashMap<LocalTime, Heartbeat>();
-    private static Random random = new Random();
+    private static Random random = new Random(System.currentTimeMillis());
     public static List<Heartbeat> seedList = new ArrayList<Heartbeat>();
 
     public Set<Heartbeat> getListOfBENodes() {
