@@ -2,5 +2,5 @@
 build
 .idea/
 *DS_Store
-ece454.iml
+*.iml
 docs/~$*.docx
