@@ -22,10 +22,7 @@ public class FEPasswordHandler implements A1Password.Iface {
         long start_time = System.nanoTime();
         long end_time = start_time;
 
-
-        boolean completed = false;
-        while(end_time - start_time < 60 * 1000000) {
-
+        while ((end_time - start_time) < (60L * 1000000000L)) {
             try {
                 // Calculate which BE to connect to
                 Heartbeat beNode = nodeService.getBE();
@@ -35,10 +32,15 @@ public class FEPasswordHandler implements A1Password.Iface {
                 output = BEPassClient.hashPassword(password, logRounds);
                 countersService.incrementRequestsCompleted();
                 return output;
-                
-            } finally {
-                end_time = System.nanoTime();
-            }
+
+            } catch (Exception e) {
+                try {
+                    // Avoid polling too frequently if BEs are down
+                    Thread.sleep(200);
+                } catch (InterruptedException e2) {
+                }
+            } 
+            end_time = System.nanoTime();
         }
         throw new ServiceUnavailableException("Unreachable for >60 seconds");
     }
