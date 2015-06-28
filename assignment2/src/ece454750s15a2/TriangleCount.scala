@@ -15,13 +15,7 @@ object TriangleCount {
   def main(args: Array[String]) {
     val argsList = args.zipWithIndex.toList
     val argMap = collection.mutable.Map[String, String]()
-    val arg_ncores: Option[Int] = None;
-    val arg_graphFileName: Option[String] = None;
-    val arg_outputFileName: Option[String] = None;
-
     println("Starting triangle count")
-    println(argsList)
-
     argsList.map{ arg =>
       arg match { 
         case ("-ncores", i) => argMap += ("ncores" -> (argsList.find(c => c == (c._1, i+1))).getOrElse(throw new RuntimeException("Must specify number of cores!"))._1)
