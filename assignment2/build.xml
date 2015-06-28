@@ -1,0 +1,62 @@
+<project name="a2" default="a2" basedir=".">
+
+  <description>ECE 454 / 750 Assignment 2 Part B</description>
+
+  <property name="src" location="src" />
+  <property name="build" location="build" />
+  <property name="scala.home" value="/opt/scala-2.11.6/" />
+  <property name="scala-library.jar" value="${scala.home}/lib/scala-library.jar" />
+
+  <taskdef resource="scala/tools/ant/antlib.xml">
+    <classpath>
+      <pathelement location="${scala.home}/lib/scala-compiler.jar"   />
+      <pathelement location="${scala.home}/lib/scala-reflect.jar"   />
+      <pathelement location="${scala-library.jar}"   />
+    </classpath>
+  </taskdef>
+
+  <path id="build.classpath">
+    <pathelement location="${scala-library.jar}"/>
+  </path>
+
+  <path id="a2.classpath">
+    <path refid="build.classpath" />
+    <pathelement path="${build}" />
+    <pathelement path="a2.jar" />
+  </path>
+  
+  <target name="init">
+    <tstamp />
+    <mkdir dir="${build}"/>
+    <mkdir dir="${build}/log"/>
+  </target>
+
+  <target name="compile" depends="init">
+    <javac source="1.6" target="1.6" debug="true" includeantruntime="false" srcdir="${src}" destdir="${build}" classpathref="build.classpath" />
+  </target>
+
+  <target name="test" depends="a2" />
+
+  <target name="a2" description="Run the solution" depends="compile">
+    <sequential>
+      <echo>A2 test</echo>
+      <!-- <java classname="ece454750s15a2.TriangleCount"
+            classpathref="a2.classpath" failonerror="true">
+        <arg line="-ncores 1 -if samplegraph.txt -of output.txt"/>
+      </java> -->
+      <scalac srcdir="${src}" destdir="${build}"
+        classpathref="a2.classpath" force="changed">
+        <include name="**/*.scala"/>
+      </scalac>
+      <jar jarfile="a2.jar" basedir="${build}"/>
+    </sequential>
+  </target>
+
+  <target name="clean">
+    <delete dir="${build}" />
+    <delete dir="${gen}"/>
+    <delete file="a2.jar" />
+    <delete file="output.txt" />
+    <delete file="ece454750a2.tar.gz" />
+  </target>
+</project>
