@@ -10,7 +10,7 @@ import org.apache.thrift.protocol.TBinaryProtocol;
 import org.apache.thrift.protocol.TProtocol;
 import org.apache.thrift.protocol.TProtocolFactory;
 
-public class LocalClient {
+public class LocalClient2 {
 
   static String hostname;
   static int pPort;
@@ -55,7 +55,7 @@ public class LocalClient {
 
       System.out.println(managementClient.getPerfCounters());
       System.out.println(managementClient.getGroupMembers());
-      System.out.println(passwordClient.hashPassword("somesamplepassword", (short)20));
+      System.out.println(passwordClient.hashPassword("somesamplepassword", (short)12));
       //        System.out.println(passwordClient.checkPassword("somesamplepassword", "$2a$12$1I2Fld0pGlqblbj7z7zA0ufwULhWkOD9bEJ1rz3jFJYDNM1lXYXim"));
 
       managementTransport.close();
