@@ -40,14 +40,6 @@
   <target name="a2" description="Run the solution" depends="compile">
     <sequential>
       <echo>A2 test</echo>
-      <!-- <java classname="ece454750s15a2.TriangleCount"
-            classpathref="a2.classpath" failonerror="true">
-        <arg line="-ncores 1 -if samplegraph.txt -of output.txt"/>
-      </java> -->
-      <scalac srcdir="${src}" destdir="${build}"
-        classpathref="a2.classpath" force="changed">
-        <include name="**/*.scala"/>
-      </scalac>
       <jar jarfile="a2.jar" basedir="${build}"/>
     </sequential>
   </target>
