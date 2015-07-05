@@ -26,7 +26,7 @@ public class TriangleCountImpl {
     ArrayList<String> ret = new ArrayList<String>();
     ret.add("cpoenaru");
     ret.add("am3clark");
-    ret.add("[Insert Tom's UserID Here]");
+    ret.add("tszwiega");
     return ret;
   }
 
