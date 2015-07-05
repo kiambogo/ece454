@@ -35,8 +35,6 @@ public class TriangleCountImpl {
     if (ncores == 1) {
       return triangleCount(0, 1, adjacencyLists);
     } else {
-
-
       try{
         ExecutorService executor = Executors.newFixedThreadPool(ncores);
         for(int i=0; i<ncores; i++){
@@ -45,7 +43,7 @@ public class TriangleCountImpl {
         }
 
         executor.shutdown();
-        executor.awaitTermination(100000l,TimeUnit.SECONDS);
+        executor.awaitTermination(1000l,TimeUnit.SECONDS);
       }
       catch(Exception ex){}
 
@@ -57,13 +55,13 @@ public class TriangleCountImpl {
     // triangle counting
     ArrayList<Triangle> ret = new ArrayList<Triangle>();
     int vertice_count = adjacencyLists.size();
-    HashSet<Integer> neighbours = new HashSet<Integer>();
+    //HashSet<Integer> neighbours = new HashSet<Integer>();
 
     for (int i = thread_id; i < vertice_count; i += thread_count) {
-      neighbours = adjacencyLists.get(i);
+      //neighbours = adjacencyLists.get(i);
 
-      for (int j : neighbours) { // all neighbours j > i
-        for (int k : neighbours) {
+      for (int j : adjacencyLists.get(i)) { // all neighbours j > i
+        for (int k : adjacencyLists.get(i)) {
 
           if (j < k) {
 
@@ -88,7 +86,6 @@ public class TriangleCountImpl {
       this.id = id;
       this.thread_count = thread_count;
       this.adjacencyLists = adjacencyLists;
-
     }
 
     @Override
