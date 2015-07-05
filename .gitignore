@@ -5,3 +5,5 @@ build
 *.iml
 *$*.docx
 assignment2/graphs
+a2.jar
+assignment2/output.txt
