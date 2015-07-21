@@ -4,19 +4,8 @@
 
   <property name="src" location="src" />
   <property name="build" location="build" />
-  <property name="scala.home" value="/opt/scala-2.11.6/" />
-  <property name="scala-library.jar" value="${scala.home}/lib/scala-library.jar" />
-
-  <taskdef resource="scala/tools/ant/antlib.xml">
-    <classpath>
-      <pathelement location="${scala.home}/lib/scala-compiler.jar"   />
-      <pathelement location="${scala.home}/lib/scala-reflect.jar"   />
-      <pathelement location="${scala-library.jar}"   />
-    </classpath>
-  </taskdef>
 
   <path id="build.classpath">
-    <pathelement location="${scala-library.jar}"/>
   </path>
 
   <path id="a2.classpath">
@@ -38,9 +27,13 @@
   <target name="test" depends="a2" />
 
   <target name="a2" description="Run the solution" depends="compile">
+    <jar jarfile="a2.jar" basedir="${build}"/>
     <sequential>
       <echo>A2 test</echo>
-      <jar jarfile="a2.jar" basedir="${build}"/>
+      <java classname="ece454750s15a2.TriangleCount"
+            classpathref="a2.classpath" failonerror="true">
+        <arg line="-ncores 1 -if samplegraph.txt -of output.txt"/>
+      </java>
     </sequential>
   </target>
 
