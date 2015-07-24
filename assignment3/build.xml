@@ -1,0 +1,57 @@
+<project name="ece454" default="init" basedir=".">
+  <description>ECE 454 Assignment 3</description>
+
+  <property name="src" location="src" />
+  <property name="build" location="build" />
+
+  <target name="init">
+    <tstamp />
+    <mkdir dir="${build}"/>
+    <mkdir dir="${build}/part1"/>
+    <mkdir dir="${build}/part2"/>
+    <mkdir dir="${build}/part3"/>
+    <mkdir dir="${build}/part4"/>
+    <mkdir dir="${build}/log"/>
+  </target>
+
+  <target name="compile1" depends="init">
+    <javac source="1.6" target="1.6" srcdir="./part1/src" destdir="build/part1" />
+  </target>
+
+  <target name="compile2" depends="init">
+    <javac source="1.6" target="1.6" srcdir="./part2/src" destdir="build/part2" />
+  </target>
+
+  <target name="compile3" depends="init">
+    <javac source="1.6" target="1.6" srcdir="./part3/src" destdir="build/part3" />
+  </target>
+
+  <target name="compile4" depends="init">
+    <javac source="1.6" target="1.6" srcdir="./part4/src" destdir="build/part4" />
+  </target>
+
+  <target name="part1" description="Build the jar for part1" depends="compile1">
+    <jar jarfile="Part1.jar" basedir="build/part1"/>
+  </target>
+
+  <target name="part2" description="Build the jar for part2" depends="compile2">
+    <jar jarfile="Part2.jar" basedir="build/part2"/>
+  </target>
+
+  <target name="part3" description="Build the jar for part3" depends="compile3">
+    <jar jarfile="Part3.jar" basedir="build/part3"/>
+  </target>
+
+  <target name="part4" description="Build the jar for part4" depends="compile4">
+    <jar jarfile="Part4.jar" basedir="build/part4"/>
+  </target>
+
+  <target name="clean">
+    <delete dir="${build}" />
+    <delete file="Part1.jar" />
+    <delete file="Part2.jar" />
+    <delete file="Part3.jar" />
+    <delete file="Part4.jar" />
+  </target>
+
+</project>
