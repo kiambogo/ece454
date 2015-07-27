@@ -5,6 +5,7 @@ import org.apache.pig.data.TupleFactory;
 import org.apache.pig.data.Tuple;
 import org.apache.pig.data.BagFactory;
 import org.apache.pig.data.DataBag;
+import org.apache.pig.data.DataType;
 
 public class TupToGeneBag extends EvalFunc<DataBag>
 {
@@ -23,7 +24,7 @@ public class TupToGeneBag extends EvalFunc<DataBag>
 				Tuple tp = myTupleFactory.newTuple(2);
 				tp.set(0, "gene_"+ Integer.toString(i+1));
 
-				int val = Double.parseDouble(input.get(i));
+				double val = DataType.toDouble(input.get(i));
 
 				if(val > 0.5){
 					tp.set(1, 1);
