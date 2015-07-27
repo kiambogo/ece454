@@ -4,6 +4,7 @@ import java.util.StringTokenizer;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.DoubleWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
@@ -23,7 +24,7 @@ public class GeneScore {
     Job job = Job.getInstance(conf, "gene score");
     job.setJarByClass(GeneScore.class);
     job.setMapperClass(TokenizerMapper.class);
-    job.setReducerClass(GeneScoreClass.class)
+    job.setReducerClass(GeneScoreClass.class);
     job.setOutputKeyClass(Text.class);
     job.setOutputValueClass(Text.class);
     FileInputFormat.addInputPath(job, new Path(args[0]));
@@ -34,15 +35,15 @@ public class GeneScore {
     public static class GeneScoreClass
         extends Reducer<Text, DoubleWritable, Text, DoubleWritable>{
 
-        private DoubleWritable() result = new DoubleWritable();
+        private DoubleWritable result = new DoubleWritable();
 
         public void reduce(Text key, Iterable<IntWritable> values, Context context)
             throws IOException, InterruptedException{
             
-            double score = 0.0
+            double score = 0.0;
             int count = 0;
             for(IntWritable val : values){
-                score += Double.parseDouble((val.get());
+                score += Double.parseDouble(val.get());
                 count++;
             }        
             score = score/count;
