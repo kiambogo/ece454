@@ -37,13 +37,13 @@ public class GeneScore {
 
         private DoubleWritable result = new DoubleWritable();
 
-        public void reduce(Text key, Iterable<IntWritable> values, Context context)
+        public void reduce(Text key, Iterable<DoubleWritable> values, Context context)
             throws IOException, InterruptedException{
             
             double score = 0.0;
             int count = 0;
             for(IntWritable val : values){
-                score += Double.parseDouble(val.get());
+                score += val.get();
                 count++;
             }        
             score = score/count;
@@ -54,11 +54,11 @@ public class GeneScore {
     }
 
     public static class TokenizerMapper 
-        extends Mapper<Object, Text, Text, IntWritable>{
+        extends Mapper<Object, Text, Text, DoubleWritable>{
     
         private Text gene = new Text();
-        private final static IntWritable zero = new IntWritable(0);
-        private final static IntWritable one = new IntWritable(1);
+        private final static DoubleWritable zero = new DoubleWritable(0.0);
+        private final static DoubleWritable one = new DoubleWritable(1.0);
       
         public void map(Object key, Text value, Context context
                     ) throws IOException, InterruptedException {
@@ -72,7 +72,7 @@ public class GeneScore {
                 } else {
                     double val = Double.parseDouble(itr.nextToken());
 
-                    gene.set("gene_" + Integer.ToString(counter));
+                    gene.set("gene_" + Integer.toString(counter));
                     if (val > 0.5) {
                         context.write(gene, one);
                     } else {
