@@ -69,8 +69,9 @@ public class GeneScore {
             while (itr.hasMoreTokens()) {
                 if (counter == 0) {
                     counter++;
+                    itr.nextToken();
                 } else {
-                    double val = itr.nextToken();
+                    double val = Double.parseDouble(itr.nextToken());
 
                     gene.set("gene_" + Integer.toString(counter));
                     if (val > 0.5) {
