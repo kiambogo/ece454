@@ -42,7 +42,7 @@ public class GeneScore {
             
             double score = 0.0;
             int count = 0;
-            for(IntWritable val : values){
+            for(DoubleWritable val : values){
                 score += val.get();
                 count++;
             }        
