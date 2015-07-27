@@ -16,6 +16,8 @@ import org.apache.hadoop.util.GenericOptionsParser;
 public class GeneScore {
   public static void main(String[] args) throws Exception {
     Configuration conf = new Configuration();
+    conf.set("mapreduce.output.textoutputformat.separator", ",");
+    
     String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
     if (otherArgs.length != 2) {
       System.err.println("Usage: wordcount <in> <out>");
