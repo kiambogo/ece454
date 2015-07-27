@@ -70,7 +70,7 @@ public class GeneScore {
                 if (counter == 0) {
                     counter++;
                 } else {
-                    double val = Double.parseDouble(itr.nextToken());
+                    double val = itr.nextToken();
 
                     gene.set("gene_" + Integer.toString(counter));
                     if (val > 0.5) {
