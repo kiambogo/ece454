@@ -8,7 +8,7 @@ import org.apache.pig.data.DataBag;
 
 public class TupToGeneBag extends EvalFunc<DataBag>
 {
-	public String exec(Tuple input) throws IOException {
+	public DataBag exec(Tuple input) throws IOException {
 		if (input == null || input.size() == 0 || input.get(0) == null)
 			return null;
 
@@ -23,7 +23,7 @@ public class TupToGeneBag extends EvalFunc<DataBag>
 				Tuple tp = myTupleFactory.newTuple(2);
 				tp.set(0, "gene_"+ Integer.toString(i+1));
 
-				int val = (double)input.get(i);
+				int val = Double.parseDouble(input.get(i));
 
 				if(val > 0.5){
 					tp.set(1, 1);
