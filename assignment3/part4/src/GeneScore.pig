@@ -5,6 +5,6 @@ samplesData = LOAD '$input' USING PigStorage(',');
 samples = FOREACH samplesData GENERATE $0 AS SampleName, TOTUPLE($1 ..) AS Genes;
 
 --dump samples;
---geneResults = FOREACH samples GENERATE TupToGeneBag(Genes);
+geneResults = FOREACH samples GENERATE FLATTEN(TupToGeneBag(Genes));
 
 dump geneResults;
