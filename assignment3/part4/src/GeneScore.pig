@@ -14,4 +14,3 @@ scores = FOREACH geneGrouped GENERATE $0, AVG( (bag{tuple(double)})geneResults.$
 STORE scores INTO '$output' USING PigStorage(',');
 
 
-dump scores;

@@ -22,7 +22,7 @@ public class TupToGeneBag extends EvalFunc<DataBag>
 			for(int i=1; i<input.size(); i++){
 				Tuple tp = myTupleFactory.newTuple(2);
 
-				tp.set(0, "gene_"+ Integer.toString(i+1));
+				tp.set(0, "gene_"+ Integer.toString(i));
 
 				double val = Double.parseDouble(input.get(i) + "");
 
