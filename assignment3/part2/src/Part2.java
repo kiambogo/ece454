@@ -13,7 +13,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
-public class GeneScore {
+public class Part2 {
   public static void main(String[] args) throws Exception {
     Configuration conf = new Configuration();
     conf.set("mapreduce.output.textoutputformat.separator", ",");
@@ -24,7 +24,7 @@ public class GeneScore {
       System.exit(2);
     }
     Job job = Job.getInstance(conf, "gene score");
-    job.setJarByClass(GeneScore.class);
+    job.setJarByClass(Part2.class);
     job.setMapperClass(TokenizerMapper.class);
     job.setReducerClass(GeneScoreClass.class);
     job.setOutputKeyClass(Text.class);

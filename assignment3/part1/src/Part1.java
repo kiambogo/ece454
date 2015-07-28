@@ -12,7 +12,7 @@ import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.util.GenericOptionsParser;
 
-public class MaxGene {
+public class Part1 {
   public static void main(String[] args) throws Exception {
     Configuration conf = new Configuration();
     String[] otherArgs = new GenericOptionsParser(conf, args).getRemainingArgs();
@@ -20,8 +20,9 @@ public class MaxGene {
       System.err.println("Usage: wordcount <in> <out>");
       System.exit(2);
     }
+    conf.set("mapreduce.output.textoutputformat.separator", ",");
     Job job = Job.getInstance(conf, "max gene");
-    job.setJarByClass(MaxGene.class);
+    job.setJarByClass(Part1.class);
     job.setMapperClass(TokenizerMapper.class);
     job.setOutputKeyClass(Text.class);
     job.setOutputValueClass(Text.class);
